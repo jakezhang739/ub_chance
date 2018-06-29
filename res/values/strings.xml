@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Chance_chain</string>
+    <string name="title_activity_authenticator">Chance</string>
+    <string name="title_home">机会首页</string>
+    <string name="title_dashboard">我的</string>
+    <string name="title_notifications">发布信息</string>
+    <string name="title_activity_home">机会首页</string>
+    <string name="title_activity_notification">发布</string>
+    <string name="title_activity_my">我的主页</string>
+    <string name="title_activity_information">个人信息</string>
+    <string name="title_activity_change_information">完善个人信息</string>
+    <string name="action_settings">Settings</string>
+</resources>
