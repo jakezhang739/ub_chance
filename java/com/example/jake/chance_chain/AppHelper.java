@@ -36,6 +36,8 @@ import static com.amazonaws.regions.Regions.US_EAST_1;
 public class AppHelper {
     private static final String TAG = "AppHelper";
 
+    public static final String fbId = "1007699982736676";
+
     private static AppHelper appHelper;
     private static CognitoUserPool userPool;
     private static CognitoUser user;

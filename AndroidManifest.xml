@@ -57,8 +57,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".signUpActivity"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="登录机会链" />
+        <activity
+            android:name=".signUpActivity"
+            android:label="注册" />
+        <activity android:name=".forgotPassword" />
+        <activity android:name=".confirmUser"></activity>
     </application>
 
 </manifest>
