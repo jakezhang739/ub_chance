@@ -45,6 +45,7 @@
         android:layout_below="@+id/textViewRegUserIdLabel"
         android:layout_centerHorizontal="true"
         android:hint="用户名"
+        android:text=""
         android:textColorHint="@color/yellow"
         android:inputType="textPersonName"/>
 
@@ -114,7 +115,7 @@
         android:layout_below="@+id/textViewRegGivenNameLabel"
         android:layout_centerHorizontal="true"
         android:hint="请再次输入密码"
-        android:inputType="textPersonName"
+        android:inputType="textPassword"
         android:textColorHint="@color/yellow"
         android:backgroundTint="@color/yellow"
         android:textColor="@color/yellow"/>
@@ -149,6 +150,7 @@
         android:layout_below="@id/textViewRegEmailLabel"
         android:layout_centerHorizontal="true"
         android:hint="电子邮箱"
+        android:textColor="@color/yellow"
         android:textColorHint="@color/yellow"
         android:backgroundTint="@color/yellow"
         android:inputType="textEmailAddress"/>

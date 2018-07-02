@@ -41,6 +41,7 @@
         android:backgroundTint="@color/yellow"
         android:ems="10"
         android:hint="用户名"
+        android:textColor="@color/yellow"
         android:inputType="text"
         android:textColorHint="@color/yellow" />
 
@@ -50,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:ems="10"
+        android:textColor="@color/yellow"
         android:backgroundTint="@color/yellow"
         android:inputType="textPassword"
         android:textColorHint="@color/yellow"

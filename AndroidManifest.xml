@@ -41,6 +41,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".InformationActivity" />
         </activity>
+
         <activity android:name=".getPicActivity" />
 
         <service
@@ -60,11 +61,32 @@
         <activity
             android:name=".LoginActivity"
             android:label="登录机会链" />
+
         <activity
             android:name=".signUpActivity"
-            android:label="注册" />
-        <activity android:name=".forgotPassword" />
-        <activity android:name=".confirmUser"></activity>
+            android:label="注册">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LoginActivity" />
+        </activity>
+
+        <activity
+            android:name=".forgotPassword"
+            android:label="忘记密码">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LoginActivity" />
+        </activity>
+
+        <activity
+            android:name=".confirmUser"
+            android:label="确认用户">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".signUpActivity" />
+        </activity>
+
+
     </application>
 
 </manifest>

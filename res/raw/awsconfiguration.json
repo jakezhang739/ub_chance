@@ -31,6 +31,13 @@
       "Region": "us-east-1"
     }
   },
+  "ContentManager": {
+    "Default": {
+      "Bucket": "chance-hosting-mobilehub-653619147",
+      "Region": "us-east-1",
+      "CloudFrontURL": "https://d3dl4dsq1o1pol.cloudfront.net"
+    }
+  },
   "PinpointAnalytics": {
     "Default": {
       "AppId": "8e2e670c75fb4227a69badf5bfa76c64",
@@ -47,5 +54,13 @@
       "Bucket": "chance-userfiles-mobilehub-653619147",
       "Region": "us-east-1"
     }
+  },
+  "GoogleSignIn": {
+    "ClientId-WebApp": "chancechain-208715",
+    "Permissions": "email,profile,openid"
+  },
+  "FacebookSignIn": {
+    "AppId": "1007699982736676",
+    "Permissions": "public_profile"
   }
 }
