@@ -83,7 +83,7 @@ public class forgotPassword extends AppCompatActivity implements AWSLoginHandler
 
     @Override
     public void onRegisterConfirmed() {
-        Toast.makeText(forgotPassword.this, "已发送验证码" , Toast.LENGTH_LONG).show();
+        //Toast.makeText(forgotPassword.this, "已发送验证码" , Toast.LENGTH_LONG).show();
 
     }
 
