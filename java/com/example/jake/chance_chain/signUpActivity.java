@@ -37,8 +37,6 @@ public class signUpActivity extends AppCompatActivity implements AWSLoginHandler
                 }
                 else {
                     registerAction();
-                    Intent intent = new Intent(signUpActivity.this, confirmUser.class);
-                    startActivity(intent);
                 }
             }
         });
@@ -46,6 +44,9 @@ public class signUpActivity extends AppCompatActivity implements AWSLoginHandler
 
     @Override
     public void onRegisterSuccess(boolean mustConfirmToComplete) {
+
+        Intent intent = new Intent(signUpActivity.this, confirmUser.class);
+        startActivity(intent);
 
     }
 
@@ -62,7 +63,7 @@ public class signUpActivity extends AppCompatActivity implements AWSLoginHandler
     @Override
     public void onFailure(int process, Exception exception) {
 
-        Toast.makeText(signUpActivity.this, "sign up" + exception.getMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(signUpActivity.this, "注册信息错误，请重新填写", Toast.LENGTH_LONG).show();
 
     }
     private void registerAction() {

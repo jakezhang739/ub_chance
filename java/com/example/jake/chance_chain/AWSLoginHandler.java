@@ -21,6 +21,7 @@ public interface AWSLoginHandler {
      */
     void onSignInSuccess();
 
+
     /**
      * Failure of the process called.
      *

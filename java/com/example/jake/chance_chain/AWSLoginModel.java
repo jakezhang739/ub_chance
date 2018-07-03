@@ -2,6 +2,7 @@ package com.example.jake.chance_chain;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.amazonaws.mobile.auth.core.IdentityManager;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoDevice;
@@ -14,8 +15,10 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.AuthenticationDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ChallengeContinuation;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.ForgotPasswordContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.MultiFactorAuthenticationContinuation;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.AuthenticationHandler;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.ForgotPasswordHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.SignUpHandler;
@@ -34,6 +37,8 @@ public class AWSLoginModel {
     public static final int PROCESS_SIGN_IN = 1;
     public static final int PROCESS_REGISTER = 2;
     public static final int PROCESS_CONFIRM_REGISTRATION = 3;
+    public static final int PROCESS_CONFIRM_PASSWORD = 4;
+    public static final int PROCESS_SEND_VER = 5;
 
     // interface handler
     private AWSLoginHandler mCallback;
@@ -150,6 +155,59 @@ public class AWSLoginModel {
         mCognitoUserPool.signUpInBackground(userName, userPassword, userAttributes, null, signUpHandler);
     }
 
+    public  void paswordReset (String userName){
+        mCognitoUser = mCognitoUserPool.getUser(userName);
+        Log.d("user",""+mCognitoUser.getUserId());
+
+        final ForgotPasswordHandler forgotPasswordHandler = new ForgotPasswordHandler() {
+            @Override
+            public void onSuccess() {
+
+
+            }
+
+            @Override
+            public void getResetCode(ForgotPasswordContinuation continuation) {
+                continuation.continueTask();
+                mCallback.onRegisterConfirmed();
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                mCallback.onFailure(PROCESS_SEND_VER, exception);
+
+            }
+        };
+        mCognitoUser.forgotPasswordInBackground(forgotPasswordHandler);
+    }
+
+    public void confirmPass (String userName,String userPass, String userVer){
+        mCognitoUser = mCognitoUserPool.getUser(userName);
+        Log.d("user",""+mCognitoUser.getUserId());
+
+        final ForgotPasswordHandler forgotPasswordHandler = new ForgotPasswordHandler() {
+            @Override
+            public void onSuccess() {
+                mCallback.onSignInSuccess();
+
+            }
+
+            @Override
+            public void getResetCode(ForgotPasswordContinuation continuation) {
+                continuation.setVerificationCode(userVer);
+                continuation.setPassword(userPass);
+
+            }
+
+            @Override
+            public void onFailure(Exception exception) {
+                mCallback.onFailure(PROCESS_CONFIRM_PASSWORD, exception);
+
+            }
+        };
+        mCognitoUser.confirmPasswordInBackground(userVer,userPass,forgotPasswordHandler);
+    }
+
     /**
      * Confirms registration of the new user in AWS Cognito User Pool.
      *
@@ -157,7 +215,7 @@ public class AWSLoginModel {
      *
      * @param confirmationCode      REQUIRED: Code sent from AWS to the user.
      */
-    public void confirmRegistration(String confirmationCode) {
+    public void confirmRegistration(String confirmationCode, String UserId) {
         final GenericHandler confirmationHandler = new GenericHandler() {
             @Override
             public void onSuccess() {
@@ -169,7 +227,7 @@ public class AWSLoginModel {
                 mCallback.onFailure(PROCESS_CONFIRM_REGISTRATION, exception);
             }
         };
-
+        mCognitoUser = mCognitoUserPool.getUser(UserId);
         mCognitoUser.confirmSignUpInBackground(confirmationCode, false, confirmationHandler);
     }
 

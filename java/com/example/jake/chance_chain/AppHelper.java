@@ -88,6 +88,16 @@ public class AppHelper {
 
     }
 
+    public static CognitoUserPool getCurrentUserPool(Context context) {
+
+        if (appHelper == null) {
+            appHelper = new AppHelper();
+        }
+        userPool = new CognitoUserPool(context, userPoolId, clientId, clientSecret, cognitoRegion);
+        return userPool;
+
+    }
+
     public static AmazonS3Client getS3Client(Context context) {
         if (sS3Client == null) {
             sS3Client = new AmazonS3Client(getCredProvider(context.getApplicationContext()));
