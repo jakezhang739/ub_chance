@@ -16,9 +16,6 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.continuations.Forg
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.ForgotPasswordHandler;
 
 public class forgotPassword extends AppCompatActivity implements AWSLoginHandler{
-
-    CognitoUserPool cognitoUserPool;
-    CognitoUser cognitoUser;
     AWSLoginModel awsLoginModel;
 
     @Override

@@ -57,9 +57,9 @@ public class GalleryAdapter extends
         ViewHolder viewHolder = new ViewHolder(view);
 
         viewHolder.mImg = (ImageView) view
-                .findViewById(R.id.id_index_gallery_item_image);
-        viewHolder.mTxt=(TextView) view.findViewById(R.id.id_index_gallery_item_text);
-        viewHolder.uImg=(ImageView) view.findViewById(R.id.touxImage);
+                .findViewById(R.id.neirongImg);
+        viewHolder.mTxt=(TextView) view.findViewById(R.id.neirongTxt);
+        viewHolder.uImg=(ImageView) view.findViewById(R.id.touxiangImg);
         return viewHolder;
     }
 
