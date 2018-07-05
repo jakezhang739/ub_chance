@@ -27,9 +27,9 @@ public class myThread extends Thread {
     private List<String> mDatasImage;
     private List<String> dTouImage;
     private volatile boolean running=true;
-    private Fragment fg;
+    private HomeFragment fg;
     private FragmentTransaction ft;
-    public myThread(BaseActivity baseActivity, Context context, DynamoDBMapper dynamoDBMapper, RecyclerView mRecyclerView, GalleryAdapter mAdapter, List<String> mDatasText, List<String> mDatasImage, List<String> tImage, FragmentTransaction fragt, Fragment fragment) {
+    public myThread(BaseActivity baseActivity, Context context, DynamoDBMapper dynamoDBMapper, RecyclerView mRecyclerView, GalleryAdapter mAdapter, List<String> mDatasText, List<String> mDatasImage, List<String> tImage, FragmentTransaction fragt, HomeFragment fragment) {
         this.baseActivity = baseActivity;
         this.context = context;
         this.dynamoDBMapper=dynamoDBMapper;

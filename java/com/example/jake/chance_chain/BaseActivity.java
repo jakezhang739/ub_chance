@@ -95,7 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     String shiit;
     public String trynum = "ui";
     public List<String> touUri;
-    private Fragment fragment = new Fragment();
+    private HomeFragment fragment = new HomeFragment();
     private FragmentTransaction fragmentTransaction;
 
     static {
@@ -133,6 +133,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         navigationView = (BottomNavigationView) findViewById(R.id.navigation);
         navigationView.setOnNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
+
+        fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        //fragmentTransaction.add(R.id.fragmentHome,fragment);
+        //fragmentTransaction.commit();
+        myThread mThread = new myThread(this,context,dynamoDBMapper,mRecyclerView,mAdapter,mDatasText,mDatasImage,touUri,fragmentTransaction,fragment);
+        mThread.start();
 
 
 
@@ -220,9 +226,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
             Log.d("loading screen ","check if loading screen");
 
-            fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.add(R.id.fragmentHome,fragment);
-            fragmentTransaction.commit();
+            //fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            //fragmentTransaction.add(R.id.fragmentHome,fragment);
+            //fragmentTransaction.commit();
             //myThread mThread = new myThread(this,context,dynamoDBMapper,mRecyclerView,mAdapter,mDatasText,mDatasImage,touUri,fragmentTransaction,fragment);
             //mThread.start();
 
@@ -625,8 +631,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     public void setFragment( Bundle bundle, FragmentTransaction ft){
 
-        //fragment.setArguments(bundle);
-        //fragmentTransaction.replace(R.id.fragmentHome,fragment);
+        fragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.fragmentHome,fragment);
         ft.commit();
     }
 
