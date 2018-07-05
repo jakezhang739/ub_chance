@@ -16,6 +16,9 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +31,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.scwang.smartrefresh.layout.header.BezierRadarHeader;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.squareup.picasso.Picasso;
 
 
@@ -52,6 +64,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
+
+
 
 public abstract class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     DynamoDBMapper dynamoDBMapper;
@@ -78,6 +95,25 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     String shiit;
     public String trynum = "ui";
     public List<String> touUri;
+    private Fragment fragment = new Fragment();
+    private FragmentTransaction fragmentTransaction;
+
+    static {
+        ClassicsHeader.REFRESH_HEADER_PULLING = "下拉可以刷新";
+        ClassicsHeader.REFRESH_HEADER_REFRESHING = "正在刷新...";
+        ClassicsHeader.REFRESH_HEADER_LOADING = "正在加载...";
+        ClassicsHeader.REFRESH_HEADER_RELEASE = "释放立即刷新";
+        ClassicsHeader.REFRESH_HEADER_FINISH = "刷新完成";
+        ClassicsHeader.REFRESH_HEADER_FAILED = "刷新失败";
+        ClassicsHeader.REFRESH_HEADER_SECONDARY = "释放进入二楼";
+        ClassicsFooter.REFRESH_FOOTER_PULLING = "上拉加载更多";
+        ClassicsFooter.REFRESH_FOOTER_RELEASE = "释放立即加载";
+        ClassicsFooter.REFRESH_FOOTER_REFRESHING = "正在刷新...";
+        ClassicsFooter.REFRESH_FOOTER_LOADING = "正在加载...";
+        ClassicsFooter.REFRESH_FOOTER_FINISH = "加载完成";
+        ClassicsFooter.REFRESH_FOOTER_FAILED = "加载失败";
+        ClassicsFooter.REFRESH_FOOTER_NOTHING = "没有更多数据了";
+    }
 
 
 
@@ -98,8 +134,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         navigationView.setOnNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
 
-        myThread mThread = new myThread(this,context,dynamoDBMapper,mRecyclerView,mAdapter,mDatasText,mDatasImage,touUri);
-        mThread.start();
 
 
 
@@ -183,6 +217,17 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
         }
         else if(getContentViewId() == R.layout.activity_home) {
+
+            Log.d("loading screen ","check if loading screen");
+
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.add(R.id.fragmentHome,fragment);
+            fragmentTransaction.commit();
+            //myThread mThread = new myThread(this,context,dynamoDBMapper,mRecyclerView,mAdapter,mDatasText,mDatasImage,touUri,fragmentTransaction,fragment);
+            //mThread.start();
+
+
+
             //File file = loadimg();
             //Log.d("good","e"+bmp.toString());
             //myTextView=(TextView) findViewById(R.id.dummy);
@@ -193,10 +238,17 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             //得到控件
             //Intent intent = new Intent(BaseActivity.this,Load.class);
             //startActivity(intent);
-            while(trynum=="ui"){
-                Log.d("yoyouuu",""+trynum);
-            }
+            /*RefreshLayout refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
+            refreshLayout.setRefreshHeader(new ClassicsHeader(this).setSpinnerStyle(SpinnerStyle.FixedBehind));
+            refreshLayout.setRefreshFooter(new ClassicsFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
 
+            while(trynum!="oo"){
+                Log.d("yoyouuu",""+trynum);
+
+
+            }
+            ft.commit();
+/*
             Log.d("yoyouuu",""+trynum);
             Log.d("trynum","nummm"+mDatasImage.size());
             mRecyclerView = (RecyclerView) findViewById(R.id.id_recyclerview_horizontal);
@@ -207,7 +259,19 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             //设置适配器
             mAdapter = new GalleryAdapter(this, mDatasImage,mDatasText,touUri);
             mRecyclerView.setAdapter(mAdapter);
+            refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(RefreshLayout refreshlayout) {
+                    refreshlayout.finishRefresh(2000);//传入false表示刷新失败
+                }
+            });
 
+            refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                    refreshLayout.finishLoadMore(2000);
+                }
+            });*/
 
         }
 
@@ -557,6 +621,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         this.mDatasImage=mDatasImage;
         this.touUri = tImg;
         this.trynum=n;
+    }
+
+    public void setFragment( Bundle bundle, FragmentTransaction ft){
+
+        //fragment.setArguments(bundle);
+        //fragmentTransaction.replace(R.id.fragmentHome,fragment);
+        ft.commit();
     }
 
     abstract int getContentViewId();
