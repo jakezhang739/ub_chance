@@ -134,11 +134,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         navigationView.setOnNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
 
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         //fragmentTransaction.add(R.id.fragmentHome,fragment);
         //fragmentTransaction.commit();
-        myThread mThread = new myThread(this,context,dynamoDBMapper,mRecyclerView,mAdapter,mDatasText,mDatasImage,touUri,fragmentTransaction,fragment);
-        mThread.start();
+
 
 
 
@@ -225,6 +223,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         else if(getContentViewId() == R.layout.activity_home) {
 
             Log.d("loading screen ","check if loading screen");
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            myThread mThread = new myThread(this,context,dynamoDBMapper,mRecyclerView,mAdapter,mDatasText,mDatasImage,touUri,fragmentTransaction,fragment);
+            mThread.start();
 
             //fragmentTransaction = getSupportFragmentManager().beginTransaction();
             //fragmentTransaction.add(R.id.fragmentHome,fragment);
