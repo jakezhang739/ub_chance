@@ -70,10 +70,12 @@ public class GalleryAdapter extends
     public void onBindViewHolder(final ViewHolder viewHolder, final int i)
     {
         //viewHolder.mImg.setImageResource(mDatas.get(i));
-        Log.d("trystr",""+mDatasImage.get(i));
-        Picasso.get().load(mDatasImage.get(i)).into(viewHolder.mImg);
-        viewHolder.mTxt.setText(mDatasText.get(i));
-        Picasso.get().load(URIlink.get(i)).into(viewHolder.uImg);
+        int c= mDatasImage.size()-1-i;
+        Log.d("gallery adapter","v "+c);
+        Log.d("trystr",""+mDatasImage.get(c));
+        Picasso.get().load(mDatasImage.get(c)).into(viewHolder.mImg);
+        viewHolder.mTxt.setText(mDatasText.get(c));
+        Picasso.get().load(URIlink.get(c)).into(viewHolder.uImg);
 
     }
 

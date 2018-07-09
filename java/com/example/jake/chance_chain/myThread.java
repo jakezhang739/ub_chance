@@ -18,23 +18,16 @@ import java.util.List;
 
 public class myThread extends Thread {
     BaseActivity baseActivity;
-    HomeFragment homeFragment;
-    Context context;
     DynamoDBMapper dynamoDBMapper;
-    private RecyclerView mRecyclerView;
-    private GalleryAdapter mAdapter;
     private List<String> mDatasText;
     private List<String> mDatasImage;
     private List<String> dTouImage;
     private volatile boolean running=true;
     private HomeFragment fg;
     private FragmentTransaction ft;
-    public myThread(BaseActivity baseActivity, Context context, DynamoDBMapper dynamoDBMapper, RecyclerView mRecyclerView, GalleryAdapter mAdapter, List<String> mDatasText, List<String> mDatasImage, List<String> tImage, FragmentTransaction fragt, HomeFragment fragment) {
+    public myThread(BaseActivity baseActivity, DynamoDBMapper dynamoDBMapper, List<String> mDatasText, List<String> mDatasImage, List<String> tImage, FragmentTransaction fragt, HomeFragment fragment) {
         this.baseActivity = baseActivity;
-        this.context = context;
         this.dynamoDBMapper=dynamoDBMapper;
-        this.mRecyclerView=mRecyclerView;
-        this.mAdapter=mAdapter;
         this.mDatasImage=mDatasImage;
         this.mDatasText=mDatasText;
         this.dTouImage = tImage;
@@ -47,19 +40,33 @@ public class myThread extends Thread {
         TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
         Log.d("dyna",""+totalChanceDO.getTotC());
 
-        for(int i = 1;i<=Integer.parseInt(totalChanceDO.getTotC());i++){
-            ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
-            mDatasImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+String.valueOf(i)+".png");
-            mDatasText.add(chanceWithValueDO.getValue());
-            Log.d("dyna","uid "+chanceWithValueDO.getUser());
-            dTouImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+chanceWithValueDO.getUser()+".png");
+        int totChance = Integer.parseInt(totalChanceDO.getTotC());
+        if(totChance > 10){
+            for(int i = totChance-9;i<=totChance;i++){
+                ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
+                mDatasImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+String.valueOf(i)+".png");
+                mDatasText.add(chanceWithValueDO.getValue());
+                Log.d("dyna222","uid "+String.valueOf(i));
+                dTouImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+chanceWithValueDO.getUser()+".png");
 
+            }
+        }
+        else{
+            for(int i = 1;i<=totChance;i++){
+                ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
+                mDatasImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+String.valueOf(i)+".png");
+                mDatasText.add(chanceWithValueDO.getValue());
+                Log.d("dyna","uid "+chanceWithValueDO.getUser());
+                dTouImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+chanceWithValueDO.getUser()+".png");
+
+            }
         }
         Log.d("thread", "fg"+"sdf11");
         Bundle bundle = new Bundle();
         bundle.putStringArray("image",mDatasImage.toArray(new String[mDatasImage.size()]));
         bundle.putStringArray("text",mDatasText.toArray(new String[mDatasText.size()]));
         bundle.putStringArray("tou",dTouImage.toArray(new String[dTouImage.size()]));
+        bundle.putInt("totchance",totChance);
 
         Log.d("thread", "fg"+"sdf");
 

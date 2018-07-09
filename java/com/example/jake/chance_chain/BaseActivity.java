@@ -98,22 +98,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     private HomeFragment fragment = new HomeFragment();
     private FragmentTransaction fragmentTransaction;
 
-    static {
-        ClassicsHeader.REFRESH_HEADER_PULLING = "下拉可以刷新";
-        ClassicsHeader.REFRESH_HEADER_REFRESHING = "正在刷新...";
-        ClassicsHeader.REFRESH_HEADER_LOADING = "正在加载...";
-        ClassicsHeader.REFRESH_HEADER_RELEASE = "释放立即刷新";
-        ClassicsHeader.REFRESH_HEADER_FINISH = "刷新完成";
-        ClassicsHeader.REFRESH_HEADER_FAILED = "刷新失败";
-        ClassicsHeader.REFRESH_HEADER_SECONDARY = "释放进入二楼";
-        ClassicsFooter.REFRESH_FOOTER_PULLING = "上拉加载更多";
-        ClassicsFooter.REFRESH_FOOTER_RELEASE = "释放立即加载";
-        ClassicsFooter.REFRESH_FOOTER_REFRESHING = "正在刷新...";
-        ClassicsFooter.REFRESH_FOOTER_LOADING = "正在加载...";
-        ClassicsFooter.REFRESH_FOOTER_FINISH = "加载完成";
-        ClassicsFooter.REFRESH_FOOTER_FAILED = "加载失败";
-        ClassicsFooter.REFRESH_FOOTER_NOTHING = "没有更多数据了";
-    }
 
 
 
@@ -224,7 +208,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
             Log.d("loading screen ","check if loading screen");
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            myThread mThread = new myThread(this,context,dynamoDBMapper,mRecyclerView,mAdapter,mDatasText,mDatasImage,touUri,fragmentTransaction,fragment);
+            myThread mThread = new myThread(this,dynamoDBMapper,mDatasText,mDatasImage,touUri,fragmentTransaction,fragment);
             mThread.start();
 
             //fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -240,7 +224,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             //myTextView=(TextView) findViewById(R.id.dummy);
 
             //getstuff();
-            //getChanceID();
             //initDatas();
             //得到控件
             //Intent intent = new Intent(BaseActivity.this,Load.class);
@@ -475,7 +458,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         super.onActivityResult(requestCode, resultCode, data);
         Log.d("actrrr", "n" + ChanceId);
         if (ChanceId == "asd"){
-            ChanceId=helper.getCurrentUserName(context)+"1";
+            ChanceId="1";
         }
         Uri galUri;
         String path;;
@@ -484,7 +467,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             try {
                 path = AppHelper.getPath(galUri,context);
                 File file = new File(path);
-                Log.d("yoiii",""+ChanceId);
+                Log.d("uyu",""+ChanceId);
                 observer =
                         sTransferUtility.upload(helper.BUCKET_NAME,ChanceId+".png",file);
                 observer.setTransferListener(new TransferListener() {
