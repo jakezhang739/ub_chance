@@ -14,6 +14,7 @@ import android.view.View;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class myThread extends Thread {
@@ -22,23 +23,24 @@ public class myThread extends Thread {
     private List<String> mDatasText;
     private List<String> mDatasImage;
     private List<String> dTouImage;
+    private List<String> uid;
     private volatile boolean running=true;
     private HomeFragment fg;
     private FragmentTransaction ft;
-    public myThread(BaseActivity baseActivity, DynamoDBMapper dynamoDBMapper, List<String> mDatasText, List<String> mDatasImage, List<String> tImage, FragmentTransaction fragt, HomeFragment fragment) {
+    public myThread(BaseActivity baseActivity, DynamoDBMapper dynamoDBMapper, FragmentTransaction fragt, HomeFragment fragment) {
         this.baseActivity = baseActivity;
         this.dynamoDBMapper=dynamoDBMapper;
-        this.mDatasImage=mDatasImage;
-        this.mDatasText=mDatasText;
-        this.dTouImage = tImage;
         this.ft = fragt;
         this.fg=fragment;
-        //this.uId=uId;
     }
 
     public void run() {
         TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
         Log.d("dyna",""+totalChanceDO.getTotC());
+        mDatasImage = new ArrayList<String>();
+        mDatasText = new ArrayList<String>();
+        dTouImage = new ArrayList<String>();
+        uid = new ArrayList<String>();
 
         int totChance = Integer.parseInt(totalChanceDO.getTotC());
         if(totChance > 10){
@@ -48,6 +50,8 @@ public class myThread extends Thread {
                 mDatasText.add(chanceWithValueDO.getValue());
                 Log.d("dyna222","uid "+String.valueOf(i));
                 dTouImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+chanceWithValueDO.getUser()+".png");
+                uid.add(chanceWithValueDO.getUser());
+                Log.d("uid121","sd "+uid.get(0));
 
             }
         }
@@ -58,6 +62,7 @@ public class myThread extends Thread {
                 mDatasText.add(chanceWithValueDO.getValue());
                 Log.d("dyna","uid "+chanceWithValueDO.getUser());
                 dTouImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+chanceWithValueDO.getUser()+".png");
+                uid.add(chanceWithValueDO.getUser());
 
             }
         }
@@ -66,6 +71,7 @@ public class myThread extends Thread {
         bundle.putStringArray("image",mDatasImage.toArray(new String[mDatasImage.size()]));
         bundle.putStringArray("text",mDatasText.toArray(new String[mDatasText.size()]));
         bundle.putStringArray("tou",dTouImage.toArray(new String[dTouImage.size()]));
+        bundle.putStringArray("uid",uid.toArray(new String[uid.size()]));
         bundle.putInt("totchance",totChance);
 
         Log.d("thread", "fg"+"sdf");

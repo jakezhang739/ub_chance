@@ -28,6 +28,18 @@
 
     <style name="mySpinner" parent="android:Widget.ProgressBar.Large" />
 
+    <style name="logoBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/colorPrimaryDark</item>
+        <item name="android:logo">@drawable/name3x</item>
+        <item name="android:displayOptions">useLogo|showHome</item>
+    </style>
+
 
 
 </resources>

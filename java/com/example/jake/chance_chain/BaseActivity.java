@@ -1,6 +1,7 @@
 package com.example.jake.chance_chain;
 
 import android.Manifest;
+import android.support.v7.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -95,6 +96,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     String shiit;
     public String trynum = "ui";
     public List<String> touUri;
+    private List<String> uid;
     private HomeFragment fragment = new HomeFragment();
     private FragmentTransaction fragmentTransaction;
 
@@ -206,9 +208,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         }
         else if(getContentViewId() == R.layout.activity_home) {
 
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setIcon(R.drawable.name3x);
+            actionBar.setLogo(R.drawable.name3x);
+            
+
+
             Log.d("loading screen ","check if loading screen");
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            myThread mThread = new myThread(this,dynamoDBMapper,mDatasText,mDatasImage,touUri,fragmentTransaction,fragment);
+            myThread mThread = new myThread(this,dynamoDBMapper,fragmentTransaction,fragment);
             mThread.start();
 
             //fragmentTransaction = getSupportFragmentManager().beginTransaction();

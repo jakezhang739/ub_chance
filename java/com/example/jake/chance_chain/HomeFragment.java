@@ -27,11 +27,16 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    List<String> mImage,mText,touUri;
+    List<String> mImage,mText,touUri,usId;
     DynamoDBMapper dynamoDBMapper;
     private boolean refreshFlag = false;
     private boolean loadmoreFlag = false;
     int tC,temptC;
+    RecyclerView mRecyclerView;
+    GalleryAdapter mAdapter;
+    LinearLayoutManager linearLayoutManager;
+    int uploadOffset=-1;
+    int tempOffset=-1;
     static {
         ClassicsHeader.REFRESH_HEADER_PULLING = "下拉可以刷新";
         ClassicsHeader.REFRESH_HEADER_REFRESHING = "正在刷新...";
@@ -65,25 +70,36 @@ public class HomeFragment extends Fragment {
         refreshLayout.setRefreshHeader(new ClassicsHeader(getContext()).setSpinnerStyle(SpinnerStyle.FixedBehind));
         refreshLayout.setRefreshFooter(new ClassicsFooter(getContext()).setSpinnerStyle(SpinnerStyle.Scale));
 
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.id_recyclerview_horizontal);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.id_recyclerview_horizontal);
         //设置布局管理器
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mImage=new ArrayList<String>(Arrays.asList(getArguments().getStringArray("image")));
         mText = new ArrayList<String>(Arrays.asList(getArguments().getStringArray("text")));
         touUri = new ArrayList<String>(Arrays.asList(getArguments().getStringArray("tou")));
+        usId=new ArrayList<String>(Arrays.asList(getArguments().getStringArray("uid")));
         tC = getArguments().getInt("totchance");
         temptC = tC;
 
-        GalleryAdapter mAdapter = new GalleryAdapter(getContext(), mImage,mText,touUri);
+        Log.d("home12", "how many wtf do i need");
+
+
+        mAdapter = new GalleryAdapter(getContext(), mImage,mText,touUri,usId,uploadOffset);
 
         mRecyclerView.setAdapter(mAdapter);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+                Log.d("uplll "," "+uploadOffset);
+
+
                 new Thread(pullDownRunnable).start();
-                refreshlayout.finishRefresh(3000,refreshFlag);//传入false表示刷新失败
+
+                while(!refreshFlag){
+
+                }
+                refreshlayout.finishRefresh(refreshFlag);//传入false表示刷新失败
                 refreshLayout.setNoMoreData(false);
             }
         });
@@ -92,12 +108,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 new Thread(pullUpLoad).start();
-                if(tC<=10){
-                    refreshLayout.finishLoadMore(3000);
-                    refreshLayout.finishLoadMoreWithNoMoreData();
+                while(!loadmoreFlag){
+
                 }
-                refreshLayout.finishLoadMore(3000);
-                refreshLayout.finishLoadMore(loadmoreFlag);
+                if(tC<=10){
+
+                    refreshLayout.finishLoadMore(500,loadmoreFlag,true);
+                }
+
+                refreshLayout.finishLoadMore(500,loadmoreFlag,false);
             }
         });
 
@@ -116,6 +135,7 @@ public class HomeFragment extends Fragment {
         public void run() {
 
 
+
             TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
             Log.d("dyna12",""+totalChanceDO.getTotC());
             mImage.clear();
@@ -124,7 +144,6 @@ public class HomeFragment extends Fragment {
 
 
             int totChance = Integer.parseInt(totalChanceDO.getTotC());
-            int index=0;
                 if (totChance> 10) {
 
                     for (int i = totChance -9; i <=totChance; i++) {
@@ -133,6 +152,7 @@ public class HomeFragment extends Fragment {
                         mText.add(chanceWithValueDO.getValue());
                         Log.d("letme try", "wtf " + String.valueOf(i));
                         touUri.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
+                        usId.add(chanceWithValueDO.getUser());
                     }
                 } else {
 
@@ -142,10 +162,12 @@ public class HomeFragment extends Fragment {
                         mText.add(chanceWithValueDO.getValue());
                         Log.d("letyou ty", "uid " + String.valueOf(i));
                         touUri.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
-                        touUri.remove(index);
-
+                        usId.add(chanceWithValueDO.getUser());
                     }
                 }
+
+
+
 
             refreshFlag=true;
                 tC=totChance;
@@ -156,6 +178,7 @@ public class HomeFragment extends Fragment {
     Runnable pullUpLoad = new Runnable() {
         @Override
         public void run() {
+
             TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
             Log.d("dyna123223",""+totalChanceDO.getTotC()+" " + tC);
             int totChance = Integer.parseInt(totalChanceDO.getTotC());
@@ -187,6 +210,11 @@ public class HomeFragment extends Fragment {
                 }
 
             }
+
+
+
+
+            uploadOffset=mImage.size()-1;
 
 
             loadmoreFlag = true;

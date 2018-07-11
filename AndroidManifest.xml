@@ -20,7 +20,10 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home" />
+            android:label=""
+            android:logo="@drawable/name3x"
+            android:icon="@drawable/name3x"
+            />
         <activity
             android:name=".NotificationActivity"
             android:label="@string/title_activity_notification" />
