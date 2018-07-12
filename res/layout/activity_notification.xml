@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimary"
     tools:context="com.example.jake.chance_chain.HomeActivity"
     >
 
@@ -17,34 +19,198 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         />
+    <RelativeLayout
+        android:id="@+id/textRe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark">
+
+        <EditText
+            android:id="@+id/titletext"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/homeback"
+            android:hint="输入标题"
+            android:textColorHint="@color/white"
+            android:inputType="textMultiLine" />
+
 
     <EditText
         android:id="@+id/neirong"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="120dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="49dp"
-        android:background="@android:drawable/alert_light_frame"
-        android:inputType="textMultiLine"
-        android:text="输入内容" />
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="90dp"
+        android:background="@color/homeback"
+        android:hint="输入内容"
+        android:textColorHint="@color/white"
+        android:inputType="textMultiLine" />
 
-    <Button
-        android:id="@+id/publicBtn"
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/neirong"
+            android:layout_alignEnd="@+id/titletext"
+            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+    </RelativeLayout>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/textRe"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="82dp"
-        android:text="发布" />
+        android:text="选择标签"
+        android:id="@+id/selectTag"
+        android:textColor="@color/white"
+        android:textSize="@dimen/activity_button_text_size"/>
 
-    <Button
-        android:id="@+id/picBtn"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/tagid"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/selectTag"
+        android:background="@color/colorPrimaryDark">
+
+        <TextView
+            android:id="@+id/circleText1"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_centerVertical="true"
+            android:text="约吗"
+            android:textColor="@color/white"
+            android:textSize="@dimen/action_bar_text"
+            android:gravity="center"
+            android:background="@drawable/transparent_circle" />
+
+        <TextView
+            android:id="@+id/circleText2"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_toRightOf="@+id/circleText1"
+            android:layout_marginLeft="35dp"
+            android:layout_centerVertical="true"
+            android:text="活动"
+            android:textColor="@color/white"
+            android:textSize="@dimen/action_bar_text"
+            android:gravity="center"
+            android:background="@drawable/transparent_circle" />
+
+        <TextView
+            android:id="@+id/circleText3"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="35dp"
+            android:layout_toLeftOf="@+id/circleText4"
+            android:layout_centerVertical="true"
+            android:text="任务"
+            android:textColor="@color/white"
+            android:textSize="@dimen/action_bar_text"
+            android:gravity="center"
+            android:background="@drawable/transparent_circle" />
+
+        <TextView
+            android:id="@+id/circleText4"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="20dp"
+            android:text="其他"
+            android:textColor="@color/white"
+            android:textSize="@dimen/action_bar_text"
+            android:gravity="center"
+            android:background="@drawable/transparent_circle" />
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="193dp"
-        android:text="图片" />
+        android:layout_below="@id/tagid"
+        android:layout_marginTop="20dp"
+        android:layout_above="@+id/navigation"
+        android:background="@color/homeback">
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/tradevalue"
+            app:cardBackgroundColor="@color/yellow"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:cardCornerRadius="10dp">
+
+
+            <EditText
+                android:id="@+id/jiaovalue"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/white"
+                android:hint="输入金额"
+                android:backgroundTint="@color/yellow"
+                android:layout_gravity="center"
+                android:textColorHint="@color/black"
+                />
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:id="@+id/bizhong"></Spinner>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@id/tradevalue"
+            android:layout_marginTop="10dp"
+            android:id="@+id/bonusValue"
+            app:cardBackgroundColor="@color/yellow"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:cardCornerRadius="10dp">
+
+            <EditText
+                android:id="@+id/zhuivalue"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/white"
+                android:hint="追加金额"
+                android:backgroundTint="@color/yellow"
+                android:layout_gravity="center"
+                android:textColorHint="@color/black"
+                />
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:id="@+id/bizhong2"></Spinner>
+        </android.support.v7.widget.CardView>
+        
+        <Button
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_below="@+id/bonusValue"
+            android:text="发布"
+            android:textColor="@color/black"
+            android:textSize="@dimen/activity_button_text_size"
+            android:background="@color/yellow"/>
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

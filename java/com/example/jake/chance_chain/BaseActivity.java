@@ -24,6 +24,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -207,14 +208,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
         }
         else if(getContentViewId() == R.layout.activity_home) {
-
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setIcon(R.drawable.name3x);
-            actionBar.setLogo(R.drawable.name3x);
             
 
 
             Log.d("loading screen ","check if loading screen");
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setCustomView(R.layout.actionbar);
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
             myThread mThread = new myThread(this,dynamoDBMapper,fragmentTransaction,fragment);
             mThread.start();
@@ -438,10 +438,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     public void setChance(String value,String chance,String num,String totNum){
         final UserChanceDO userC = new UserChanceDO();
-        final ChanceWithValueDO chanceWithValueDO = new ChanceWithValueDO();
-        chanceWithValueDO.setId(totNum);
-        chanceWithValueDO.setUser(helper.getCurrentUserName(context));
-        chanceWithValueDO.setValue(value);
+        final PostsDO postsDO = new PostsDO();
+        postsDO.setPostId(totNum);
+        postsDO.setUsername(helper.getCurrentUserName(context));
+        postsDO.setText(value);
 
         userC.setNumid(num);
         userC.setUserid(uId);
@@ -452,7 +452,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             @Override
             public void run() {
                 dynamoDBMapper.save(userC);
-                dynamoDBMapper.save(chanceWithValueDO);
+                dynamoDBMapper.save(postsDO);
                 // Item saved
             }
         }).start();
