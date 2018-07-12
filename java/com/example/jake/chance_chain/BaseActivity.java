@@ -175,11 +175,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
 
         else if(getContentViewId()==R.layout.activity_notification){
-            Button picButton = (Button) findViewById(R.id.picBtn);
-            Button pubButton = (Button) findViewById(R.id.publicBtn);
-            EditText vText = (EditText) findViewById(R.id.neirong);
+            ImageView picView = (ImageView) findViewById(R.id.getPic);
+            EditText titleText = (EditText) findViewById(R.id.titletext);
+            EditText Neirong = (EditText) findViewById(R.id.neirong);
 
-            picButton.setOnClickListener(new View.OnClickListener(){
+
+            picView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
                     getChanceID();
@@ -194,17 +195,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 }
             });
 
-            pubButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    //number=1;
-                    vStr = vText.getText().toString();
-                    setStuff(vStr);
 
-                    Log.d("number2","value"+ChanceId);
-
-                }
-            });
 
         }
         else if(getContentViewId() == R.layout.activity_home) {

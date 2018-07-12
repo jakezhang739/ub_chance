@@ -55,7 +55,8 @@
         android:inputType="textMultiLine" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/getPic"
+            android:clickable="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/neirong"
@@ -143,68 +144,60 @@
         android:layout_marginTop="20dp"
         android:layout_above="@+id/navigation"
         android:background="@color/homeback">
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:id="@+id/tradevalue"
-            app:cardBackgroundColor="@color/yellow"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            app:cardCornerRadius="10dp">
-
-
-            <EditText
+        <EditText
                 android:id="@+id/jiaovalue"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:background="@color/white"
+                android:background="@drawable/round_corner"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="50dp"
                 android:hint="输入金额"
-                android:backgroundTint="@color/yellow"
+                android:textAlignment="center"
                 android:layout_gravity="center"
                 android:textColorHint="@color/black"
                 />
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:id="@+id/bizhong"></Spinner>
-        </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_below="@id/tradevalue"
-            android:layout_marginTop="10dp"
-            android:id="@+id/bonusValue"
-            app:cardBackgroundColor="@color/yellow"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            app:cardCornerRadius="10dp">
+        <Spinner
+            android:id="@+id/bizhong"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/zhuivalue"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="17dp"
+            android:background="@drawable/round_corner" />
 
             <EditText
                 android:id="@+id/zhuivalue"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
+                android:layout_below="@+id/jiaovalue"
                 android:layout_height="30dp"
-                android:background="@color/white"
+                android:background="@drawable/round_corner"
                 android:hint="追加金额"
-                android:backgroundTint="@color/yellow"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
                 android:layout_gravity="center"
+                android:textAlignment="center"
                 android:textColorHint="@color/black"
                 />
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:id="@+id/bizhong2"></Spinner>
-        </android.support.v7.widget.CardView>
-        
+
+        <Spinner
+            android:id="@+id/bizhong2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/zhuivalue"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:background="@color/yellow"
+            />
+
         <Button
             android:layout_width="match_parent"
-            android:layout_marginTop="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
             android:layout_height="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_below="@+id/bonusValue"
             android:text="发布"
             android:textColor="@color/black"
             android:textSize="@dimen/activity_button_text_size"
