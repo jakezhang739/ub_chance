@@ -141,41 +141,41 @@ public class HomeFragment extends Fragment {
 
 
 
-            TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
-            Log.d("dyna12",""+totalChanceDO.getTotC());
+            //TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
+            //Log.d("dyna12",""+totalChanceDO.getTotC());
             mImage.clear();
             mText.clear();
             touUri.clear();
 
 
-            int totChance = Integer.parseInt(totalChanceDO.getTotC());
-                if (totChance> 10) {
-
-                    for (int i = totChance -9; i <=totChance; i++) {
-                        ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
-                        mImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + String.valueOf(i) + ".png");
-                        mText.add(chanceWithValueDO.getValue());
-                        Log.d("letme try", "wtf " + String.valueOf(i));
-                        touUri.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
-                        usId.add(chanceWithValueDO.getUser());
-                    }
-                } else {
-
-                    for (int i = 1; i <= totChance; i++) {
-                        ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
-                        mImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + String.valueOf(i) + ".png");
-                        mText.add(chanceWithValueDO.getValue());
-                        Log.d("letyou ty", "uid " + String.valueOf(i));
-                        touUri.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
-                        usId.add(chanceWithValueDO.getUser());
-                    }
-                }
+//            int totChance = Integer.parseInt(totalChanceDO.getTotC());
+//                if (totChance> 10) {
+//
+//                    for (int i = totChance -9; i <=totChance; i++) {
+//                        ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
+//                        mImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + String.valueOf(i) + ".png");
+//                        mText.add(chanceWithValueDO.getValue());
+//                        Log.d("letme try", "wtf " + String.valueOf(i));
+//                        touUri.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
+//                        usId.add(chanceWithValueDO.getUser());
+//                    }
+//                } else {
+//
+//                    for (int i = 1; i <= totChance; i++) {
+//                        ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
+//                        mImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + String.valueOf(i) + ".png");
+//                        mText.add(chanceWithValueDO.getValue());
+//                        Log.d("letyou ty", "uid " + String.valueOf(i));
+//                        touUri.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
+//                        usId.add(chanceWithValueDO.getUser());
+//                    }
+//                }
 
 
 
 
             refreshFlag=true;
-                tC=totChance;
+                //tC=totChance;
 
         }
     };
@@ -184,9 +184,9 @@ public class HomeFragment extends Fragment {
         @Override
         public void run() {
 
-            TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
-            Log.d("dyna123223",""+totalChanceDO.getTotC()+" " + tC);
-            int totChance = Integer.parseInt(totalChanceDO.getTotC());
+//            TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
+//            Log.d("dyna123223",""+totalChanceDO.getTotC()+" " + tC);
+//            int totChance = Integer.parseInt(totalChanceDO.getTotC());
 
 
             int index=0;
@@ -197,9 +197,9 @@ public class HomeFragment extends Fragment {
                 for(int i=tC-10;i<tC;i++){
                     ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
                     mImage.add(index,"https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + String.valueOf(i) + ".png");
-                    mText.add(index,chanceWithValueDO.getValue());
-                    Log.d("dyna123", "uid " + chanceWithValueDO.getValue());
-                    touUri.add(index,"https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
+                    //mText.add(index,chanceWithValueDO.getValue());
+                    //Log.d("dyna123", "uid " + chanceWithValueDO.getValue());
+                    //touUri.add(index,"https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
                 }
             }
             else if(tC > 10){
@@ -209,9 +209,9 @@ public class HomeFragment extends Fragment {
                 for(int i=1;i<=tC-10;i++){
                     ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
                     mImage.add(index,"https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + String.valueOf(i) + ".png");
-                    mText.add(index,chanceWithValueDO.getValue());
+                    //mText.add(index,chanceWithValueDO.getValue());
                     Log.d("dyna123123", "uid " + String.valueOf(i));
-                    touUri.add(index,"https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
+                    //touUri.add(index,"https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
                 }
 
             }

@@ -21,11 +21,16 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBScanExpression;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedList;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GetDetailsHandler;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.amazonaws.services.s3.AmazonS3Client;
 
 import java.net.URISyntaxException;
@@ -126,6 +131,13 @@ public class AppHelper {
                         AWSMobileClient.getInstance().getConfiguration())
                 .build();
         return mapper;
+    }
+
+    public int returnChanceeSize(DynamoDBMapper mapper){
+        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
+        PaginatedList<ChanceWithValueDO> result = mapper.scan(ChanceWithValueDO.class,scanExpression);
+        return result.size();
+
     }
 
 

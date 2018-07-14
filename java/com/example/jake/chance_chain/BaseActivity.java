@@ -1,6 +1,8 @@
 package com.example.jake.chance_chain;
 
 import android.Manifest;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
@@ -27,13 +29,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sangcomz.fishbun.FishBun;
+import com.sangcomz.fishbun.adapter.image.impl.GlideAdapter;
+import com.sangcomz.fishbun.define.Define;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
@@ -93,13 +101,18 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     private GalleryAdapter mAdapter;
     private List<String> mDatasText;
     private List<String> mDatasImage;
+    private String username,textTilte,textValue,txtBonus,txtBonusType,txtReward,txtRewardType;
+    private List<String> picList;
     String TestChance;
     String shiit;
     public String trynum = "ui";
     public List<String> touUri;
     private List<String> uid;
+    private List<Uri> uriList;
     private HomeFragment fragment = new HomeFragment();
     private FragmentTransaction fragmentTransaction;
+    private int clickFlag =0;
+    private int rewardtypeInt,bonusTypeInt;
 
 
 
@@ -123,6 +136,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
         //fragmentTransaction.add(R.id.fragmentHome,fragment);
         //fragmentTransaction.commit();
+        uriList = new ArrayList<Uri>();
 
 
 
@@ -135,6 +149,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
 
         if(getContentViewId()==R.layout.activity_my) {
+
             tImage = (ImageView) findViewById(R.id.touImage);
             Button clickButton = (Button) findViewById(R.id.logoutBtn);
             Button infButton = (Button) findViewById(R.id.informationBtn);
@@ -178,22 +193,158 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             ImageView picView = (ImageView) findViewById(R.id.getPic);
             EditText titleText = (EditText) findViewById(R.id.titletext);
             EditText Neirong = (EditText) findViewById(R.id.neirong);
+            EditText reWard = (EditText) findViewById(R.id.jiaovalue);
+            EditText bonus = (EditText) findViewById(R.id.zhuivalue);
+
+            TextView cic1 = (TextView) findViewById(R.id.circleText1);
+            TextView cic2 = (TextView) findViewById(R.id.circleText2);
+            TextView cic3 = (TextView) findViewById(R.id.circleText3);
+            TextView cic4 = (TextView) findViewById(R.id.circleText4);
+
+            Button fabuBtn = (Button) findViewById(R.id.fabubtn);
+
+
+            cic1.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                   cic1.setBackground(ContextCompat.getDrawable(context,R.drawable.yeallow_cic));
+                   cic2.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                   cic3.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                   cic4.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                   cic1.setTextColor(getColor(R.color.black));
+                   cic2.setTextColor(getColor(R.color.white));
+                   cic3.setTextColor(getColor(R.color.white));
+                   cic4.setTextColor(getColor(R.color.white));
+                   clickFlag=1;
+
+                }
+            });
+
+            cic2.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    cic1.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                    cic2.setBackground(ContextCompat.getDrawable(context,R.drawable.yeallow_cic));
+                    cic3.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                    cic4.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                    cic1.setTextColor(getColor(R.color.white));
+                    cic2.setTextColor(getColor(R.color.black));
+                    cic3.setTextColor(getColor(R.color.white));
+                    cic4.setTextColor(getColor(R.color.white));
+                    clickFlag=2;
+
+                }
+            });
+
+            cic3.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    cic1.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                    cic2.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                    cic3.setBackground(ContextCompat.getDrawable(context,R.drawable.yeallow_cic));
+                    cic4.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                    cic1.setTextColor(getColor(R.color.white));
+                    cic2.setTextColor(getColor(R.color.white));
+                    cic3.setTextColor(getColor(R.color.black));
+                    cic4.setTextColor(getColor(R.color.white));
+                    clickFlag=3;
+
+                }
+            });
+
+            cic4.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    cic1.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                    cic2.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                    cic3.setBackground(ContextCompat.getDrawable(context,R.drawable.transparent_circle));
+                    cic4.setBackground(ContextCompat.getDrawable(context,R.drawable.yeallow_cic));
+                    cic1.setTextColor(getColor(R.color.white));
+                    cic2.setTextColor(getColor(R.color.white));
+                    cic3.setTextColor(getColor(R.color.white));
+                    cic4.setTextColor(getColor(R.color.black));
+                    clickFlag=4;
+
+                }
+            });
+
+            Spinner bi1 = (Spinner) findViewById(R.id.bizhong);
+            Spinner bi2 = (Spinner) findViewById(R.id.bizhong2);
+
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                    R.array.currency_name, R.layout.item_select);
+
+            adapter.setDropDownViewResource(R.layout.drop_down_item);
+
+            bi1.setAdapter(adapter);
+            bi2.setAdapter(adapter);
+            bi1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    //选择列表项的操作
+                    parent.getItemAtPosition(position);
+                    rewardtypeInt = position;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    //未选中时候的操作
+                    rewardtypeInt = 0;
+                }
+            });
+
+            bi2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    //选择列表项的操作
+                    parent.getItemAtPosition(position);
+                    bonusTypeInt=position;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    //未选中时候的操作
+                    bonusTypeInt=0;
+
+                }
+            });
 
 
             picView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
-                    getChanceID();
-                    Log.d("uuiiu",""+ChanceId);
+                    Log.d("typetry"," rew "+ rewardtypeInt+" bonus " + bonusTypeInt);
+
                     requstStoragePermission();
-                    Intent imageIntent = new Intent();
-                    imageIntent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-                    //imageIntent.addCategory(Intent.CATEGORY_OPENABLE);
-                    // imageIntent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                    imageIntent.setType("image/*");
-                    startActivityForResult(imageIntent.createChooser(imageIntent,"选取图片"),GALLERY_REQUEST);
+                    FishBun.with(BaseActivity.this).setImageAdapter(new GlideAdapter()).startAlbum();
                 }
             });
+
+            fabuBtn.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    Log.d("typetry"," rew "+ rewardtypeInt+" bonus " + bonusTypeInt);
+                    txtBonus=bonus.getText().toString();
+                    switch (bonusTypeInt){
+                        case 0: txtBonusType="cc";break;
+                        case 1: txtBonusType="eth";break;
+                        case 2: txtBonusType="btc";break;
+                    }
+                    txtReward=reWard.getText().toString();
+                    switch (rewardtypeInt){
+                        case 0:txtReward = "cc";break;
+                        case 1:txtReward="eth";break;
+                        case 2:txtReward="btc";break;
+                    }
+
+                }
+            });
+
+
 
 
 
@@ -325,27 +476,27 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             public void run() {
                 Log.d("uid","f"+uId);
                 UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,uId);
-                TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
+                //TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
 
 
                 if(userPoolDO != null) {
                     Log.d("wtf", "sdf3" + userPoolDO.toString());
                     Log.d("wtf", "career" + userPoolDO.getChanceId());
-                    String str = totalChanceDO.getTotC();
-                    Log.d("wtf2", "career" + str);
-                    if(str!=null) {
-                        number = Integer.parseInt(str);
-                        number++;
-                        Log.d("wtf3", "n" + number);
-                        Message msg=Message.obtain();
-                        msg.what=3;
-                        msg.obj=number;
-                        handler.sendMessage(msg);
-
-
-                    }
-                    totalChanceDO.setTotC(String.valueOf(number));
-                    dynamoDBMapper.save(totalChanceDO);
+                    //String str = totalChanceDO.getTotC();
+//                    Log.d("wtf2", "career" + str);
+//                    if(str!=null) {
+//                        number = Integer.parseInt(str);
+//                        number++;
+//                        Log.d("wtf3", "n" + number);
+//                        Message msg=Message.obtain();
+//                        msg.what=3;
+//                        msg.obj=number;
+//                        handler.sendMessage(msg);
+//
+//
+//                    }
+                    //totalChanceDO.setTotC(String.valueOf(number));
+                    //dynamoDBMapper.save(totalChanceDO);
                     //userPoolDO.setNumofChance(String.valueOf(number));
                 }
 
@@ -360,8 +511,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             public void run() {
                 Log.d("uid","f"+uId);
                 UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,uId);
-                TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,totId);
-                String totNum = totalChanceDO.getTotC();
+               // TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,totId);
+                //String totNum = totalChanceDO.getTotC();
 
 
                 if(userPoolDO != null) {
@@ -378,7 +529,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 }
                 //number++;
                 String chanceID = uId + String.valueOf(number);
-                setChance(value,chanceID,String.valueOf(number),totNum);
+                //setChance(value,chanceID,String.valueOf(number),totNum);
             }
         }).start();
 
@@ -428,47 +579,37 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     }
 
     public void setChance(String value,String chance,String num,String totNum){
-        final UserChanceDO userC = new UserChanceDO();
-        final PostsDO postsDO = new PostsDO();
-        postsDO.setPostId(totNum);
-        postsDO.setUsername(helper.getCurrentUserName(context));
-        postsDO.setText(value);
-
-        userC.setNumid(num);
-        userC.setUserid(uId);
-        userC.setValue(value);
-        userC.setChanceid(chance);
-        Log.d("chanceid","cc"+chance);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                dynamoDBMapper.save(userC);
-                dynamoDBMapper.save(postsDO);
-                // Item saved
-            }
-        }).start();
+//        final UserChanceDO userC = new UserChanceDO();
+//        final PostsDO postsDO = new PostsDO();
+//        postsDO.setPostId(totNum);
+//        postsDO.setUsername(helper.getCurrentUserName(context));
+//        postsDO.setText(value);
+//
+//        userC.setNumid(num);
+//        userC.setUserid(uId);
+//        userC.setValue(value);
+//        userC.setChanceid(chance);
+//        Log.d("chanceid","cc"+chance);
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                dynamoDBMapper.save(userC);
+//                dynamoDBMapper.save(postsDO);
+//                // Item saved
+//            }
+//        }).start();
     }
 
-
-
-
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("actrrr", "n" + ChanceId);
-        if (ChanceId == "asd"){
-            ChanceId="1";
-        }
-        Uri galUri;
-        String path;;
-        if(requestCode == GALLERY_REQUEST){
-            galUri=data.getData();
-            try {
-                path = AppHelper.getPath(galUri,context);
+    Runnable uploadRunnable = new Runnable() {
+        @Override
+        public void run() {
+            for(int i=0;i<uriList.size();i++){
+                try {
+                String path = AppHelper.getPath(uriList.get(i),context);
                 File file = new File(path);
                 Log.d("uyu",""+ChanceId);
                 observer =
-                        sTransferUtility.upload(helper.BUCKET_NAME,ChanceId+".png",file);
+                        sTransferUtility.upload(helper.BUCKET_NAME,"yoyowtf.png",file);
                 observer.setTransferListener(new TransferListener() {
                     @Override
                     public void onError(int id, Exception e) {
@@ -489,11 +630,62 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 //beginUpload(path);
                 Log.d("gooodshit", "upload"+file.getName());
             } catch (URISyntaxException e) {
-                Toast.makeText(this,
-                        "Unable to get the file from the given URI.  See error log for details",
-                        Toast.LENGTH_LONG).show();
                 Log.d("fck2", "Unable to upload file from the given uri", e);
             }
+            }
+
+        }
+    };
+
+
+
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("actrrr", "n" + ChanceId);
+
+        Log.d("uri","size "+uriList.size());
+        Log.d("get code","reque" + requestCode + " resu " + resultCode);
+
+
+        Uri galUri;
+        String path;;
+        if(requestCode == Define.ALBUM_REQUEST_CODE){
+
+            uriList=data.getParcelableArrayListExtra(Define.INTENT_PATH);
+
+//            try {
+//                path = AppHelper.getPath(uriList.get(0),context);
+//                File file = new File(path);
+//                Log.d("uyu",""+ChanceId);
+//                observer =
+//                        sTransferUtility.upload(helper.BUCKET_NAME,"yoyowtf.png",file);
+//                observer.setTransferListener(new TransferListener() {
+//                    @Override
+//                    public void onError(int id, Exception e) {
+//                        Log.e("onError", "Error during upload: " + id, e);
+//                    }
+//
+//                    @Override
+//                    public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+//                        Log.d("onProgress", String.format("onProgressChanged: %d, total: %d, current: %d",
+//                                id, bytesTotal, bytesCurrent));
+//                    }
+//
+//                    @Override
+//                    public void onStateChanged(int id, TransferState newState) {
+//                        Log.d("onState", "onStateChanged: " + id + ", " + newState);
+//                    }
+//                });
+//                //beginUpload(path);
+//                Log.d("gooodshit", "upload"+file.getName());
+//            } catch (URISyntaxException e) {
+//                Toast.makeText(this,
+//                        "Unable to get the file from the given URI.  See error log for details",
+//                        Toast.LENGTH_LONG).show();
+//                Log.d("fck2", "Unable to upload file from the given uri", e);
+//            }
 
         }
     }
