@@ -137,6 +137,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         //fragmentTransaction.add(R.id.fragmentHome,fragment);
         //fragmentTransaction.commit();
         uriList = new ArrayList<Uri>();
+        username=helper.getCurrentUserName(context);
 
 
 
@@ -340,6 +341,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         case 1:txtReward="eth";break;
                         case 2:txtReward="btc";break;
                     }
+                    textTilte=titleText.getText().toString();
+                    textValue=Neirong.getText().toString();
+                    new Thread(uploadRunnable).start();
+
 
                 }
             });
@@ -608,8 +613,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 String path = AppHelper.getPath(uriList.get(i),context);
                 File file = new File(path);
                 Log.d("uyu",""+ChanceId);
+                int cSize = helper.returnChanceeSize(dynamoDBMapper);
                 observer =
-                        sTransferUtility.upload(helper.BUCKET_NAME,"yoyowtf.png",file);
+                        sTransferUtility.upload(helper.BUCKET_NAME,String.valueOf(cSize)+"_"+String.valueOf(i)+".png",file);
                 observer.setTransferListener(new TransferListener() {
                     @Override
                     public void onError(int id, Exception e) {
