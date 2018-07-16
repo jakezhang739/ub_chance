@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment {
     DynamoDBMapper dynamoDBMapper;
     private boolean refreshFlag = false;
     private boolean loadmoreFlag = false;
+    private  chanceClass cc;
     int tC,temptC;
     RecyclerView mRecyclerView;
     GalleryAdapter mAdapter;
@@ -75,24 +76,24 @@ public class HomeFragment extends Fragment {
 
 
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.id_recyclerview_horizontal);
-        //设置布局管理器
-        linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
-        mImage=new ArrayList<String>(Arrays.asList(getArguments().getStringArray("image")));
-        mText = new ArrayList<String>(Arrays.asList(getArguments().getStringArray("text")));
-        touUri = new ArrayList<String>(Arrays.asList(getArguments().getStringArray("tou")));
-        usId=new ArrayList<String>(Arrays.asList(getArguments().getStringArray("uid")));
-        tC = getArguments().getInt("totchance");
-        temptC = tC;
-
-        Log.d("home12", "how many wtf do i need");
-
-
-        mAdapter = new GalleryAdapter(getContext(), mImage,mText,touUri,usId,uploadOffset);
-
-        mRecyclerView.setAdapter(mAdapter);
+//        mRecyclerView = (RecyclerView) view.findViewById(R.id.id_recyclerview_horizontal);
+//        //设置布局管理器
+//        linearLayoutManager = new LinearLayoutManager(getContext());
+//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        mRecyclerView.setLayoutManager(linearLayoutManager);
+//        mImage=new ArrayList<String>(Arrays.asList(getArguments().getStringArray("image")));
+//        mText = new ArrayList<String>(Arrays.asList(getArguments().getStringArray("text")));
+//        touUri = new ArrayList<String>(Arrays.asList(getArguments().getStringArray("tou")));
+//        usId=new ArrayList<String>(Arrays.asList(getArguments().getStringArray("uid")));
+//        tC = getArguments().getInt("totchance");
+//        temptC = tC;
+//
+//        Log.d("home12", "how many wtf do i need");
+//
+//
+//        mAdapter = new GalleryAdapter(getContext(), mImage,mText,touUri,usId,uploadOffset);
+//
+//        mRecyclerView.setAdapter(mAdapter);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -133,6 +134,10 @@ public class HomeFragment extends Fragment {
         this.mImage=img;
         this.touUri = tou;
 
+    }
+
+    public void setClass(chanceClass cc){
+        this.cc = cc;
     }
 
     Runnable pullDownRunnable = new Runnable() {

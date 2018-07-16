@@ -17,7 +17,7 @@ public class ChanceWithValueDO {
     private String _id;
     private Double _bonus;
     private String _bonusType;
-    private Double _comments;
+    private Set<String> _comments;
     private Double _liked;
     private Set<String> _pictures;
     private String _profilePicture;
@@ -56,11 +56,11 @@ public class ChanceWithValueDO {
         this._bonusType = _bonusType;
     }
     @DynamoDBAttribute(attributeName = "comments")
-    public Double getComments() {
+    public Set<String> getComments() {
         return _comments;
     }
 
-    public void setComments(final Double _comments) {
+    public void setComments(final Set<String> _comments) {
         this._comments = _comments;
     }
     @DynamoDBIndexRangeKey(attributeName = "liked", globalSecondaryIndexName = "GroupUser")

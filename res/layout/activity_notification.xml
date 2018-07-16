@@ -36,6 +36,7 @@
             android:layout_marginTop="10dp"
             android:background="@color/homeback"
             android:hint="输入标题"
+            android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:inputType="textMultiLine" />
 
@@ -51,6 +52,7 @@
         android:layout_marginTop="90dp"
         android:background="@color/homeback"
         android:hint="输入内容"
+        android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:inputType="textMultiLine" />
 
@@ -163,7 +165,7 @@
                 android:layout_toLeftOf="@+id/bizhong"
                 android:background="@color/yellow"
                 android:textColorHint="@color/black"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 />
 
         <Spinner
@@ -191,7 +193,7 @@
                 android:layout_toLeftOf="@+id/bizhong2"
                 android:background="@color/yellow"
                 android:textColorHint="@color/black"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 />
 
             <Spinner

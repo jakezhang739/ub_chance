@@ -27,6 +27,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
+import android.util.ArraySet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.AdapterView;
@@ -73,7 +75,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.Fragment;
@@ -146,7 +151,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
         Log.d("uid","f"+uId);
 
-        Log.d("number","f"+number);
 
 
         if(getContentViewId()==R.layout.activity_my) {
@@ -273,6 +277,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 }
             });
 
+            Date currentTime = Calendar.getInstance().getTime();
+            long yo = currentTime.getTime();
+            String dateString = DateFormat.format("yyyyMMddHHmmss", new Date(yo)).toString();
+
+            Log.d("time ", "tr " + currentTime.toString()+ " sd " + dateString+ " " + (double) currentTime.getTime());
             Spinner bi1 = (Spinner) findViewById(R.id.bizhong);
             Spinner bi2 = (Spinner) findViewById(R.id.bizhong2);
 
@@ -328,22 +337,45 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             fabuBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
-                    Log.d("typetry"," rew "+ rewardtypeInt+" bonus " + bonusTypeInt);
-                    txtBonus=bonus.getText().toString();
+                    if(bonus.getText().length()!=0) {
+                        txtBonus = bonus.getText().toString();
+                    }
+                    else{
+                        txtBonus="0";
+                    }
                     switch (bonusTypeInt){
                         case 0: txtBonusType="cc";break;
                         case 1: txtBonusType="eth";break;
                         case 2: txtBonusType="btc";break;
                     }
-                    txtReward=reWard.getText().toString();
-                    switch (rewardtypeInt){
-                        case 0:txtReward = "cc";break;
-                        case 1:txtReward="eth";break;
-                        case 2:txtReward="btc";break;
+                    if(reWard.getText().length()!=0) {
+                        txtReward = reWard.getText().toString();
                     }
-                    textTilte=titleText.getText().toString();
-                    textValue=Neirong.getText().toString();
-                    new Thread(uploadRunnable).start();
+                    else{
+                        txtReward="0";
+                    }
+                    switch (rewardtypeInt){
+                        case 0:txtRewardType = "cc";break;
+                        case 1:txtRewardType="eth";break;
+                        case 2:txtRewardType="btc";break;
+                    }
+
+                    if(titleText.length()==0){
+                        Log.d("wtftt"," rew "+ reWard+" bonus " + bonus);
+                        Toast.makeText(context,"请输入标题",Toast.LENGTH_LONG).show();
+                    }
+                    else if(Neirong.length()==0){
+                        Toast.makeText(context,"请输入内容",Toast.LENGTH_LONG).show();
+                    }
+                    else if(clickFlag==0){
+                        Toast.makeText(context,"请选择标签",Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        textTilte = titleText.getText().toString();
+                        textValue = Neirong.getText().toString();
+                        new Thread(uploadRunnable).start();
+                        Toast.makeText(context,"已上传发布",Toast.LENGTH_LONG).show();
+                    }
 
 
                 }
@@ -366,57 +398,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             myThread mThread = new myThread(this,dynamoDBMapper,fragmentTransaction,fragment);
             mThread.start();
 
-            //fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            //fragmentTransaction.add(R.id.fragmentHome,fragment);
-            //fragmentTransaction.commit();
-            //myThread mThread = new myThread(this,context,dynamoDBMapper,mRecyclerView,mAdapter,mDatasText,mDatasImage,touUri,fragmentTransaction,fragment);
-            //mThread.start();
-
-
-
-            //File file = loadimg();
-            //Log.d("good","e"+bmp.toString());
-            //myTextView=(TextView) findViewById(R.id.dummy);
-
-            //getstuff();
-            //initDatas();
-            //得到控件
-            //Intent intent = new Intent(BaseActivity.this,Load.class);
-            //startActivity(intent);
-            /*RefreshLayout refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
-            refreshLayout.setRefreshHeader(new ClassicsHeader(this).setSpinnerStyle(SpinnerStyle.FixedBehind));
-            refreshLayout.setRefreshFooter(new ClassicsFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
-
-            while(trynum!="oo"){
-                Log.d("yoyouuu",""+trynum);
-
-
-            }
-            ft.commit();
-/*
-            Log.d("yoyouuu",""+trynum);
-            Log.d("trynum","nummm"+mDatasImage.size());
-            mRecyclerView = (RecyclerView) findViewById(R.id.id_recyclerview_horizontal);
-            //设置布局管理器
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-            mRecyclerView.setLayoutManager(linearLayoutManager);
-            //设置适配器
-            mAdapter = new GalleryAdapter(this, mDatasImage,mDatasText,touUri);
-            mRecyclerView.setAdapter(mAdapter);
-            refreshLayout.setOnRefreshListener(new OnRefreshListener() {
-                @Override
-                public void onRefresh(RefreshLayout refreshlayout) {
-                    refreshlayout.finishRefresh(2000);//传入false表示刷新失败
-                }
-            });
-
-            refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-                @Override
-                public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                    refreshLayout.finishLoadMore(2000);
-                }
-            });*/
 
         }
 
@@ -438,150 +419,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     }
 
 
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg){
-            String str;
-            if(msg.obj!=null){
-                str=msg.obj.toString();
-            }
-            else{
-                str=null;
-            }
-            int index = msg.what;
-            /*if(index == 1){
-                //myTextView.setText(str);
-                //mDatasText.add(str);
-                shiit = str;
-            }*/
-            if(index == 2){
-                Log.d("chance","value"+String.valueOf(str));
-                String str1 = "https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+str+".png";
-                TestChance = str1;
-                //mDatasImage.add(TestChance);
-                Log.d("str22","value"+str1);
-                //Picasso.get().load(str1).into(myimageView);
-            }
-            else if(index == 3){
-                //num=num-1;
-                ChanceId=str;
-                Log.d("str2332","value"+ChanceId);
-            }
-        }
-    };
-
-    private void initDatas()
-    {
-        getstuff();
-    }
-
-    private void getChanceID(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("uid","f"+uId);
-                UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,uId);
-                //TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
-
-
-                if(userPoolDO != null) {
-                    Log.d("wtf", "sdf3" + userPoolDO.toString());
-                    Log.d("wtf", "career" + userPoolDO.getChanceId());
-                    //String str = totalChanceDO.getTotC();
-//                    Log.d("wtf2", "career" + str);
-//                    if(str!=null) {
-//                        number = Integer.parseInt(str);
-//                        number++;
-//                        Log.d("wtf3", "n" + number);
-//                        Message msg=Message.obtain();
-//                        msg.what=3;
-//                        msg.obj=number;
-//                        handler.sendMessage(msg);
-//
-//
-//                    }
-                    //totalChanceDO.setTotC(String.valueOf(number));
-                    //dynamoDBMapper.save(totalChanceDO);
-                    //userPoolDO.setNumofChance(String.valueOf(number));
-                }
-
-            }
-        }).start();
-
-    }
-
-    private void setStuff(String value){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("uid","f"+uId);
-                UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,uId);
-               // TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,totId);
-                //String totNum = totalChanceDO.getTotC();
-
-
-                if(userPoolDO != null) {
-                    Log.d("wtf", "sdf3" + userPoolDO.toString());
-                    Log.d("wtf", "career" + userPoolDO.getChanceId());
-                    String str = userPoolDO.getNumofChance();
-                    Log.d("wtf2", "career" + str);
-                    if(str!=null) {
-                        number = Integer.parseInt(str);
-                        //number++;
-                        Log.d("wtf3", "n" + str);
-
-                    }
-                }
-                //number++;
-                String chanceID = uId + String.valueOf(number);
-                //setChance(value,chanceID,String.valueOf(number),totNum);
-            }
-        }).start();
-
-    }
-
-    private void getstuff(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Log.d("uid","f"+uId);
-                UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,uId);
-                Message msgText = Message.obtain();
-                Message msgChance = Message.obtain();
-                msgText.what=1;
-                msgChance.what=2;
-
-
-                if(userPoolDO != null) {
-                    Log.d("wtf", "sdf3" + userPoolDO.toString());
-                    Log.d("wtf", "career" + userPoolDO.getChanceId());
-                    Log.d("wtf55", "career" + userPoolDO.getNumofChance());
-                    Log.d("wtf55", "career" + userPoolDO.getNumofChance());
-                    if(userPoolDO.getNumofChance()!=null) {
-                        number = Integer.parseInt(userPoolDO.getNumofChance());
-
-                    }Log.d("wtf55", "career" + uId+String.valueOf(number));
-                    try {
-                        String chanceid=uId + String.valueOf(number);
-                        UserChanceDO userChanceDO = dynamoDBMapper.load(UserChanceDO.class,chanceid,uId);
-                        if (userChanceDO != null) {
-                            Log.d("tutu", "sdf3" + userChanceDO.toString());
-                            Log.d("ert", "career" + userChanceDO.getChanceid());
-                            Log.d("ertwe", "career" + userChanceDO.getValue());
-                            msgText.obj=userChanceDO.getValue();
-                            msgChance.obj=userChanceDO.getChanceid();
-                            handler.sendMessage(msgText);
-                            handler.sendMessage(msgChance);
-                        }
-                    }
-                    catch (Exception e){
-                        Log.d("erre", "career" + e+uId+String.valueOf(number));
-                    }
-                }
-                //number++;
-            }
-        }).start();
-    }
 
     public void setChance(String value,String chance,String num,String totNum){
 //        final UserChanceDO userC = new UserChanceDO();
@@ -608,12 +445,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     Runnable uploadRunnable = new Runnable() {
         @Override
         public void run() {
+            int cSize = helper.returnChanceeSize(dynamoDBMapper)+1;
+            final ChanceWithValueDO chanceWithValueDO = new ChanceWithValueDO();
+            Set<String> pictureSet = new ArraySet<>();
             for(int i=0;i<uriList.size();i++){
                 try {
                 String path = AppHelper.getPath(uriList.get(i),context);
                 File file = new File(path);
                 Log.d("uyu",""+ChanceId);
-                int cSize = helper.returnChanceeSize(dynamoDBMapper);
                 observer =
                         sTransferUtility.upload(helper.BUCKET_NAME,String.valueOf(cSize)+"_"+String.valueOf(i)+".png",file);
                 observer.setTransferListener(new TransferListener() {
@@ -633,12 +472,31 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         Log.d("onState", "onStateChanged: " + id + ", " + newState);
                     }
                 });
+                pictureSet.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+String.valueOf(cSize)+"_"+String.valueOf(i)+".png");
                 //beginUpload(path);
-                Log.d("gooodshit", "upload"+file.getName());
+                Log.d("gooodshit", "upload "+String.valueOf(cSize)+"_"+String.valueOf(i)+".png");
             } catch (URISyntaxException e) {
                 Log.d("fck2", "Unable to upload file from the given uri", e);
             }
             }
+            Log.d("letsee ", " "+txtReward);
+            if(pictureSet.size()!=0) {
+                chanceWithValueDO.setPictures(pictureSet);
+            }
+            chanceWithValueDO.setUsername(username);
+            chanceWithValueDO.setProfilePicture("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+username+".png");
+            chanceWithValueDO.setId(String.valueOf(cSize));
+            chanceWithValueDO.setReward(Double.parseDouble(txtReward));
+            chanceWithValueDO.setRewardType(txtRewardType);
+            chanceWithValueDO.setBonus(Double.parseDouble(txtBonus));
+            chanceWithValueDO.setBonusType(txtBonusType);
+            chanceWithValueDO.setTag((double)clickFlag);
+            chanceWithValueDO.setTitle(textTilte);
+            chanceWithValueDO.setText(textValue);
+            Date currentTime = Calendar.getInstance().getTime();
+            String dateString = DateFormat.format("yyyyMMddHHmmss", new Date(currentTime.getTime())).toString();
+            chanceWithValueDO.setTime(Double.parseDouble(dateString));
+            dynamoDBMapper.save(chanceWithValueDO);
 
         }
     };
@@ -654,44 +512,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         Log.d("uri","size "+uriList.size());
         Log.d("get code","reque" + requestCode + " resu " + resultCode);
 
-
-        Uri galUri;
-        String path;;
         if(requestCode == Define.ALBUM_REQUEST_CODE){
 
             uriList=data.getParcelableArrayListExtra(Define.INTENT_PATH);
 
-//            try {
-//                path = AppHelper.getPath(uriList.get(0),context);
-//                File file = new File(path);
-//                Log.d("uyu",""+ChanceId);
-//                observer =
-//                        sTransferUtility.upload(helper.BUCKET_NAME,"yoyowtf.png",file);
-//                observer.setTransferListener(new TransferListener() {
-//                    @Override
-//                    public void onError(int id, Exception e) {
-//                        Log.e("onError", "Error during upload: " + id, e);
-//                    }
-//
-//                    @Override
-//                    public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-//                        Log.d("onProgress", String.format("onProgressChanged: %d, total: %d, current: %d",
-//                                id, bytesTotal, bytesCurrent));
-//                    }
-//
-//                    @Override
-//                    public void onStateChanged(int id, TransferState newState) {
-//                        Log.d("onState", "onStateChanged: " + id + ", " + newState);
-//                    }
-//                });
-//                //beginUpload(path);
-//                Log.d("gooodshit", "upload"+file.getName());
-//            } catch (URISyntaxException e) {
-//                Toast.makeText(this,
-//                        "Unable to get the file from the given URI.  See error log for details",
-//                        Toast.LENGTH_LONG).show();
-//                Log.d("fck2", "Unable to upload file from the given uri", e);
-//            }
 
         }
     }
@@ -810,9 +634,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         this.trynum=n;
     }
 
-    public void setFragment( Bundle bundle, FragmentTransaction ft){
+    public void setFragment( chanceClass cc, FragmentTransaction ft){
 
-        fragment.setArguments(bundle);
+        fragment.setClass(cc);
         fragmentTransaction.replace(R.id.fragmentHome,fragment);
         ft.commit();
     }
