@@ -53,6 +53,9 @@ public class changeInformationActivity extends AppCompatActivity {
     Button cameraBtn,picBtn;
     private static final int GALLERY_REQUEST= 5;
     private static final int CAMERA_REQUEST=0;
+    Uri galUri;
+    String path;
+    String pFlag="";
     TransferObserver observer;
     TransferListener listener;
     AppHelper helper;
@@ -139,8 +142,6 @@ public class changeInformationActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri galUri;
-        String path;
         if(requestCode == CAMERA_REQUEST){
             Log.d("do","shiit");
             try {
@@ -180,36 +181,7 @@ public class changeInformationActivity extends AppCompatActivity {
         }
         else if(requestCode == GALLERY_REQUEST){
             galUri=data.getData();
-            try {
-                path = AppHelper.getPath(galUri,context);
-                File file = new File(path);
-                observer =
-                        sTransferUtility.upload(helper.BUCKET_NAME,AppHelper.getCurrentUserName(context)+".png",file);
-                observer.setTransferListener(new TransferListener() {
-                    @Override
-                    public void onError(int id, Exception e) {
-                        Log.e("onError", "Error during upload: " + id, e);
-                    }
-
-                    @Override
-                    public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                        Log.d("onProgress", String.format("onProgressChanged: %d, total: %d, current: %d",
-                                id, bytesTotal, bytesCurrent));
-                    }
-
-                    @Override
-                    public void onStateChanged(int id, TransferState newState) {
-                        Log.d("onState", "onStateChanged: " + id + ", " + newState);
-                    }
-                });
-                //beginUpload(path);
-                Log.d("gooodshit", "upload"+file.getName());
-            } catch (URISyntaxException e) {
-                Toast.makeText(this,
-                        "Unable to get the file from the given URI.  See error log for details",
-                        Toast.LENGTH_LONG).show();
-                Log.d("fck2", "Unable to upload file from the given uri", e);
-            }
+            pFlag="yes";
 
         }
     }
@@ -274,6 +246,39 @@ public class changeInformationActivity extends AppCompatActivity {
 
     public void UpdateAtr(){
         final UserPoolDO userInf = new UserPoolDO();
+        if(pFlag=="yes") {
+            try {
+                path = AppHelper.getPath(galUri, context);
+                File file = new File(path);
+                observer =
+                        sTransferUtility.upload(helper.BUCKET_NAME, AppHelper.getCurrentUserName(context) + ".png", file);
+                observer.setTransferListener(new TransferListener() {
+                    @Override
+                    public void onError(int id, Exception e) {
+                        Log.e("onError", "Error during upload: " + id, e);
+                    }
+
+                    @Override
+                    public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                        Log.d("onProgress", String.format("onProgressChanged: %d, total: %d, current: %d",
+                                id, bytesTotal, bytesCurrent));
+                    }
+
+                    @Override
+                    public void onStateChanged(int id, TransferState newState) {
+                        Log.d("onState", "onStateChanged: " + id + ", " + newState);
+                    }
+                });
+                userInf.setProfilePic("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+AppHelper.getCurrentUserName(context)+".png");
+                //beginUpload(path);
+                Log.d("gaodshit", "upload" + file.getName());
+            } catch (URISyntaxException e) {
+                Toast.makeText(this,
+                        "Unable to get the file from the given URI.  See error log for details",
+                        Toast.LENGTH_LONG).show();
+                Log.d("fck2", "Unable to upload file from the given uri", e);
+            }
+        }
         userInf.setUserId(uId);
         userInf.setName(name);
         userInf.setCareer(career);

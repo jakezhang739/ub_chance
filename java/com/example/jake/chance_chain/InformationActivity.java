@@ -9,15 +9,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.squareup.picasso.Picasso;
 
 
 public class InformationActivity extends AppCompatActivity {
     DynamoDBMapper dynamoDBMapper;
     private TextView nickView,nameView,chanceView,walletView,genderView, careerView, resumeView;
+    private ImageView toImage;
     Context context;
     private String uId;
 
@@ -36,6 +39,7 @@ public class InformationActivity extends AppCompatActivity {
         genderView = (TextView) findViewById(R.id.sexInp);
         careerView = (TextView) findViewById(R.id.careerInp);
         resumeView = (TextView) findViewById(R.id.resumeInp);
+        toImage = (ImageView) findViewById(R.id.touxiang);
 
         dynamoDBMapper=AppHelper.getMapper(context);
 
@@ -77,6 +81,8 @@ public class InformationActivity extends AppCompatActivity {
                 break;
                 case 7:resumeView.setText(str);
                 break;
+                case 8: Log.d("try8 ",str);Picasso.get().load(str).into(toImage);
+                break;
             }
         }
     };
@@ -97,6 +103,7 @@ public class InformationActivity extends AppCompatActivity {
                 Message msgGender = Message.obtain();
                 Message msgCareer = Message.obtain();
                 Message msgResume = Message.obtain();
+                Message msgPro = Message.obtain();
                 msgNick.what= 1;
                 msgName.what = 2;
                 msgChance.what = 3;
@@ -104,6 +111,8 @@ public class InformationActivity extends AppCompatActivity {
                 msgGender.what = 5;
                 msgCareer.what = 6;
                 msgResume.what = 7;
+                msgPro.what=8;
+
 
 
                 if(userPoolDO != null) {
@@ -123,6 +132,11 @@ public class InformationActivity extends AppCompatActivity {
                     handler.sendMessage(msgGender);
                     handler.sendMessage(msgCareer);
                     handler.sendMessage(msgResume);
+                }
+                if(userPoolDO.getProfilePic()!=null){
+                    msgPro.obj=userPoolDO.getProfilePic();
+                    handler.sendMessage(msgPro);
+
                 }
             }
         }).start();

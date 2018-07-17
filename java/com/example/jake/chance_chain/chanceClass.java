@@ -16,8 +16,8 @@ public class chanceClass {
 
 
 
-    public chanceClass(String touUri, String bType,String rType,String userid,String txtTitle,String txtNeirong,String cId, double bonus, double reward,  double tag, double uploadTime){
-        this.touUri = touUri;
+    public chanceClass(String bType,String rType,String userid,String txtTitle,String txtNeirong,String cId, double bonus, double reward,  double tag, double uploadTime){
+        touUri="";
         this.bType = bType;
         this.rType=rType;
         this.userid = userid;
@@ -32,5 +32,8 @@ public class chanceClass {
 
     public void setPicture(Set<String> imgSet){
         this.imageSet=imgSet;
+    }
+    public void settImg(String tou){
+        this.touUri=tou;
     }
 }

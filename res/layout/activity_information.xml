@@ -22,13 +22,13 @@
             android:text="修改信息" />
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/touxiang"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            app:srcCompat="@mipmap/ic_launcher_round" />
+            android:src="@drawable/sp" />
         <TextView
             android:id="@+id/uid"
             android:layout_width="wrap_content"

@@ -1,7 +1,11 @@
 package com.example.jake.chance_chain;
 
 import android.Manifest;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.StateListDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.app.Activity;
@@ -137,7 +141,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         touUri = new ArrayList<String>(Arrays.asList());
         navigationView = (BottomNavigationView) findViewById(R.id.navigation);
         navigationView.setOnNavigationItemSelectedListener(this);
-        navigationView.setItemIconTintList(null);
+
+
+
 
         //fragmentTransaction.add(R.id.fragmentHome,fragment);
         //fragmentTransaction.commit();
@@ -158,6 +164,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             tImage = (ImageView) findViewById(R.id.touImage);
             Button clickButton = (Button) findViewById(R.id.logoutBtn);
             Button infButton = (Button) findViewById(R.id.informationBtn);
+            new Thread(proPic).start();
             clickButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -180,13 +187,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             userTxt.setText(AppHelper.getCurrentUserName(context));
             us = AppHelper.getCurrentUserName(context);
             Log.d("username","www"+us);
-            try{
-                Picasso.get().load("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+us+".png").resize(60,60).centerCrop().into(tImage);
 
-            }
-            catch (Exception e){
-
-            }
 
 
 
@@ -440,7 +441,38 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 //                // Item saved
 //            }
 //        }).start();
+
     }
+
+    Handler pHandler = new Handler(){
+      @Override
+      public void handleMessage(Message msg) {
+          if(msg.what==1){
+              Picasso.get().load(msg.obj.toString()).resize(60,60).centerCrop().into(tImage);
+
+          }
+      }
+
+    };
+
+    Runnable proPic = new Runnable() {
+        @Override
+        public void run() {
+            UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,username);
+            if(userPoolDO.getProfilePic()==null){
+                Message msg = new Message();
+                msg.what=0;
+                pHandler.sendMessage(msg);
+
+            }
+            else{
+                Message msg =new Message();
+                msg.what = 1;
+                msg.obj = userPoolDO.getProfilePic();
+                pHandler.sendMessage((msg));
+            }
+        }
+    };
 
     Runnable uploadRunnable = new Runnable() {
         @Override
@@ -484,7 +516,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 chanceWithValueDO.setPictures(pictureSet);
             }
             chanceWithValueDO.setUsername(username);
-            chanceWithValueDO.setProfilePicture("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/"+username+".png");
             chanceWithValueDO.setId(String.valueOf(cSize));
             chanceWithValueDO.setReward(Double.parseDouble(txtReward));
             chanceWithValueDO.setRewardType(txtRewardType);
@@ -599,6 +630,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     void selectBottomNavigationBarItem(int itemId) {
         MenuItem item = navigationView.getMenu().findItem(itemId);
         item.setChecked(true);
+
     }
 
     private void requstStoragePermission(){
@@ -634,7 +666,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         this.trynum=n;
     }
 
-    public void setFragment( chanceClass cc, FragmentTransaction ft){
+    public void setFragment( List<chanceClass> cc, FragmentTransaction ft){
 
         fragment.setClass(cc);
         fragmentTransaction.replace(R.id.fragmentHome,fragment);

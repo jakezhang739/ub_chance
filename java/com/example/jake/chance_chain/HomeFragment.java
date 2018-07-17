@@ -33,7 +33,7 @@ public class HomeFragment extends Fragment {
     DynamoDBMapper dynamoDBMapper;
     private boolean refreshFlag = false;
     private boolean loadmoreFlag = false;
-    private  chanceClass cc;
+    private List<chanceClass> cList = new ArrayList<chanceClass>();
     int tC,temptC;
     RecyclerView mRecyclerView;
     GalleryAdapter mAdapter;
@@ -76,24 +76,19 @@ public class HomeFragment extends Fragment {
 
 
 
-//        mRecyclerView = (RecyclerView) view.findViewById(R.id.id_recyclerview_horizontal);
-//        //设置布局管理器
-//        linearLayoutManager = new LinearLayoutManager(getContext());
-//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        mRecyclerView.setLayoutManager(linearLayoutManager);
-//        mImage=new ArrayList<String>(Arrays.asList(getArguments().getStringArray("image")));
-//        mText = new ArrayList<String>(Arrays.asList(getArguments().getStringArray("text")));
-//        touUri = new ArrayList<String>(Arrays.asList(getArguments().getStringArray("tou")));
-//        usId=new ArrayList<String>(Arrays.asList(getArguments().getStringArray("uid")));
-//        tC = getArguments().getInt("totchance");
-//        temptC = tC;
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.id_recyclerview_horizontal);
+        //设置布局管理器
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(linearLayoutManager);
+
 //
 //        Log.d("home12", "how many wtf do i need");
 //
 //
-//        mAdapter = new GalleryAdapter(getContext(), mImage,mText,touUri,usId,uploadOffset);
-//
-//        mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new GalleryAdapter(getContext(), cList);
+
+        mRecyclerView.setAdapter(mAdapter);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -136,8 +131,8 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public void setClass(chanceClass cc){
-        this.cc = cc;
+    public void setClass(List<chanceClass> cc){
+        this.cList = cc;
     }
 
     Runnable pullDownRunnable = new Runnable() {
@@ -224,7 +219,7 @@ public class HomeFragment extends Fragment {
 
 
 
-            uploadOffset=mImage.size()-1;
+//            uploadOffset=mImage.size()-1;
 
 
             loadmoreFlag = true;

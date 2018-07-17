@@ -24,6 +24,7 @@ public class UserPoolDO {
     private String _walletAddress;
     private String _cryptoCurrency;
     private String _numofChance;
+    private String _profilePic;
 
     @DynamoDBHashKey(attributeName = "userId")
     @DynamoDBAttribute(attributeName = "userId")
@@ -105,6 +106,14 @@ public class UserPoolDO {
 
     public void setNumofChance(final String _numofChance) {
         this._numofChance = _numofChance;
+    }
+    @DynamoDBAttribute(attributeName = "profilePic")
+    public String getProfilePic() {
+        return _profilePic;
+    }
+
+    public void setProfilePic(final String _profilePic) {
+        this._profilePic = _profilePic;
     }
 
 }
