@@ -12,7 +12,8 @@
         android:id="@+id/scrollId">
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollRel">
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/contentTou"
         android:layout_width="60dp"
@@ -21,7 +22,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        app:srcCompat="@drawable/sp" />
+        android:src="@drawable/sp" />
 
     <TextView
         android:id="@+id/contentUid"
@@ -57,7 +58,7 @@
             android:layout_below="@+id/contentTou"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
-            android:text="kkk"/>
+            />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="5dp"
@@ -139,11 +140,101 @@
             android:text="Get"
             android:layout_below="@id/spacing1"
             android:textColor="@color/black"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycle_ping"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:scrollbars="none"
+            android:layout_below="@id/getBtn"
+            android:clickable="true"/>
 
     </RelativeLayout>
     </ScrollView>
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></RelativeLayout>
+        android:layout_height="50dp"
+        android:id="@+id/bottomBar"
+        android:layout_alignParentBottom="true"
+        android:background="@color/homeback"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/firstBar"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="7dp"
+            android:layout_weight="1"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/zhanneifenxiang2x"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/zhuanBar"
+                android:layout_marginLeft="10dp"
+                android:text="转发"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:layout_gravity="center_vertical"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/secondBar"
+            android:background="@color/colorPrimaryDark"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/liuyan2x"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pinBar"
+                android:layout_marginLeft="10dp"
+                android:text="评论"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:layout_gravity="center_vertical"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/thirdBar"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_weight="1"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/dianzan2x"
+                android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/zanBar"
+                android:layout_marginLeft="10dp"
+                android:text="点赞"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:layout_gravity="center_vertical"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
