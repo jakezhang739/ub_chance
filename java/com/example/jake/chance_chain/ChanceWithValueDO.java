@@ -17,9 +17,10 @@ public class ChanceWithValueDO {
     private String _id;
     private Double _bonus;
     private String _bonusType;
-    private Set<String> _comments;
-    private Double _liked;
-    private Set<String> _pictures;
+    private Double _commentNumber;
+    private Map<String, String> _comments;
+    private Set<String> _liked;
+    private List<String> _pictures;
     private String _profilePicture;
     private Double _reward;
     private String _rewardType;
@@ -55,28 +56,36 @@ public class ChanceWithValueDO {
     public void setBonusType(final String _bonusType) {
         this._bonusType = _bonusType;
     }
+    @DynamoDBAttribute(attributeName = "commentNumber")
+    public Double getCommentNumber() {
+        return _commentNumber;
+    }
+
+    public void setCommentNumber(final Double _commentNumber) {
+        this._commentNumber = _commentNumber;
+    }
     @DynamoDBAttribute(attributeName = "comments")
-    public Set<String> getComments() {
+    public Map<String, String> getComments() {
         return _comments;
     }
 
-    public void setComments(final Set<String> _comments) {
+    public void setComments(final Map<String, String> _comments) {
         this._comments = _comments;
     }
-    @DynamoDBIndexRangeKey(attributeName = "liked", globalSecondaryIndexName = "GroupUser")
-    public Double getLiked() {
+    @DynamoDBAttribute(attributeName = "liked")
+    public Set<String> getLiked() {
         return _liked;
     }
 
-    public void setLiked(final Double _liked) {
+    public void setLiked(final Set<String> _liked) {
         this._liked = _liked;
     }
     @DynamoDBAttribute(attributeName = "pictures")
-    public Set<String> getPictures() {
+    public List<String> getPictures() {
         return _pictures;
     }
 
-    public void setPictures(final Set<String> _pictures) {
+    public void setPictures(final List<String> _pictures) {
         this._pictures = _pictures;
     }
     @DynamoDBAttribute(attributeName = "profile_picture")
@@ -143,7 +152,7 @@ public class ChanceWithValueDO {
     public void setTitle(final String _title) {
         this._title = _title;
     }
-    @DynamoDBIndexHashKey(attributeName = "username", globalSecondaryIndexName = "GroupUser")
+    @DynamoDBAttribute(attributeName = "username")
     public String getUsername() {
         return _username;
     }

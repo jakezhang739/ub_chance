@@ -23,6 +23,7 @@ public class myThread extends Thread {
     BaseActivity baseActivity;
     DynamoDBMapper dynamoDBMapper;
     private List<chanceClass> cList = new ArrayList<chanceClass>();
+    private List<String> imgList = new ArrayList<>();
     private volatile boolean running=true;
     private HomeFragment fg;
     private FragmentTransaction ft;
@@ -41,10 +42,10 @@ public class myThread extends Thread {
         Log.d("just try222", "come on "+helper.returnChanceeSize(dynamoDBMapper));
 
         if(totChance > 10){
-            for(int i = totChance;i>=totChance-9;i--){
+            for(int i = totChance-9;i<=totChance-9;i++){
                 ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
                 Log.d("uid121","sd "+totChance);
-                chanceClass cc = new chanceClass(chanceWithValueDO.getBonusType(),chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
+                chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
                 UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,cc.userid);
                 if(userPoolDO.getProfilePic()!=null){
                     cc.settImg(userPoolDO.getProfilePic());
@@ -54,12 +55,15 @@ public class myThread extends Thread {
             }
         }
         else{
-            for(int i = totChance;i>=1;i--){
+            for(int i = 1;i<=totChance;i++){
                 ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
-                chanceClass cc = new chanceClass(chanceWithValueDO.getBonusType(),chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
+                chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
                 UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,cc.userid);
                 if(userPoolDO.getProfilePic()!=null){
                     cc.settImg(userPoolDO.getProfilePic());
+                }
+                if(chanceWithValueDO.getPictures()!=null){
+                    cc.setPicture(chanceWithValueDO.getPictures());
                 }
                 cList.add(cc);
                 Log.d("uid121","sd "+totChance);

@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/neirong"
             android:layout_alignEnd="@+id/titletext"
-            app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
+            app:srcCompat="@drawable/xiangji" />
     </RelativeLayout>
 
     <TextView
@@ -90,7 +90,7 @@
             android:layout_height="60dp"
             android:layout_marginStart="20dp"
             android:layout_centerVertical="true"
-            android:text="约吗"
+            android:text="活动"
             android:textColor="@color/white"
             android:textSize="@dimen/action_bar_text"
             android:gravity="center"
@@ -105,7 +105,7 @@
             android:layout_marginLeft="35dp"
             android:layout_centerVertical="true"
             android:clickable="true"
-            android:text="活动"
+            android:text="约吗"
             android:textColor="@color/white"
             android:textSize="@dimen/action_bar_text"
             android:gravity="center"

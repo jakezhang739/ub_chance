@@ -1,24 +1,43 @@
 package com.example.jake.chance_chain;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.ArrayMap;
 import android.util.ArraySet;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-public class chanceClass {
+public class chanceClass implements Parcelable {
 
-    public Set<String> imageSet = new ArraySet<String>();
-    public Set<String> commentSet = new ArraySet<String>();
+    public List<String> imageSet;
+    public Map<String,String> commentSet;
     public double bonus;
     public double reward,uploadTime,tag;
-    public String touUri, bType,rType,userid,txtTitle,txtNeirong,cId,liked,shared;
+    int shared,cNumber;
+    public String touUri, bType,rType,userid,txtTitle,txtNeirong,cId;
+    public Set<String> liked;
+
+//    public chanceClass(){
+//        this.touUri="";
+//        this.cNumber=0;
+//        this.shared=0;
+//        this.imageSet=  new ArrayList<>();
+//        this.liked = new ArraySet<>();
+//        this.commentSet=  new ArrayMap<>();
+//    }
 
 
 
 
-    public chanceClass(String bType,String rType,String userid,String txtTitle,String txtNeirong,String cId, double bonus, double reward,  double tag, double uploadTime){
-        touUri="";
-        this.bType = bType;
+    public chanceClass(String rType,String userid,String txtTitle,String txtNeirong,String cId, double bonus, double reward,  double tag, double uploadTime){
+        this.touUri="";
+        this.cNumber=0;
+        this.shared=0;
+        this.imageSet=  new ArrayList<>();
         this.rType=rType;
         this.userid = userid;
         this.txtTitle = txtTitle;
@@ -28,12 +47,73 @@ public class chanceClass {
         this.reward = reward;
         this.uploadTime = uploadTime;
         this.tag = tag;
+        this.liked = new ArraySet<>();
+        this.commentSet=  new ArrayMap<>();
+
     }
 
-    public void setPicture(Set<String> imgSet){
+    protected chanceClass(Parcel in) {
+        imageSet = in.createStringArrayList();
+        bonus = in.readDouble();
+        reward = in.readDouble();
+        uploadTime = in.readDouble();
+        tag = in.readDouble();
+        shared = in.readInt();
+        cNumber = in.readInt();
+        touUri = in.readString();
+        bType = in.readString();
+        rType = in.readString();
+        userid = in.readString();
+        txtTitle = in.readString();
+        txtNeirong = in.readString();
+        cId = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringList(imageSet);
+        dest.writeDouble(bonus);
+        dest.writeDouble(reward);
+        dest.writeDouble(uploadTime);
+        dest.writeDouble(tag);
+        dest.writeInt(shared);
+        dest.writeInt(cNumber);
+        dest.writeString(touUri);
+        dest.writeString(bType);
+        dest.writeString(rType);
+        dest.writeString(userid);
+        dest.writeString(txtTitle);
+        dest.writeString(txtNeirong);
+        dest.writeString(cId);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<chanceClass> CREATOR = new Creator<chanceClass>() {
+        @Override
+        public chanceClass createFromParcel(Parcel in) {
+            return new chanceClass(in);
+        }
+
+        @Override
+        public chanceClass[] newArray(int size) {
+            return new chanceClass[size];
+        }
+    };
+
+    public void setPicture(List<String> imgSet){
         this.imageSet=imgSet;
     }
     public void settImg(String tou){
         this.touUri=tou;
     }
+    public void setCommentSet (Map<String,String> comment){this.commentSet=comment;}
+    public void setLiked(Set<String> like){this.liked=like;}
+    public void setShare (double share){ this.shared = (int) share; }
+    public void setcNumber(double number){this.cNumber = (int) number;}
+
+
 }

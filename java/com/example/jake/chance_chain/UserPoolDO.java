@@ -22,6 +22,7 @@ public class UserPoolDO {
     private String _nickName;
     private String _resume;
     private String _walletAddress;
+    private String _candyCurrency;
     private String _cryptoCurrency;
     private String _numofChance;
     private String _profilePic;
@@ -90,6 +91,14 @@ public class UserPoolDO {
 
     public void setWalletAddress(final String _walletAddress) {
         this._walletAddress = _walletAddress;
+    }
+    @DynamoDBAttribute(attributeName = "candyCurrency")
+    public String getCandyCurrency() {
+        return _candyCurrency;
+    }
+
+    public void setCandyCurrency(final String _candyCurrency) {
+        this._candyCurrency = _candyCurrency;
     }
     @DynamoDBAttribute(attributeName = "cryptoCurrency")
     public String getCryptoCurrency() {

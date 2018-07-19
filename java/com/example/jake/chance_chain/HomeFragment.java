@@ -24,6 +24,8 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -40,6 +42,7 @@ public class HomeFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     int uploadOffset=-1;
     int tempOffset=-1;
+    AppHelper helper = new AppHelper();
     static {
         ClassicsHeader.REFRESH_HEADER_PULLING = "下拉可以刷新";
         ClassicsHeader.REFRESH_HEADER_REFRESHING = "正在刷新...";
@@ -81,6 +84,7 @@ public class HomeFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
+
 
 //
 //        Log.d("home12", "how many wtf do i need");
@@ -140,42 +144,42 @@ public class HomeFragment extends Fragment {
         public void run() {
 
 
-
-            //TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
-            //Log.d("dyna12",""+totalChanceDO.getTotC());
-            mImage.clear();
-            mText.clear();
-            touUri.clear();
+            int totChance = helper.returnChanceeSize(dynamoDBMapper);
 
 
-//            int totChance = Integer.parseInt(totalChanceDO.getTotC());
-//                if (totChance> 10) {
-//
-//                    for (int i = totChance -9; i <=totChance; i++) {
-//                        ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
-//                        mImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + String.valueOf(i) + ".png");
-//                        mText.add(chanceWithValueDO.getValue());
-//                        Log.d("letme try", "wtf " + String.valueOf(i));
-//                        touUri.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
-//                        usId.add(chanceWithValueDO.getUser());
-//                    }
-//                } else {
-//
-//                    for (int i = 1; i <= totChance; i++) {
-//                        ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
-//                        mImage.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + String.valueOf(i) + ".png");
-//                        mText.add(chanceWithValueDO.getValue());
-//                        Log.d("letyou ty", "uid " + String.valueOf(i));
-//                        touUri.add("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
-//                        usId.add(chanceWithValueDO.getUser());
-//                    }
-//                }
+            int curChance = Integer.parseInt(cList.get(cList.size()-1).cId)+1;
 
+            Log.d("sss11t try222", "come on "+curChance);
 
+            Collections.reverse(cList);
+            if(totChance-curChance>=9){
+                for(int i = curChance;i<=curChance+9;i++){
+                    ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
+                    chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(), chanceWithValueDO.getUsername(), chanceWithValueDO.getTitle(), chanceWithValueDO.getText(), chanceWithValueDO.getId(), chanceWithValueDO.getBonus(), chanceWithValueDO.getReward(), chanceWithValueDO.getTag(), chanceWithValueDO.getTime());
+                    UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class, cc.userid);
+                    if (userPoolDO.getProfilePic() != null) {
+                        cc.settImg(userPoolDO.getProfilePic());
+                    }
+                    cList.add(cc);
+                }
 
+            }
 
+            else {
+                for (int i = curChance; i <= totChance; i++) {
+                    ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
+                    chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(), chanceWithValueDO.getUsername(), chanceWithValueDO.getTitle(), chanceWithValueDO.getText(), chanceWithValueDO.getId(), chanceWithValueDO.getBonus(), chanceWithValueDO.getReward(), chanceWithValueDO.getTag(), chanceWithValueDO.getTime());
+                    UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class, cc.userid);
+                    if (userPoolDO.getProfilePic() != null) {
+                        cc.settImg(userPoolDO.getProfilePic());
+                    }
+                    cList.add(cc);
+                }
+            }
+            Collections.reverse(cList);
             refreshFlag=true;
-                //tC=totChance;
+
+
 
         }
     };
@@ -184,46 +188,35 @@ public class HomeFragment extends Fragment {
         @Override
         public void run() {
 
-//            TotalChanceDO totalChanceDO = dynamoDBMapper.load(TotalChanceDO.class,"totalID");
-//            Log.d("dyna123223",""+totalChanceDO.getTotC()+" " + tC);
-//            int totChance = Integer.parseInt(totalChanceDO.getTotC());
+            Log.d("just try222", "come on "+helper.returnChanceeSize(dynamoDBMapper));
 
+            int curChance = Integer.parseInt(cList.get(0).cId)-1;
 
-            int index=0;
-            if(tC>20){
-                mImage.clear();
-                mText.clear();
-                touUri.clear();
-                for(int i=tC-10;i<tC;i++){
-                    ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
-                    mImage.add(index,"https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + String.valueOf(i) + ".png");
-                    //mText.add(index,chanceWithValueDO.getValue());
-                    //Log.d("dyna123", "uid " + chanceWithValueDO.getValue());
-                    //touUri.add(index,"https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
+            Log.d("jus11t try222", "come on "+curChance);
+
+            if(curChance>=9){
+                for(int i=curChance;i>=curChance-9;i--){
+                    ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
+                    chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
+                    UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,cc.userid);
+                    if(userPoolDO.getProfilePic()!=null){
+                        cc.settImg(userPoolDO.getProfilePic());
+                    }
+                    cList.add(cc);
                 }
             }
-            else if(tC > 10){
-                mImage.clear();
-                mText.clear();
-                touUri.clear();
-                for(int i=1;i<=tC-10;i++){
-                    ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
-                    mImage.add(index,"https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + String.valueOf(i) + ".png");
-                    //mText.add(index,chanceWithValueDO.getValue());
-                    Log.d("dyna123123", "uid " + String.valueOf(i));
-                    //touUri.add(index,"https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + chanceWithValueDO.getUser() + ".png");
+
+            for(int i = curChance;i>=1;i--){
+                ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
+                chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
+                UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,cc.userid);
+                if(userPoolDO.getProfilePic()!=null){
+                    cc.settImg(userPoolDO.getProfilePic());
                 }
-
+                cList.add(cc);
             }
+            loadmoreFlag=true;
 
-
-
-
-//            uploadOffset=mImage.size()-1;
-
-
-            loadmoreFlag = true;
-            tC=tC-10;
 
         }
     };

@@ -142,11 +142,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         navigationView = (BottomNavigationView) findViewById(R.id.navigation);
         navigationView.setOnNavigationItemSelectedListener(this);
 
+        navigationView.setItemIconTintList(null);
 
-
-
-        //fragmentTransaction.add(R.id.fragmentHome,fragment);
-        //fragmentTransaction.commit();
         uriList = new ArrayList<Uri>();
         username=helper.getCurrentUserName(context);
 
@@ -479,7 +476,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         public void run() {
             int cSize = helper.returnChanceeSize(dynamoDBMapper)+1;
             final ChanceWithValueDO chanceWithValueDO = new ChanceWithValueDO();
-            Set<String> pictureSet = new ArraySet<>();
+            List<String> pictureSet = new ArrayList<>();
             for(int i=0;i<uriList.size();i++){
                 try {
                 String path = AppHelper.getPath(uriList.get(i),context);

@@ -20,10 +20,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".HomeActivity"
-            android:label=""
-            android:logo="@drawable/name3x"
             android:icon="@drawable/name3x"
-            />
+            android:label=""
+            android:logo="@drawable/name3x" />
         <activity
             android:name=".NotificationActivity"
             android:label="@string/title_activity_notification" />
@@ -44,7 +43,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".InformationActivity" />
         </activity>
-
         <activity android:name=".getPicActivity" />
 
         <service
@@ -63,7 +61,6 @@
         <activity
             android:name=".LoginActivity"
             android:label="登录机会链" />
-
         <activity
             android:name=".signUpActivity"
             android:label="注册">
@@ -71,7 +68,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoginActivity" />
         </activity>
-
         <activity
             android:name=".forgotPassword"
             android:label="忘记密码">
@@ -79,7 +75,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoginActivity" />
         </activity>
-
         <activity
             android:name=".confirmUser"
             android:label="确认用户">
@@ -87,8 +82,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".signUpActivity" />
         </activity>
-
-
+        <activity android:name=".ContentActivity"
+            android:label="机会">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity"/>
+        </activity>
     </application>
 
 </manifest>
