@@ -23,6 +23,7 @@ public class myThread extends Thread {
     BaseActivity baseActivity;
     DynamoDBMapper dynamoDBMapper;
     private List<chanceClass> cList = new ArrayList<chanceClass>();
+    private List<commentClass> comList = new ArrayList<>();
     private List<String> imgList = new ArrayList<>();
     private volatile boolean running=true;
     private HomeFragment fg;
@@ -44,13 +45,25 @@ public class myThread extends Thread {
         if(totChance > 10){
             for(int i = totChance-9;i<=totChance-9;i++){
                 ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
-                Log.d("uid121","sd "+totChance);
                 chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
                 UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,cc.userid);
                 if(userPoolDO.getProfilePic()!=null){
                     cc.settImg(userPoolDO.getProfilePic());
                 }
+                if(chanceWithValueDO.getPictures()!=null){
+                    cc.setPicture(chanceWithValueDO.getPictures());
+                }
+                if(chanceWithValueDO.getLiked()!=null){
+                    cc.setLiked(chanceWithValueDO.getLiked());
+                }
+                if(chanceWithValueDO.getCommentNumber()!=null){
+                    cc.setcNumber(chanceWithValueDO.getCommentNumber());
+                }
+                if(chanceWithValueDO.getCommentIdList()!=null){
+                    cc.setCid(chanceWithValueDO.getCommentIdList());
+                }
                 cList.add(cc);
+                Log.d("uid121","sd "+totChance);
 
             }
         }
@@ -65,6 +78,24 @@ public class myThread extends Thread {
                 if(chanceWithValueDO.getPictures()!=null){
                     cc.setPicture(chanceWithValueDO.getPictures());
                 }
+                if(chanceWithValueDO.getLiked()!=null){
+                    cc.setLiked(chanceWithValueDO.getLiked());
+                }
+                if(chanceWithValueDO.getCommentNumber()!=null){
+                    int cTotal = chanceWithValueDO.getCommentNumber().intValue();
+                    cc.setcNumber(chanceWithValueDO.getCommentNumber());
+                    for(int j =0;j<cTotal;j++){
+                        CommentTableDO commentTableDO = dynamoDBMapper.load(CommentTableDO.class,chanceWithValueDO.getCommentIdList().get(j));
+                        commentClass comC = new commentClass(commentTableDO.getCommentId(),commentTableDO.getUpTime(),commentTableDO.getChanceId(),commentTableDO.getCommentText(),commentTableDO.getUserId());
+                        if(commentTableDO.getUserPic()!=null){
+                            comC.setUpic(commentTableDO.getUserPic());
+                        }
+                        comList.add(comC);
+                    }
+                }
+                if(chanceWithValueDO.getCommentIdList()!=null){
+                    cc.setCid(chanceWithValueDO.getCommentIdList());
+                }
                 cList.add(cc);
                 Log.d("uid121","sd "+totChance);
 
@@ -78,7 +109,7 @@ public class myThread extends Thread {
 
 
 
-        baseActivity.setFragment(cList,ft);
+        baseActivity.setFragment(cList,comList,ft);
         Log.d("thread", "fg"+"sd123f");
         //设置布局管理器
 

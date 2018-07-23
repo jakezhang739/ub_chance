@@ -22,8 +22,8 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
-public class GalleryAdapter extends
-        RecyclerView.Adapter<GalleryAdapter.ViewHolder>
+public class CommentAdapter extends
+        RecyclerView.Adapter<CommentAdapter.ViewHolder>
 {
 
     private LayoutInflater mInflater;
@@ -32,7 +32,7 @@ public class GalleryAdapter extends
 
 
 
-    public GalleryAdapter(Context context, List<chanceClass> cc)
+    public CommentAdapter(Context context, List<chanceClass> cc)
     {
         this.mInflater = LayoutInflater.from(context);
         this.cList = cc;
@@ -115,7 +115,7 @@ public class GalleryAdapter extends
             Picasso.get().load(cList.get(c).touUri).into(viewHolder.uImg);
         }
         if(cList.get(c).imageSet.size()!=0){
-        viewHolder.mGridview.setAdapter(new ImageAdapter(mContext,cList.get(c).imageSet));
+            viewHolder.mGridview.setAdapter(new ImageAdapter(mContext,cList.get(c).imageSet));
         }
         if(cList.get(c).liked.size()!=0){
             viewHolder.dianzhan.setText(String.valueOf(cList.get(c).liked.size()));

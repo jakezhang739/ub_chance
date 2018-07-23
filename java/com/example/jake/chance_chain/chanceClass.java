@@ -14,12 +14,12 @@ import java.util.Set;
 public class chanceClass implements Parcelable {
 
     public List<String> imageSet;
-    public Map<String,String> commentSet;
     public double bonus;
     public double reward,uploadTime,tag;
     int shared,cNumber;
     public String touUri, bType,rType,userid,txtTitle,txtNeirong,cId;
-    public Set<String> liked;
+    public List<String> liked;
+    public List<String> commentId;
 
 //    public chanceClass(){
 //        this.touUri="";
@@ -47,8 +47,8 @@ public class chanceClass implements Parcelable {
         this.reward = reward;
         this.uploadTime = uploadTime;
         this.tag = tag;
-        this.liked = new ArraySet<>();
-        this.commentSet=  new ArrayMap<>();
+        this.liked = new ArrayList<>();
+        this.commentId = new ArrayList<>();
 
     }
 
@@ -67,6 +67,8 @@ public class chanceClass implements Parcelable {
         txtTitle = in.readString();
         txtNeirong = in.readString();
         cId = in.readString();
+        liked = in.createStringArrayList();
+        commentId = in.createStringArrayList();
     }
 
     @Override
@@ -85,6 +87,8 @@ public class chanceClass implements Parcelable {
         dest.writeString(txtTitle);
         dest.writeString(txtNeirong);
         dest.writeString(cId);
+        dest.writeStringList(liked);
+        dest.writeStringList(commentId);
     }
 
     @Override
@@ -110,10 +114,12 @@ public class chanceClass implements Parcelable {
     public void settImg(String tou){
         this.touUri=tou;
     }
-    public void setCommentSet (Map<String,String> comment){this.commentSet=comment;}
-    public void setLiked(Set<String> like){this.liked=like;}
+    public void setLiked(List<String> like){this.liked=like;}
     public void setShare (double share){ this.shared = (int) share; }
     public void setcNumber(double number){this.cNumber = (int) number;}
+    public void setCid(List<String> cId){this.commentId = cId;}
+    public void addLiked(String user){this.liked.add(user);}
+    public void deleteLike (String user){ this.liked.remove(user);}
 
 
 }

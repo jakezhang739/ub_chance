@@ -13,7 +13,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollRel">
+        android:id="@+id/scrollRel"
+        >
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/contentTou"
         android:layout_width="60dp"
@@ -42,6 +43,28 @@
         android:layout_alignStart="@+id/contentUid"
         android:layout_marginTop="49dp"
         android:text="TextView" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/contentNei"
+            android:layout_below="@+id/contentTou"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imgLayout"
+            android:orientation="vertical"
+            android:layout_below="@id/contentNei">
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:id="@+id/spacing1"
+            android:layout_below="@+id/imgLayout"
+            android:background="@color/homeback"/>
 
     <ImageView
         android:id="@+id/contentFen"
@@ -51,20 +74,7 @@
         android:layout_alignTop="@+id/contentTou"
         android:layout_marginEnd="16dp"
         app:srcCompat="@drawable/zhanwaifenxiang2x" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/contentNei"
-            android:layout_below="@+id/contentTou"
-            android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="5dp"
-            android:id="@+id/spacing1"
-            android:layout_below="@+id/contentNei"
-            android:background="@color/homeback"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -120,37 +130,52 @@
             android:textSize="20dp"
             android:text="0"/>
 
-       <ImageView
-           android:layout_width="30dp"
-           android:layout_height="30dp"
-           android:id="@+id/zanPic"
-           android:layout_below="@+id/spacing1"
-           android:layout_toRightOf="@+id/zanNUm"
-           android:layout_marginLeft="30dp"
-           android:src="@drawable/dianzan2x"
-           />
-
         <Button
+            android:id="@+id/getBtn"
             android:layout_width="60dp"
             android:layout_height="30dp"
-            android:id="@+id/getBtn"
-            android:layout_toRightOf="@+id/zanPic"
-            android:layout_marginLeft="40dp"
+            android:layout_toRightOf="@id/zanNUm"
+            android:layout_marginLeft="80dp"
+            android:layout_below="@+id/spacing1"
             android:background="@color/yellow"
             android:text="Get"
-            android:layout_below="@id/spacing1"
-            android:textColor="@color/black"/>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycle_ping"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:scrollbars="none"
-            android:layout_below="@id/getBtn"
-            android:clickable="true"/>
+            android:textColor="@color/black" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cRecycle"
+            android:layout_below="@+id/getBtn">
+        </FrameLayout>
 
     </RelativeLayout>
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@id/bottomBar"
+        android:id="@+id/liulay"
+        android:background="@color/colorPrimary"
+        android:visibility="invisible"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/pingText"
+            android:textColorHint="@color/white"
+            android:layout_weight="9"
+            android:hint="请输入留言"/>
+
+        <ImageView
+            android:id="@+id/faliuyan"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            app:srcCompat="@drawable/fabu" />
+
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -222,6 +247,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@drawable/dianzan2x"
+                android:id="@+id/zanSpic"
                 android:layout_gravity="center"/>
             <TextView
                 android:layout_width="wrap_content"

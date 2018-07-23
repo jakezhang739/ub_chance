@@ -38,14 +38,14 @@ public class ImageAdapter extends BaseAdapter {
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(200, 200));
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(250, 250));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(5, 5, 5, 5);
         } else {
             imageView = (ImageView) convertView;
         }
 
-        Picasso.get().load(imgStr.get(position)).resize(200,200).into(imageView);
+        Picasso.get().load(imgStr.get(position)).into(imageView);
         return imageView;
     }
 

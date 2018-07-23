@@ -189,7 +189,7 @@
                 android:id="@+id/zhuivalue"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="追加金额"
+                android:hint="奖励金额"
                 android:layout_toLeftOf="@+id/bizhong2"
                 android:background="@color/yellow"
                 android:textColorHint="@color/black"

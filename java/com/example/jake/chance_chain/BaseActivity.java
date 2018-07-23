@@ -663,9 +663,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         this.trynum=n;
     }
 
-    public void setFragment( List<chanceClass> cc, FragmentTransaction ft){
+    public void setFragment( List<chanceClass> cc, List<commentClass> coList,FragmentTransaction ft){
 
-        fragment.setClass(cc);
+        fragment.setClass(cc,coList);
         fragmentTransaction.replace(R.id.fragmentHome,fragment);
         ft.commit();
     }

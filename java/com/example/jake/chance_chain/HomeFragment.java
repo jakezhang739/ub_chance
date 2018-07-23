@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
     private boolean refreshFlag = false;
     private boolean loadmoreFlag = false;
     private List<chanceClass> cList = new ArrayList<chanceClass>();
+    private List<commentClass> comList = new ArrayList<>();
     int tC,temptC;
     RecyclerView mRecyclerView;
     GalleryAdapter mAdapter;
@@ -128,15 +129,11 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    public void setData(List<String> txt,List<String> img, List<String> tou){
-        this.mText=txt;
-        this.mImage=img;
-        this.touUri = tou;
 
-    }
 
-    public void setClass(List<chanceClass> cc){
+    public void setClass(List<chanceClass> cc, List<commentClass> coList){
         this.cList = cc;
+        this.comList = coList;
     }
 
     Runnable pullDownRunnable = new Runnable() {

@@ -17,9 +17,9 @@ public class ChanceWithValueDO {
     private String _id;
     private Double _bonus;
     private String _bonusType;
+    private List<String> _commentIdList;
     private Double _commentNumber;
-    private Map<String, String> _comments;
-    private Set<String> _liked;
+    private List<String> _liked;
     private List<String> _pictures;
     private String _profilePicture;
     private Double _reward;
@@ -56,6 +56,14 @@ public class ChanceWithValueDO {
     public void setBonusType(final String _bonusType) {
         this._bonusType = _bonusType;
     }
+    @DynamoDBAttribute(attributeName = "commentIdList")
+    public List<String> getCommentIdList() {
+        return _commentIdList;
+    }
+
+    public void setCommentIdList(final List<String> _commentIdList) {
+        this._commentIdList = _commentIdList;
+    }
     @DynamoDBAttribute(attributeName = "commentNumber")
     public Double getCommentNumber() {
         return _commentNumber;
@@ -64,21 +72,19 @@ public class ChanceWithValueDO {
     public void setCommentNumber(final Double _commentNumber) {
         this._commentNumber = _commentNumber;
     }
-    @DynamoDBAttribute(attributeName = "comments")
-    public Map<String, String> getComments() {
-        return _comments;
-    }
-
-    public void setComments(final Map<String, String> _comments) {
-        this._comments = _comments;
-    }
     @DynamoDBAttribute(attributeName = "liked")
-    public Set<String> getLiked() {
+    public List<String> getLiked() {
         return _liked;
     }
 
-    public void setLiked(final Set<String> _liked) {
+    public void setLiked(final List<String> _liked) {
         this._liked = _liked;
+    }
+    public void deleteLike(String Usr) {
+        this._liked.remove(Usr) ;
+    }
+    public void addLike(String Usr) {
+        this._liked.add(Usr) ;
     }
     @DynamoDBAttribute(attributeName = "pictures")
     public List<String> getPictures() {
