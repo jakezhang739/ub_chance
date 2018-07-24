@@ -25,6 +25,7 @@ public class ChanceWithValueDO {
     private Double _reward;
     private String _rewardType;
     private Double _shared;
+    private String _sharedFrom;
     private Double _tag;
     private String _text;
     private Double _time;
@@ -64,6 +65,7 @@ public class ChanceWithValueDO {
     public void setCommentIdList(final List<String> _commentIdList) {
         this._commentIdList = _commentIdList;
     }
+    public void addCommentId(String cId){this._commentIdList.add(cId);}
     @DynamoDBAttribute(attributeName = "commentNumber")
     public Double getCommentNumber() {
         return _commentNumber;
@@ -80,12 +82,8 @@ public class ChanceWithValueDO {
     public void setLiked(final List<String> _liked) {
         this._liked = _liked;
     }
-    public void deleteLike(String Usr) {
-        this._liked.remove(Usr) ;
-    }
-    public void addLike(String Usr) {
-        this._liked.add(Usr) ;
-    }
+    public void deleteLike(String usr){ this._liked.remove(usr);}
+    public void addLike(String usr){this._liked.add(usr);}
     @DynamoDBAttribute(attributeName = "pictures")
     public List<String> getPictures() {
         return _pictures;
@@ -125,6 +123,14 @@ public class ChanceWithValueDO {
 
     public void setShared(final Double _shared) {
         this._shared = _shared;
+    }
+    @DynamoDBAttribute(attributeName = "sharedFrom")
+    public String getSharedFrom() {
+        return _sharedFrom;
+    }
+
+    public void setSharedFrom(final String _sharedFrom) {
+        this._sharedFrom = _sharedFrom;
     }
     @DynamoDBAttribute(attributeName = "tag")
     public Double getTag() {

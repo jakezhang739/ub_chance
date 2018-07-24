@@ -27,15 +27,15 @@ public class CommentAdapter extends
 {
 
     private LayoutInflater mInflater;
-    private List<chanceClass> cList = new ArrayList<chanceClass>();
+    private List<commentClass> comList = new ArrayList<commentClass>();
     private Context mContext;
 
 
 
-    public CommentAdapter(Context context, List<chanceClass> cc)
+    public CommentAdapter(Context context, List<commentClass> cc)
     {
         this.mInflater = LayoutInflater.from(context);
-        this.cList = cc;
+        this.comList = cc;
         this.mContext = context;
 
 
@@ -51,9 +51,8 @@ public class CommentAdapter extends
             super(arg0);
         }
 
-        ImageView uImg,tagView,moreContent;
-        TextView mTxt,uidTxt,timeTxt,dianzhan,fenxiang,pingjia;
-        GridView mGridview;
+        ImageView cuImg;
+        TextView cmTxt,cuidTxt,ctimeTxt;
 
 
     }
@@ -61,7 +60,7 @@ public class CommentAdapter extends
     @Override
     public int getItemCount()
     {
-        return cList.size();
+        return comList.size();
     }
 
     /**
@@ -70,22 +69,17 @@ public class CommentAdapter extends
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
     {
-        View view = mInflater.inflate(R.layout.item,
+        View view = mInflater.inflate(R.layout.comment,
                 viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
 
-        viewHolder.mTxt=(TextView) view.findViewById(R.id.neirongTxt);
-        viewHolder.uImg=(ImageView) view.findViewById(R.id.touxiangImg);
-        viewHolder.uidTxt=(TextView) view.findViewById(R.id.userNameText);
-        viewHolder.timeTxt=(TextView) view.findViewById(R.id.timeview);
-        viewHolder.tagView=(ImageView) view.findViewById(R.id.tagView);
-        viewHolder.mGridview = (GridView) view.findViewById(R.id.gallery);
-        viewHolder.moreContent = (ImageView) view.findViewById(R.id.gengduo);
-        viewHolder.pingjia = (TextView) view.findViewById(R.id.liuyan);
-        viewHolder.fenxiang = (TextView) view.findViewById(R.id.fenxiang);
-        viewHolder.dianzhan = (TextView) view.findViewById(R.id.dianzhan);
+        viewHolder.cmTxt=(TextView) view.findViewById(R.id.neiText);
+        viewHolder.cuImg=(ImageView) view.findViewById(R.id.cTou);
+        viewHolder.cuidTxt=(TextView) view.findViewById(R.id.cUser);
+        viewHolder.ctimeTxt=(TextView) view.findViewById(R.id.cTime);
 
-        Log.d("gallery adapter","v "+cList.get(0).txtNeirong);
+
+        Log.d("gallery adapter","v "+comList.get(0).cText);
 
 
         return viewHolder;
@@ -98,46 +92,26 @@ public class CommentAdapter extends
     public void onBindViewHolder(final ViewHolder viewHolder, final int i)
     {
 
-        int c = cList.size()-1-i;
-        viewHolder.mTxt.setText(cList.get(c).txtTitle);
+        int c = comList.size()-1-i;
+        if(comList.size()>0) {
+            viewHolder.cmTxt.setText(comList.get(c).cText);
 
-        viewHolder.uidTxt.setText(cList.get(c).userid);
-        String display = displayTime(String.valueOf((long)cList.get(c).uploadTime));
-        viewHolder.timeTxt.setText(display);
-        switch ((int)cList.get(c).tag){
-            case 1:viewHolder.tagView.setImageResource(R.drawable.huodong);break;
-            case 2:viewHolder.tagView.setImageResource(R.drawable.yuema);break;
-            case 3:viewHolder.tagView.setImageResource(R.drawable.remwu); break;
-            case 4:viewHolder.tagView.setImageResource(R.drawable.qita); break;
-        }
-        viewHolder.pingjia.setText(String.valueOf(cList.get(c).cNumber));
-        if(!cList.get(c).touUri.isEmpty()){
-            Picasso.get().load(cList.get(c).touUri).into(viewHolder.uImg);
-        }
-        if(cList.get(c).imageSet.size()!=0){
-            viewHolder.mGridview.setAdapter(new ImageAdapter(mContext,cList.get(c).imageSet));
-        }
-        if(cList.get(c).liked.size()!=0){
-            viewHolder.dianzhan.setText(String.valueOf(cList.get(c).liked.size()));
-        }
-        if(cList.get(c).shared != 0){
-            viewHolder.fenxiang.setText(String.valueOf(cList.get(c).shared));
-        }
+            viewHolder.cuidTxt.setText(comList.get(c).uId);
+            String display = displayTime(comList.get(c).upTime);
+            viewHolder.ctimeTxt.setText(display);
 
-        viewHolder.moreContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),ContentActivity.class);
-                intent.putExtra("cc",cList.get(c));
-                v.getContext().startActivity(intent);
+            if (!comList.get(c).uPic.isEmpty()) {
+                Picasso.get().load(comList.get(c).uPic).into(viewHolder.cuImg);
             }
-        });
+        }
+
+        }
 
 
 
 
 
-    }
+
 
     public String displayTime(String thatTime){
         Date currentTime = Calendar.getInstance().getTime();

@@ -36,7 +36,6 @@ public class HomeFragment extends Fragment {
     private boolean refreshFlag = false;
     private boolean loadmoreFlag = false;
     private List<chanceClass> cList = new ArrayList<chanceClass>();
-    private List<commentClass> comList = new ArrayList<>();
     int tC,temptC;
     RecyclerView mRecyclerView;
     GalleryAdapter mAdapter;
@@ -131,9 +130,8 @@ public class HomeFragment extends Fragment {
 
 
 
-    public void setClass(List<chanceClass> cc, List<commentClass> coList){
+    public void setClass(List<chanceClass> cc){
         this.cList = cc;
-        this.comList = coList;
     }
 
     Runnable pullDownRunnable = new Runnable() {
@@ -144,40 +142,24 @@ public class HomeFragment extends Fragment {
             int totChance = helper.returnChanceeSize(dynamoDBMapper);
 
 
-            int curChance = Integer.parseInt(cList.get(cList.size()-1).cId)+1;
 
-            Log.d("sss11t try222", "come on "+curChance);
+            cList.clear();
 
-            Collections.reverse(cList);
-            if(totChance-curChance>=9){
-                for(int i = curChance;i<=curChance+9;i++){
-                    ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
-                    chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(), chanceWithValueDO.getUsername(), chanceWithValueDO.getTitle(), chanceWithValueDO.getText(), chanceWithValueDO.getId(), chanceWithValueDO.getBonus(), chanceWithValueDO.getReward(), chanceWithValueDO.getTag(), chanceWithValueDO.getTime());
-                    UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class, cc.userid);
-                    if (userPoolDO.getProfilePic() != null) {
-                        cc.settImg(userPoolDO.getProfilePic());
-                    }
-                    cList.add(cc);
-                }
+            if(totChance >= 10){
+                for(int i = totChance;i>=totChance-9;i--){
+                    fragPutIn(i);
 
-            }
-
-            else {
-                for (int i = curChance; i <= totChance; i++) {
-                    ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, String.valueOf(i));
-                    chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(), chanceWithValueDO.getUsername(), chanceWithValueDO.getTitle(), chanceWithValueDO.getText(), chanceWithValueDO.getId(), chanceWithValueDO.getBonus(), chanceWithValueDO.getReward(), chanceWithValueDO.getTag(), chanceWithValueDO.getTime());
-                    UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class, cc.userid);
-                    if (userPoolDO.getProfilePic() != null) {
-                        cc.settImg(userPoolDO.getProfilePic());
-                    }
-                    cList.add(cc);
                 }
             }
-            Collections.reverse(cList);
-            refreshFlag=true;
+            else{
+                for(int i = totChance;i<=1;i--){
+                    fragPutIn(i);
+
+                }
+            }
 
 
-
+            refreshFlag = true;
         }
     };
 
@@ -187,35 +169,53 @@ public class HomeFragment extends Fragment {
 
             Log.d("just try222", "come on "+helper.returnChanceeSize(dynamoDBMapper));
 
-            int curChance = Integer.parseInt(cList.get(0).cId)-1;
+            int curChance = Integer.parseInt(cList.get(cList.size()-1).cId)-1;
 
             Log.d("jus11t try222", "come on "+curChance);
 
-            if(curChance>=9){
-                for(int i=curChance;i>=curChance-9;i--){
-                    ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
-                    chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
-                    UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,cc.userid);
-                    if(userPoolDO.getProfilePic()!=null){
-                        cc.settImg(userPoolDO.getProfilePic());
-                    }
-                    cList.add(cc);
+            if(curChance>=10) {
+                for (int i = curChance; i >= curChance-9; i--) {
+                    fragPutIn(i);
                 }
             }
-
-            for(int i = curChance;i>=1;i--){
-                ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
-                chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
-                UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,cc.userid);
-                if(userPoolDO.getProfilePic()!=null){
-                    cc.settImg(userPoolDO.getProfilePic());
+            else{
+                for(int i = curChance;i>=1;i--){
+                    fragPutIn(i);
                 }
-                cList.add(cc);
             }
             loadmoreFlag=true;
 
 
         }
     };
+
+    public void fragPutIn(int i){
+        Log.d("fragshowstuff", "come on "+String.valueOf(i));
+        ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
+        chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
+        if(chanceWithValueDO.getProfilePicture()!=null){
+            cc.settImg(chanceWithValueDO.getProfilePicture());
+        }
+        if(chanceWithValueDO.getPictures()!=null){
+            cc.setPicture(chanceWithValueDO.getPictures());
+        }
+        if(chanceWithValueDO.getLiked()!=null){
+            cc.setLiked(chanceWithValueDO.getLiked());
+        }
+        if(chanceWithValueDO.getCommentNumber()!=null){
+            int cTotal = chanceWithValueDO.getCommentNumber().intValue();
+            Log.d("showTot",String.valueOf(cTotal));
+            cc.setcNumber(chanceWithValueDO.getCommentNumber());
+            for(int j =0;j<cTotal;j++){
+                CommentTableDO commentTableDO = dynamoDBMapper.load(CommentTableDO.class,chanceWithValueDO.getCommentIdList().get(j));
+                commentClass comC = new commentClass(commentTableDO.getCommentId(),commentTableDO.getUpTime(),commentTableDO.getChanceId(),commentTableDO.getCommentText(),commentTableDO.getUserId());
+                if(commentTableDO.getUserPic()!=null){
+                    comC.setUpic(commentTableDO.getUserPic());
+                }
+                cc.addComList(comC);
+            }
+        }
+        cList.add(cc);
+    }
 
 }

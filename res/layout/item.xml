@@ -24,8 +24,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/touxiangImg"
-                android:layout_width="47dp"
-                android:layout_height="39dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="11dp"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="49dp"
+                android:layout_marginTop="65dp"
                 android:textColor="@color/white"
                 android:text="TextView" />
 
@@ -71,7 +71,8 @@
                 android:id="@+id/timeview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/touxiangImg"
+                android:layout_below="@+id/userNameText"
+                android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/touxiangImg"
                 android:text="TextView" />
 

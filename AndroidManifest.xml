@@ -82,11 +82,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".signUpActivity" />
         </activity>
-        <activity android:name=".ContentActivity"
+        <activity
+            android:name=".ContentActivity"
             android:label="机会">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity"/>
+                android:value=".HomeActivity" />
+        </activity>
+        <activity android:name=".sharingActivity"
+            android:label="转发机会">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
         </activity>
     </application>
 

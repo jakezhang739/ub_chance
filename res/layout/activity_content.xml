@@ -9,7 +9,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollId">
+        android:id="@+id/scrollId"
+        android:layout_above="@+id/bottomBar">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,12 +141,12 @@
             android:background="@color/yellow"
             android:text="Get"
             android:textColor="@color/black" />
-        <FrameLayout
+        <android.support.v7.widget.RecyclerView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/cRecycle"
             android:layout_below="@+id/getBtn">
-        </FrameLayout>
+        </android.support.v7.widget.RecyclerView>
 
     </RelativeLayout>
     </ScrollView>
@@ -164,6 +165,7 @@
             android:id="@+id/pingText"
             android:textColorHint="@color/white"
             android:layout_weight="9"
+            android:textColor="@color/white"
             android:hint="请输入留言"/>
 
         <ImageView

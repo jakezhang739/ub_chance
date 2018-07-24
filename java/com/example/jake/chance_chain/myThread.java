@@ -23,7 +23,6 @@ public class myThread extends Thread {
     BaseActivity baseActivity;
     DynamoDBMapper dynamoDBMapper;
     private List<chanceClass> cList = new ArrayList<chanceClass>();
-    private List<commentClass> comList = new ArrayList<>();
     private List<String> imgList = new ArrayList<>();
     private volatile boolean running=true;
     private HomeFragment fg;
@@ -42,62 +41,15 @@ public class myThread extends Thread {
 
         Log.d("just try222", "come on "+helper.returnChanceeSize(dynamoDBMapper));
 
-        if(totChance > 10){
-            for(int i = totChance-9;i<=totChance-9;i++){
-                ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
-                chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
-                UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,cc.userid);
-                if(userPoolDO.getProfilePic()!=null){
-                    cc.settImg(userPoolDO.getProfilePic());
-                }
-                if(chanceWithValueDO.getPictures()!=null){
-                    cc.setPicture(chanceWithValueDO.getPictures());
-                }
-                if(chanceWithValueDO.getLiked()!=null){
-                    cc.setLiked(chanceWithValueDO.getLiked());
-                }
-                if(chanceWithValueDO.getCommentNumber()!=null){
-                    cc.setcNumber(chanceWithValueDO.getCommentNumber());
-                }
-                if(chanceWithValueDO.getCommentIdList()!=null){
-                    cc.setCid(chanceWithValueDO.getCommentIdList());
-                }
-                cList.add(cc);
-                Log.d("uid121","sd "+totChance);
+        if(totChance >= 10){
+            for(int i = totChance;i>=totChance-9;i--){
+                putStuffin(i);
 
             }
         }
         else{
-            for(int i = 1;i<=totChance;i++){
-                ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
-                chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
-                UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,cc.userid);
-                if(userPoolDO.getProfilePic()!=null){
-                    cc.settImg(userPoolDO.getProfilePic());
-                }
-                if(chanceWithValueDO.getPictures()!=null){
-                    cc.setPicture(chanceWithValueDO.getPictures());
-                }
-                if(chanceWithValueDO.getLiked()!=null){
-                    cc.setLiked(chanceWithValueDO.getLiked());
-                }
-                if(chanceWithValueDO.getCommentNumber()!=null){
-                    int cTotal = chanceWithValueDO.getCommentNumber().intValue();
-                    cc.setcNumber(chanceWithValueDO.getCommentNumber());
-                    for(int j =0;j<cTotal;j++){
-                        CommentTableDO commentTableDO = dynamoDBMapper.load(CommentTableDO.class,chanceWithValueDO.getCommentIdList().get(j));
-                        commentClass comC = new commentClass(commentTableDO.getCommentId(),commentTableDO.getUpTime(),commentTableDO.getChanceId(),commentTableDO.getCommentText(),commentTableDO.getUserId());
-                        if(commentTableDO.getUserPic()!=null){
-                            comC.setUpic(commentTableDO.getUserPic());
-                        }
-                        comList.add(comC);
-                    }
-                }
-                if(chanceWithValueDO.getCommentIdList()!=null){
-                    cc.setCid(chanceWithValueDO.getCommentIdList());
-                }
-                cList.add(cc);
-                Log.d("uid121","sd "+totChance);
+            for(int i = totChance;i>=1;i--){
+                putStuffin(i);
 
             }
         }
@@ -109,13 +61,46 @@ public class myThread extends Thread {
 
 
 
-        baseActivity.setFragment(cList,comList,ft);
+        baseActivity.setFragment(cList,ft);
         Log.d("thread", "fg"+"sd123f");
+
+
         //设置布局管理器
 
         //设置适配器
 
 
+    }
+
+    public void putStuffin(int i){
+        ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(i));
+        chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
+        UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,cc.userid);
+        if(userPoolDO.getProfilePic()!=null){
+            cc.settImg(userPoolDO.getProfilePic());
+            chanceWithValueDO.setProfilePicture(userPoolDO.getProfilePic());
+        }
+        if(chanceWithValueDO.getPictures()!=null){
+            cc.setPicture(chanceWithValueDO.getPictures());
+        }
+        if(chanceWithValueDO.getLiked()!=null){
+            cc.setLiked(chanceWithValueDO.getLiked());
+        }
+        if(chanceWithValueDO.getCommentNumber()!=null){
+            int cTotal = chanceWithValueDO.getCommentNumber().intValue();
+            Log.d("showTot",String.valueOf(cTotal));
+            cc.setcNumber(chanceWithValueDO.getCommentNumber());
+            for(int j =0;j<cTotal;j++){
+                CommentTableDO commentTableDO = dynamoDBMapper.load(CommentTableDO.class,chanceWithValueDO.getCommentIdList().get(j));
+                commentClass comC = new commentClass(commentTableDO.getCommentId(),commentTableDO.getUpTime(),commentTableDO.getChanceId(),commentTableDO.getCommentText(),commentTableDO.getUserId());
+                if(commentTableDO.getUserPic()!=null){
+                    comC.setUpic(commentTableDO.getUserPic());
+                }
+                cc.addComList(comC);
+            }
+        }
+        dynamoDBMapper.save(chanceWithValueDO);
+        cList.add(cc);
     }
 
 }

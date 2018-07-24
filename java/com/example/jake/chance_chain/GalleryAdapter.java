@@ -98,9 +98,9 @@ public class GalleryAdapter extends
     public void onBindViewHolder(final ViewHolder viewHolder, final int i)
     {
 
-        int c = cList.size()-1-i;
+        int c = i;
+        Log.d("showBinding",String.valueOf(c));
         viewHolder.mTxt.setText(cList.get(c).txtTitle);
-
         viewHolder.uidTxt.setText(cList.get(c).userid);
         String display = displayTime(String.valueOf((long)cList.get(c).uploadTime));
         viewHolder.timeTxt.setText(display);

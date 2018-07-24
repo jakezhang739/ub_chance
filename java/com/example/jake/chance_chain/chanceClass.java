@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class chanceClass implements Parcelable {
+public class chanceClass implements Parcelable{
 
     public List<String> imageSet;
     public double bonus;
@@ -20,6 +20,7 @@ public class chanceClass implements Parcelable {
     public String touUri, bType,rType,userid,txtTitle,txtNeirong,cId;
     public List<String> liked;
     public List<String> commentId;
+    public List<commentClass> commentList;
 
 //    public chanceClass(){
 //        this.touUri="";
@@ -49,6 +50,7 @@ public class chanceClass implements Parcelable {
         this.tag = tag;
         this.liked = new ArrayList<>();
         this.commentId = new ArrayList<>();
+        this.commentList=new ArrayList<>();
 
     }
 
@@ -69,6 +71,7 @@ public class chanceClass implements Parcelable {
         cId = in.readString();
         liked = in.createStringArrayList();
         commentId = in.createStringArrayList();
+        commentList = in.createTypedArrayList(commentClass.CREATOR);
     }
 
     @Override
@@ -89,6 +92,7 @@ public class chanceClass implements Parcelable {
         dest.writeString(cId);
         dest.writeStringList(liked);
         dest.writeStringList(commentId);
+        dest.writeTypedList(commentList);
     }
 
     @Override
@@ -120,6 +124,8 @@ public class chanceClass implements Parcelable {
     public void setCid(List<String> cId){this.commentId = cId;}
     public void addLiked(String user){this.liked.add(user);}
     public void deleteLike (String user){ this.liked.remove(user);}
+    public void addComList (commentClass comL){this.commentList.add(comL);}
+    public void addComId (String comId){this.commentId.add(comId);}
 
 
 }
