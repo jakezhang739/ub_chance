@@ -80,8 +80,17 @@ public class myThread extends Thread {
             cc.settImg(userPoolDO.getProfilePic());
             chanceWithValueDO.setProfilePicture(userPoolDO.getProfilePic());
         }
+        if(chanceWithValueDO.getProfilePicture()!=null){
+            cc.settImg(chanceWithValueDO.getProfilePicture());
+        }
         if(chanceWithValueDO.getPictures()!=null){
             cc.setPicture(chanceWithValueDO.getPictures());
+        }
+        if(chanceWithValueDO.getShared()!=null){
+            cc.setShare(chanceWithValueDO.getShared());
+        }
+        if(chanceWithValueDO.getGetList()!=null){
+            cc.setGetList(chanceWithValueDO.getGetList());
         }
         if(chanceWithValueDO.getLiked()!=null){
             cc.setLiked(chanceWithValueDO.getLiked());
@@ -98,6 +107,9 @@ public class myThread extends Thread {
                 }
                 cc.addComList(comC);
             }
+        }
+        if(chanceWithValueDO.getSharedFrom()!=null){
+            cc.setSharfrom(chanceWithValueDO.getSharedFrom());
         }
         dynamoDBMapper.save(chanceWithValueDO);
         cList.add(cc);

@@ -7,6 +7,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRan
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +27,7 @@ public class UserPoolDO {
     private String _cryptoCurrency;
     private String _numofChance;
     private String _profilePic;
+    private List<String> _gottenList=new ArrayList<>();
 
     @DynamoDBHashKey(attributeName = "userId")
     @DynamoDBAttribute(attributeName = "userId")
@@ -115,6 +117,17 @@ public class UserPoolDO {
 
     public void setNumofChance(final String _numofChance) {
         this._numofChance = _numofChance;
+    }
+    @DynamoDBAttribute(attributeName = "gottenList")
+    public List<String> getGottenList() {
+        return _gottenList;
+    }
+
+    public void setGottenList(final List<String> _gottenList) {
+        this._gottenList = _gottenList;
+    }
+    public void addGotten (String gotten){
+        this._gottenList.add(gotten);
     }
     @DynamoDBAttribute(attributeName = "profilePic")
     public String getProfilePic() {

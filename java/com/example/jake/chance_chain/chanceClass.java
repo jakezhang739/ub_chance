@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class chanceClass implements Parcelable{
+public class chanceClass implements Parcelable {
 
     public List<String> imageSet;
     public double bonus;
@@ -21,6 +21,8 @@ public class chanceClass implements Parcelable{
     public List<String> liked;
     public List<String> commentId;
     public List<commentClass> commentList;
+    public List<String> shareLink;
+    public List<String> gottenId;
 
 //    public chanceClass(){
 //        this.touUri="";
@@ -51,6 +53,8 @@ public class chanceClass implements Parcelable{
         this.liked = new ArrayList<>();
         this.commentId = new ArrayList<>();
         this.commentList=new ArrayList<>();
+        this.shareLink = new ArrayList<>();
+        this.gottenId=new ArrayList<>();
 
     }
 
@@ -72,6 +76,8 @@ public class chanceClass implements Parcelable{
         liked = in.createStringArrayList();
         commentId = in.createStringArrayList();
         commentList = in.createTypedArrayList(commentClass.CREATOR);
+        shareLink = in.createStringArrayList();
+        gottenId = in.createStringArrayList();
     }
 
     @Override
@@ -93,6 +99,8 @@ public class chanceClass implements Parcelable{
         dest.writeStringList(liked);
         dest.writeStringList(commentId);
         dest.writeTypedList(commentList);
+        dest.writeStringList(shareLink);
+        dest.writeStringList(gottenId);
     }
 
     @Override
@@ -126,6 +134,8 @@ public class chanceClass implements Parcelable{
     public void deleteLike (String user){ this.liked.remove(user);}
     public void addComList (commentClass comL){this.commentList.add(comL);}
     public void addComId (String comId){this.commentId.add(comId);}
+    public void setSharfrom (List<String> shareLink){this.shareLink=shareLink;}
+    public void setGetList (List<String> getList){this.gottenId=getList;}
 
 
 }

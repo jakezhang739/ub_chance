@@ -89,12 +89,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity" />
         </activity>
-        <activity android:name=".sharingActivity"
-            android:label="转发机会">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
-        </activity>
+        <activity android:name=".sharingActivity" />
+        <activity android:name=".fsizepic"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>

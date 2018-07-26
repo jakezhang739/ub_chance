@@ -51,13 +51,34 @@
             android:layout_below="@+id/contentTou"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
+            android:text="lk"
             />
+
+        <TextView
+            android:id="@+id/jiaoyijingTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/contentNei"
+            android:text="TextView"
+            android:textColor="@color/yellow"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/zhuijiajin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/jiaoyijingTxt"
+            android:text="TextView"
+            android:textColor="@color/yellow"
+            android:textSize="20sp" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/imgLayout"
             android:orientation="vertical"
-            android:layout_below="@id/contentNei">
+            android:layout_below="@id/zhuijiajin">
 
         </LinearLayout>
         <TextView
@@ -147,6 +168,20 @@
             android:id="@+id/cRecycle"
             android:layout_below="@+id/getBtn">
         </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/huodeJihui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/spacing1"
+            android:background="@color/yellow"
+            android:gravity="center"
+            android:text="您已获得该机会"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:visibility="invisible"/>
+
 
     </RelativeLayout>
     </ScrollView>

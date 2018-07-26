@@ -25,4 +25,8 @@
     <color name="transyellow">#80ffd978</color>
     <color name="trans">#80ffffff</color>
     <color name="homeback">#313849</color>
+    <color name="ziyanse">#996e30</color>
+    <color name="xiaoziyanse">#d2a463</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

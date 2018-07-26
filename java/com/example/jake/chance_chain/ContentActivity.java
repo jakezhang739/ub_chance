@@ -9,12 +9,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.text.format.DateFormat;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,7 +42,7 @@ public class ContentActivity extends AppCompatActivity {
     private chanceClass chanceC;
     DynamoDBMapper dynamoDBMapper;
     ImageView touImg,likeImg;
-    TextView uName,uTime,nText,zhuanfaTxt,pingjiaTxt,likeTxt,zhuanNum,comNum,zhanNum;
+    TextView uName,uTime,nText,zhuanNum,comNum,zhanNum,jiaoTxt,zhuitxt;
     List<ImageView> imgList = new ArrayList<>();
     List<String> strList = new ArrayList<>();
     List<commentClass> comClass = new ArrayList<>();
@@ -46,9 +53,12 @@ public class ContentActivity extends AppCompatActivity {
     String liuText;
     Context context;
     String curUsername;
+    String bonusValue,tradeValue,tradeType;
     RecyclerView mRecyclerView;
     CommentAdapter mAdapter;
     LinearLayoutManager linearLayoutManager;
+    Button getButton;
+    PopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +72,17 @@ public class ContentActivity extends AppCompatActivity {
         shareNum = chanceC.shared;
         liuNum = chanceC.cNumber;
         likeNum = chanceC.liked.size();
+        bonusValue = String.valueOf(chanceC.bonus);
+        tradeValue = String.valueOf(chanceC.reward);
+        tradeType = String.valueOf(chanceC.rType);
+        jiaoTxt = (TextView) findViewById(R.id.jiaoyijingTxt);
+        zhuitxt = (TextView) findViewById(R.id.zhuijiajin);
+        jiaoTxt.setText("交易金额： "+tradeValue+tradeType);
+        zhuitxt.setText("奖励金额： "+bonusValue+" cc");
         touImg = (ImageView) findViewById(R.id.contentTou);
         uName = (TextView) findViewById(R.id.contentUid);
         uTime = (TextView) findViewById(R.id.contentTime);
         nText = (TextView) findViewById(R.id.contentNei);
-        zhuanfaTxt = (TextView) findViewById(R.id.zhuanBar);
-        pingjiaTxt = (TextView) findViewById(R.id.pinBar);
-        likeTxt = (TextView) findViewById(R.id.zanBar);
         likeImg = (ImageView) findViewById(R.id.zanSpic);
         zhuanNum = (TextView) findViewById(R.id.zhuanfaNum);
         comNum = (TextView) findViewById(R.id.pingNum);
@@ -105,9 +119,6 @@ public class ContentActivity extends AppCompatActivity {
 
         ImageView dianPic = (ImageView) findViewById(R.id.zanSpic);
 
-        zhuanfaTxt.setText(String.valueOf(shareNum));
-        pingjiaTxt.setText(String.valueOf(liuNum));
-        likeTxt.setText(String.valueOf(likeNum));
         zhuanNum.setText(String.valueOf(shareNum));
         comNum.setText(String.valueOf(liuNum));
         zhanNum.setText(String.valueOf(likeNum));
@@ -131,6 +142,7 @@ public class ContentActivity extends AppCompatActivity {
             public void onClick(View v) {
                 new Thread(shareThread).start();
                 Intent intent = new Intent(ContentActivity.this,sharingActivity.class);
+                intent.putExtra("link",chanceC);
                 startActivity(intent);
             }
         });
@@ -153,7 +165,6 @@ public class ContentActivity extends AppCompatActivity {
                     likeImg.setBackgroundColor(getColor(R.color.colorPrimaryDark));
                     chanceC.deleteLike(curUsername);
                     likeNum--;
-                    likeTxt.setText(String.valueOf(likeNum));
                     zhanNum.setText(String.valueOf(likeNum));
 
                 }
@@ -161,7 +172,6 @@ public class ContentActivity extends AppCompatActivity {
                     likeImg.setBackgroundColor(getColor(R.color.yellow));
                     chanceC.addLiked(curUsername);
                     likeNum++;
-                    likeTxt.setText(String.valueOf(likeNum));
                     zhanNum.setText(String.valueOf(likeNum));
                 }
                 new Thread(likeThread).start();
@@ -176,25 +186,79 @@ public class ContentActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 liuText = shuruFa.getText().toString();
+                chanceC.cNumber++;
+                comNum.setText(String.valueOf(chanceC.cNumber));
                 new Thread(liuThread).start();
+                comLayout.setVisibility(View.INVISIBLE);
             }
         });
 
+        getButton = (Button) findViewById(R.id.getBtn);
+        popupWindow = new PopupWindow(this);
+        popupWindow.setWidth(RelativeLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setHeight(RelativeLayout.LayoutParams.WRAP_CONTENT);
+        popupWindow.setContentView(LayoutInflater.from(this).inflate(R.layout.popupwindow,null));
+        View rootview = LayoutInflater.from(ContentActivity.this).inflate(R.layout.activity_content, null);
+        TextView showText = (TextView) findViewById(R.id.huodeJihui);
+
+        if(chanceC.gottenId.contains(curUsername)){
+            getButton.setVisibility(View.INVISIBLE);
+            showText.setVisibility(View.VISIBLE);
+        }
+        else {
+            getButton.setVisibility(View.VISIBLE);
+            showText.setVisibility(View.INVISIBLE);
+        }
+
+
+        getButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(getRunnable).start();
+                popupWindow.showAtLocation(rootview, Gravity.CENTER_VERTICAL,0,0);
+                getButton.setVisibility(View.INVISIBLE);
+                showText.setVisibility(View.VISIBLE);
+
+            }
+        });
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
+        popupWindow.setTouchable(true);
+
+
+
+
+
     }
+
+    public void popupdismiss(View v){
+        popupWindow.dismiss();
+    }
+
+    Runnable getRunnable = new Runnable() {
+        @Override
+        public void run() {
+            ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,chanceC.cId);
+            UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,curUsername);
+            chanceWithValueDO.addGetList(curUsername);
+            userPoolDO.addGotten(chanceC.cId);
+            dynamoDBMapper.save(userPoolDO);
+            dynamoDBMapper.save(chanceWithValueDO);
+
+        }
+    };
 
 
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             if(msg.what==1){
-                zhuanfaTxt.setText(msg.obj.toString());
                 zhanNum.setText(msg.obj.toString());
             }
             else if(msg.what==2){
                 chanceClass cClass = (chanceClass) msg.getData().getParcelable("chance");
                 mAdapter= new CommentAdapter(context,cClass.commentList);
                 mRecyclerView.setAdapter(mAdapter);
-                pingjiaTxt.setText(String.valueOf(cClass.commentList.size()));
                 comNum.setText(String.valueOf(liuNum));
 
             }
@@ -222,6 +286,7 @@ public class ContentActivity extends AppCompatActivity {
             msg.what=1;
             msg.obj=cS;
             handler.sendMessage(msg);
+            dynamoDBMapper.save(cc);
 
         }
     };
@@ -268,6 +333,7 @@ public class ContentActivity extends AppCompatActivity {
                 commentId.add(String.valueOf(comId));
                 cc.setCommentIdList(commentId);
             }
+            Log.d("show comid ",String.valueOf(commentTableDO.getCommentId())+" "+String.valueOf(cc.getCommentNumber()));
             dynamoDBMapper.save(commentTableDO);
             dynamoDBMapper.save(cc);
             msg.what=2;

@@ -7,6 +7,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRan
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,15 +18,16 @@ public class ChanceWithValueDO {
     private String _id;
     private Double _bonus;
     private String _bonusType;
-    private List<String> _commentIdList;
+    private List<String> _commentIdList=new ArrayList<>();
     private Double _commentNumber;
-    private List<String> _liked;
-    private List<String> _pictures;
+    private List<String> _liked=new ArrayList<>();
+    private List<String> _getList=new ArrayList<>();
+    private List<String> _pictures=new ArrayList<>();
     private String _profilePicture;
     private Double _reward;
     private String _rewardType;
     private Double _shared;
-    private String _sharedFrom;
+    private List<String> _sharedFrom=new ArrayList<>();
     private Double _tag;
     private String _text;
     private Double _time;
@@ -65,7 +67,9 @@ public class ChanceWithValueDO {
     public void setCommentIdList(final List<String> _commentIdList) {
         this._commentIdList = _commentIdList;
     }
-    public void addCommentId(String cId){this._commentIdList.add(cId);}
+    public void addCommentId(String cid){
+        this._commentIdList.add(cid);
+    }
     @DynamoDBAttribute(attributeName = "commentNumber")
     public Double getCommentNumber() {
         return _commentNumber;
@@ -73,6 +77,17 @@ public class ChanceWithValueDO {
 
     public void setCommentNumber(final Double _commentNumber) {
         this._commentNumber = _commentNumber;
+    }
+    @DynamoDBAttribute(attributeName = "getList")
+    public List<String> getGetList() {
+        return _getList;
+    }
+
+    public void setGetList(final List<String> _getList) {
+        this._getList = _getList;
+    }
+    public void addGetList(final String getId){
+        this._getList.add(getId);
     }
     @DynamoDBAttribute(attributeName = "liked")
     public List<String> getLiked() {
@@ -82,8 +97,12 @@ public class ChanceWithValueDO {
     public void setLiked(final List<String> _liked) {
         this._liked = _liked;
     }
-    public void deleteLike(String usr){ this._liked.remove(usr);}
-    public void addLike(String usr){this._liked.add(usr);}
+    public void addLike(String like){
+        this._liked.add(like);
+    }
+    public void deleteLike(String like){
+        this._liked.remove(like);
+    }
     @DynamoDBAttribute(attributeName = "pictures")
     public List<String> getPictures() {
         return _pictures;
@@ -125,11 +144,11 @@ public class ChanceWithValueDO {
         this._shared = _shared;
     }
     @DynamoDBAttribute(attributeName = "sharedFrom")
-    public String getSharedFrom() {
+    public List<String> getSharedFrom() {
         return _sharedFrom;
     }
 
-    public void setSharedFrom(final String _sharedFrom) {
+    public void setSharedFrom(final List<String> _sharedFrom) {
         this._sharedFrom = _sharedFrom;
     }
     @DynamoDBAttribute(attributeName = "tag")

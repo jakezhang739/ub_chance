@@ -152,7 +152,7 @@ public class HomeFragment extends Fragment {
                 }
             }
             else{
-                for(int i = totChance;i<=1;i--){
+                for(int i = totChance;i>=1;i--){
                     fragPutIn(i);
 
                 }
@@ -199,6 +199,9 @@ public class HomeFragment extends Fragment {
         if(chanceWithValueDO.getPictures()!=null){
             cc.setPicture(chanceWithValueDO.getPictures());
         }
+        if(chanceWithValueDO.getShared()!=null){
+            cc.setShare(chanceWithValueDO.getShared());
+        }
         if(chanceWithValueDO.getLiked()!=null){
             cc.setLiked(chanceWithValueDO.getLiked());
         }
@@ -214,6 +217,9 @@ public class HomeFragment extends Fragment {
                 }
                 cc.addComList(comC);
             }
+        }
+        if(chanceWithValueDO.getSharedFrom()!=null){
+            cc.setSharfrom(chanceWithValueDO.getSharedFrom());
         }
         cList.add(cc);
     }

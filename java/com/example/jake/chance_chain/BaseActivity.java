@@ -418,28 +418,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
 
 
-    public void setChance(String value,String chance,String num,String totNum){
-//        final UserChanceDO userC = new UserChanceDO();
-//        final PostsDO postsDO = new PostsDO();
-//        postsDO.setPostId(totNum);
-//        postsDO.setUsername(helper.getCurrentUserName(context));
-//        postsDO.setText(value);
-//
-//        userC.setNumid(num);
-//        userC.setUserid(uId);
-//        userC.setValue(value);
-//        userC.setChanceid(chance);
-//        Log.d("chanceid","cc"+chance);
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                dynamoDBMapper.save(userC);
-//                dynamoDBMapper.save(postsDO);
-//                // Item saved
-//            }
-//        }).start();
 
-    }
 
     Handler pHandler = new Handler(){
       @Override

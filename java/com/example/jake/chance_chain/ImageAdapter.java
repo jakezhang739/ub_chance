@@ -1,6 +1,10 @@
 package com.example.jake.chance_chain;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,6 +14,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
@@ -46,8 +52,16 @@ public class ImageAdapter extends BaseAdapter {
         }
 
         Picasso.get().load(imgStr.get(position)).into(imageView);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent()
+
+            }
+        });
         return imageView;
     }
+
 
     // references to our images
 }

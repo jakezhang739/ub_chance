@@ -6,6 +6,10 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -15,9 +19,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -29,6 +36,9 @@ public class GalleryAdapter extends
     private LayoutInflater mInflater;
     private List<chanceClass> cList = new ArrayList<chanceClass>();
     private Context mContext;
+    private String cid;
+    private DynamoDBMapper dynamoDBMapper;
+    private AppHelper helper = new AppHelper();
 
 
 
@@ -37,6 +47,8 @@ public class GalleryAdapter extends
         this.mInflater = LayoutInflater.from(context);
         this.cList = cc;
         this.mContext = context;
+        this.cid = "";
+        this.dynamoDBMapper = helper.getMapper(context);
 
 
     }
@@ -51,11 +63,20 @@ public class GalleryAdapter extends
             super(arg0);
         }
 
-        ImageView uImg,tagView,moreContent;
-        TextView mTxt,uidTxt,timeTxt,dianzhan,fenxiang,pingjia;
+        ImageView uImg,tagView,moreContent,fent;
+        TextView mTxt,uidTxt,timeTxt,dianzhan,fenxiang,pingjia,fenTitle,fenUsr;
         GridView mGridview;
+        RelativeLayout link;
+        ProgressBar loading;
 
 
+    }
+
+
+
+    @Override
+    public int getItemViewType(int position){
+        return position ;
     }
 
     @Override
@@ -70,22 +91,42 @@ public class GalleryAdapter extends
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i)
     {
-        View view = mInflater.inflate(R.layout.item,
-                viewGroup, false);
-        ViewHolder viewHolder = new ViewHolder(view);
+        View view;
+        ViewHolder viewHolder;
+        if(cList.get(i).shareLink.size()==0) {
+            view = mInflater.inflate(R.layout.item,
+                    viewGroup, false);
+            viewHolder = new ViewHolder(view);
+            viewHolder.mTxt=(TextView) view.findViewById(R.id.neirongTxt);
+            viewHolder.uImg=(ImageView) view.findViewById(R.id.touxiangImg);
+            viewHolder.uidTxt=(TextView) view.findViewById(R.id.userNameText);
+            viewHolder.timeTxt=(TextView) view.findViewById(R.id.timeview);
+            viewHolder.tagView=(ImageView) view.findViewById(R.id.tagView);
+            viewHolder.mGridview = (GridView) view.findViewById(R.id.gallery);
+            viewHolder.moreContent = (ImageView) view.findViewById(R.id.gengduo);
+            viewHolder.pingjia = (TextView) view.findViewById(R.id.liuyan);
+            viewHolder.fenxiang = (TextView) view.findViewById(R.id.fenxiang);
+            viewHolder.dianzhan = (TextView) view.findViewById(R.id.dianzhan);
 
-        viewHolder.mTxt=(TextView) view.findViewById(R.id.neirongTxt);
-        viewHolder.uImg=(ImageView) view.findViewById(R.id.touxiangImg);
-        viewHolder.uidTxt=(TextView) view.findViewById(R.id.userNameText);
-        viewHolder.timeTxt=(TextView) view.findViewById(R.id.timeview);
-        viewHolder.tagView=(ImageView) view.findViewById(R.id.tagView);
-        viewHolder.mGridview = (GridView) view.findViewById(R.id.gallery);
-        viewHolder.moreContent = (ImageView) view.findViewById(R.id.gengduo);
-        viewHolder.pingjia = (TextView) view.findViewById(R.id.liuyan);
-        viewHolder.fenxiang = (TextView) view.findViewById(R.id.fenxiang);
-        viewHolder.dianzhan = (TextView) view.findViewById(R.id.dianzhan);
-
-        Log.d("gallery adapter","v "+cList.get(0).txtNeirong);
+            Log.d("gallery adapter","v "+String.valueOf(i));
+        }
+        else {
+            view = mInflater.inflate(R.layout.sharingitem,
+                    viewGroup, false);
+            viewHolder = new ViewHolder(view);
+            viewHolder.mTxt=(TextView) view.findViewById(R.id.sneirongTxt);
+            viewHolder.uImg=(ImageView) view.findViewById(R.id.stouxiangImg);
+            viewHolder.uidTxt=(TextView) view.findViewById(R.id.suserNameText);
+            viewHolder.timeTxt=(TextView) view.findViewById(R.id.stimeview);
+            viewHolder.fent = (ImageView) view.findViewById(R.id.fenTou);
+            viewHolder.fenTitle = (TextView) view.findViewById(R.id.titleTxt);
+            viewHolder.fenUsr = (TextView) view.findViewById(R.id.UserNameAt);
+            viewHolder.pingjia = (TextView) view.findViewById(R.id.liuyan);
+            viewHolder.fenxiang = (TextView) view.findViewById(R.id.fenxiang);
+            viewHolder.dianzhan = (TextView) view.findViewById(R.id.dianzhan);
+            viewHolder.link = (RelativeLayout) view.findViewById(R.id.shareLink);
+            viewHolder.loading = (ProgressBar) view.findViewById(R.id.waitingbar);
+        }
 
 
         return viewHolder;
@@ -98,46 +139,149 @@ public class GalleryAdapter extends
     public void onBindViewHolder(final ViewHolder viewHolder, final int i)
     {
 
-        int c = i;
-        Log.d("showBinding",String.valueOf(c));
-        viewHolder.mTxt.setText(cList.get(c).txtTitle);
-        viewHolder.uidTxt.setText(cList.get(c).userid);
-        String display = displayTime(String.valueOf((long)cList.get(c).uploadTime));
-        viewHolder.timeTxt.setText(display);
-        switch ((int)cList.get(c).tag){
-            case 1:viewHolder.tagView.setImageResource(R.drawable.huodong);break;
-            case 2:viewHolder.tagView.setImageResource(R.drawable.yuema);break;
-            case 3:viewHolder.tagView.setImageResource(R.drawable.remwu); break;
-            case 4:viewHolder.tagView.setImageResource(R.drawable.qita); break;
-        }
-        viewHolder.pingjia.setText(String.valueOf(cList.get(c).cNumber));
-        if(!cList.get(c).touUri.isEmpty()){
-            Picasso.get().load(cList.get(c).touUri).into(viewHolder.uImg);
-        }
-        if(cList.get(c).imageSet.size()!=0){
-        viewHolder.mGridview.setAdapter(new ImageAdapter(mContext,cList.get(c).imageSet));
-        }
-        if(cList.get(c).liked.size()!=0){
-            viewHolder.dianzhan.setText(String.valueOf(cList.get(c).liked.size()));
-        }
-        if(cList.get(c).shared != 0){
-            viewHolder.fenxiang.setText(String.valueOf(cList.get(c).shared));
-        }
-
-        viewHolder.moreContent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(),ContentActivity.class);
-                intent.putExtra("cc",cList.get(c));
-                v.getContext().startActivity(intent);
+        if(cList.get(i).shareLink.size()==0) {
+            viewHolder.mTxt.setText(cList.get(i).txtTitle);
+            viewHolder.uidTxt.setText(cList.get(i).userid);
+            String display = displayTime(String.valueOf((long) cList.get(i).uploadTime));
+            viewHolder.timeTxt.setText(display);
+            switch ((int) cList.get(i).tag) {
+                case 1:
+                    viewHolder.tagView.setImageResource(R.drawable.huodong);
+                    break;
+                case 2:
+                    viewHolder.tagView.setImageResource(R.drawable.yuema);
+                    break;
+                case 3:
+                    viewHolder.tagView.setImageResource(R.drawable.remwu);
+                    break;
+                case 4:
+                    viewHolder.tagView.setImageResource(R.drawable.qita);
+                    break;
             }
-        });
+            viewHolder.pingjia.setText(String.valueOf(cList.get(i).cNumber));
+            if (!cList.get(i).touUri.isEmpty()) {
+                Picasso.get().load(cList.get(i).touUri).into(viewHolder.uImg);
+            }
+            if (cList.get(i).imageSet.size() != 0) {
+                ImageAdapter imageAdapter = new ImageAdapter(mContext,cList.get(i).imageSet);
+                int adprow = cList.get(i).imageSet.size()/4;;
+                if(cList.get(i).imageSet.size()%4>0){
+                    adprow++;
+                }
+                ViewGroup.LayoutParams params = viewHolder.mGridview.getLayoutParams();
+                params.height=250*adprow;
+                viewHolder.mGridview.setLayoutParams(params);
+                viewHolder.mGridview.setAdapter(imageAdapter);
+            }
+            if (cList.get(i).liked.size() != 0) {
+                viewHolder.dianzhan.setText(String.valueOf(cList.get(i).liked.size()));
+            }
+            if (cList.get(i).shared != 0) {
+                viewHolder.fenxiang.setText(String.valueOf(cList.get(i).shared));
+            }
 
+            viewHolder.moreContent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ContentActivity.class);
+                    intent.putExtra("cc", cList.get(i));
+                    v.getContext().startActivity(intent);
+                }
+            });
 
+        }
+        else{
+            viewHolder.mTxt.setText(cList.get(i).txtTitle);
+            viewHolder.uidTxt.setText(cList.get(i).userid);
+            String display = displayTime(String.valueOf((long) cList.get(i).uploadTime));
+            viewHolder.timeTxt.setText(display);
+            viewHolder.pingjia.setText(String.valueOf(cList.get(i).cNumber));
+            if (cList.get(i).liked.size() != 0) {
+                viewHolder.dianzhan.setText(String.valueOf(cList.get(i).liked.size()));
+            }
+            if (cList.get(i).shared != 0) {
+                Log.d("i need this",String.valueOf(cList.get(i).shared));
+                viewHolder.fenxiang.setText(String.valueOf(cList.get(i).shared));
+            }
+            if (!cList.get(i).touUri.isEmpty()) {
+                Picasso.get().load(cList.get(i).touUri).into(viewHolder.uImg);
+            }
+            if(cList.get(i).shareLink.size()==4){
+                Picasso.get().load(cList.get(i).shareLink.get(3)).into(viewHolder.fent);
+            }
+            viewHolder.fenUsr.setText(cList.get(i).shareLink.get(1));
+            viewHolder.fenTitle.setText(cList.get(i).shareLink.get(2));
+            viewHolder.link.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cid = cList.get(i).shareLink.get(0);
+                    viewHolder.loading.setVisibility(View.VISIBLE);
+                    new Thread(shareLink).start();
+                }
+            });
+        }
 
 
 
     }
+
+    Handler mHandler = new Handler(){
+      @Override
+      public void handleMessage(Message msg) {
+      if(msg.what==1){
+          Intent intent = new Intent(mContext,ContentActivity.class);
+          chanceClass cc = (chanceClass) msg.getData().getParcelable("share");
+          intent.putExtra("cc",cc);
+          mContext.startActivity(intent);
+      }
+      }
+
+    };
+
+    Runnable shareLink = new Runnable() {
+        @Override
+        public void run() {
+            ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,String.valueOf(cid));
+            chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getBonus(),chanceWithValueDO.getReward(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime());
+            UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,cc.userid);
+            if(userPoolDO.getProfilePic()!=null){
+                cc.settImg(userPoolDO.getProfilePic());
+                chanceWithValueDO.setProfilePicture(userPoolDO.getProfilePic());
+            }
+            if(chanceWithValueDO.getProfilePicture()!=null){
+                cc.settImg(chanceWithValueDO.getProfilePicture());
+            }
+            if(chanceWithValueDO.getPictures()!=null){
+                cc.setPicture(chanceWithValueDO.getPictures());
+            }
+            if(chanceWithValueDO.getLiked()!=null){
+                cc.setLiked(chanceWithValueDO.getLiked());
+            }
+            if(chanceWithValueDO.getCommentNumber()!=null){
+                int cTotal = chanceWithValueDO.getCommentNumber().intValue();
+                Log.d("showTot",String.valueOf(cTotal));
+                cc.setcNumber(chanceWithValueDO.getCommentNumber());
+                for(int j =0;j<cTotal;j++){
+                    CommentTableDO commentTableDO = dynamoDBMapper.load(CommentTableDO.class,chanceWithValueDO.getCommentIdList().get(j));
+                    commentClass comC = new commentClass(commentTableDO.getCommentId(),commentTableDO.getUpTime(),commentTableDO.getChanceId(),commentTableDO.getCommentText(),commentTableDO.getUserId());
+                    if(commentTableDO.getUserPic()!=null){
+                        comC.setUpic(commentTableDO.getUserPic());
+                    }
+                    cc.addComList(comC);
+                }
+            }
+            if(chanceWithValueDO.getSharedFrom()!=null){
+                cc.setSharfrom(chanceWithValueDO.getSharedFrom());
+            }
+            dynamoDBMapper.save(chanceWithValueDO);
+            Message msg = new Message();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("share",cc);
+            msg.setData(bundle);
+            msg.what = 1;
+            mHandler.sendMessage(msg);
+        }
+    };
 
     public String displayTime(String thatTime){
         Date currentTime = Calendar.getInstance().getTime();
