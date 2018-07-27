@@ -55,7 +55,11 @@ public class ImageAdapter extends BaseAdapter {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent()
+                Intent intent = new Intent(v.getContext(),fsizepic.class);
+                ArrayList<String> uriList = new ArrayList<>(imgStr);
+                intent.putStringArrayListExtra("uri",uriList);
+                intent.putExtra("pos",position);
+                v.getContext().startActivity(intent);
 
             }
         });
