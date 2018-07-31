@@ -41,6 +41,7 @@ import android.widget.Button;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -158,18 +159,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
         if(getContentViewId()==R.layout.activity_my) {
 
-            tImage = (ImageView) findViewById(R.id.touImage);
-            Button clickButton = (Button) findViewById(R.id.logoutBtn);
-            Button infButton = (Button) findViewById(R.id.informationBtn);
+            tImage = (ImageView) findViewById(R.id.wodetouxiang);
+            RelativeLayout infButton = (RelativeLayout) findViewById(R.id.shezhi);
             new Thread(proPic).start();
-            clickButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    IdentityManager.getDefaultIdentityManager().signOut();
-                    Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }
-            });
 
             infButton.setOnClickListener(new View.OnClickListener() {
 
@@ -180,7 +172,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 }
             });
 
-            TextView userTxt = (TextView) findViewById(R.id.userName);
+            TextView userTxt = (TextView) findViewById(R.id.wodeUser);
             userTxt.setText(AppHelper.getCurrentUserName(context));
             us = AppHelper.getCurrentUserName(context);
             Log.d("username","www"+us);
