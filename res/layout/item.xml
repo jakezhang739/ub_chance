@@ -29,6 +29,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="11dp"
+                android:clickable="true"
                 android:src="@drawable/sp" />
 
             <TextView

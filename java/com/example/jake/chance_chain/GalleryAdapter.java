@@ -10,6 +10,7 @@ import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -68,6 +69,7 @@ public class GalleryAdapter extends
         GridView mGridview;
         RelativeLayout link;
         ProgressBar loading;
+        CardView cardView;
 
 
     }
@@ -104,6 +106,7 @@ public class GalleryAdapter extends
             viewHolder.tagView=(ImageView) view.findViewById(R.id.tagView);
             viewHolder.mGridview = (GridView) view.findViewById(R.id.gallery);
             viewHolder.moreContent = (ImageView) view.findViewById(R.id.gengduo);
+            viewHolder.cardView = (CardView) view.findViewById(R.id.card_view);
             viewHolder.pingjia = (TextView) view.findViewById(R.id.liuyan);
             viewHolder.fenxiang = (TextView) view.findViewById(R.id.fenxiang);
             viewHolder.dianzhan = (TextView) view.findViewById(R.id.dianzhan);
@@ -180,11 +183,19 @@ public class GalleryAdapter extends
                 viewHolder.fenxiang.setText(String.valueOf(cList.get(i).shared));
             }
 
-            viewHolder.moreContent.setOnClickListener(new View.OnClickListener() {
+            viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), ContentActivity.class);
                     intent.putExtra("cc", cList.get(i));
+                    v.getContext().startActivity(intent);
+                }
+            });
+            viewHolder.uImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(),HisActivity.class);
+                    intent.putExtra("userName",cList.get(i).userid);
                     v.getContext().startActivity(intent);
                 }
             });
@@ -211,6 +222,14 @@ public class GalleryAdapter extends
             }
             viewHolder.fenUsr.setText(cList.get(i).shareLink.get(1));
             viewHolder.fenTitle.setText(cList.get(i).shareLink.get(2));
+            viewHolder.uImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(),HisActivity.class);
+                    intent.putExtra("userName",cList.get(i).userid);
+                    v.getContext().startActivity(intent);
+                }
+            });
             viewHolder.link.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

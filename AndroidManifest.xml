@@ -34,7 +34,7 @@
             android:label="@string/title_activity_information">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MyActivity" />
+                android:value=".settingActivity" />
         </activity>
         <activity
             android:name=".changeInformationActivity"
@@ -90,8 +90,24 @@
                 android:value=".HomeActivity" />
         </activity>
         <activity android:name=".sharingActivity" />
-        <activity android:name=".fsizepic"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".fsizepic"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".settingActivity"
+            android:label="设置">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyActivity" />
+        </activity>
+        <activity
+            android:name=".MessageActivity"
+            android:label="我的消息">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MyActivity" />
+        </activity>
+        <activity android:name=".HisActivity"></activity>
     </application>
 
 </manifest>
