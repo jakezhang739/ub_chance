@@ -34,7 +34,7 @@ public class hisThread extends Thread {
             totChance=0;
         }
         else{
-            totChance=userPoolDO.getChanceIdList().size();
+            totChance=userPoolDO.getChanceIdList().size()-1;
         }
         Log.d("just try222", "come on "+helper.returnChanceeSize(dynamoDBMapper));
 
@@ -59,6 +59,8 @@ public class hisThread extends Thread {
 
 
         Log.d("thread", "fg"+"sd123f");
+
+        hisActivity.setHistFragment(cList,ft);
 
 
         //设置布局管理器
@@ -110,4 +112,6 @@ public class hisThread extends Thread {
         dynamoDBMapper.save(chanceWithValueDO);
         cList.add(cc);
     }
+
+
 }

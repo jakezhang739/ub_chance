@@ -170,6 +170,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                     startActivity(intentInf);
                 }
             });
+            IdentityManager.getDefaultIdentityManager().signOut();
 
             TextView userTxt = (TextView) findViewById(R.id.wodeUser);
             userTxt.setText(AppHelper.getCurrentUserName(context));
@@ -713,7 +714,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
         fragment.setClass(cc);
         fragmentTransaction.replace(R.id.fragmentHome,fragment);
-        ft.commit();
+        ft.commitAllowingStateLoss();
     }
 
     abstract int getContentViewId();

@@ -205,10 +205,10 @@ public class HomeFragment extends Fragment {
         if(chanceWithValueDO.getLiked()!=null){
             cc.setLiked(chanceWithValueDO.getLiked());
         }
-        if(chanceWithValueDO.getCommentNumber()!=null){
-            int cTotal = chanceWithValueDO.getCommentNumber().intValue();
+        if(chanceWithValueDO.getCommentIdList()!=null){
+            int cTotal = chanceWithValueDO.getCommentIdList().size();
             Log.d("showTot",String.valueOf(cTotal));
-            cc.setcNumber(chanceWithValueDO.getCommentNumber());
+            cc.setcNumber((double) chanceWithValueDO.getCommentIdList().size());
             for(int j =0;j<cTotal;j++){
                 CommentTableDO commentTableDO = dynamoDBMapper.load(CommentTableDO.class,chanceWithValueDO.getCommentIdList().get(j));
                 commentClass comC = new commentClass(commentTableDO.getCommentId(),commentTableDO.getUpTime(),commentTableDO.getChanceId(),commentTableDO.getCommentText(),commentTableDO.getUserId());
