@@ -168,20 +168,24 @@ public class HomeFragment extends Fragment {
         public void run() {
 
             Log.d("just try222", "come on "+helper.returnChanceeSize(dynamoDBMapper));
+            if(cList.size()!=0) {
 
-            int curChance = Integer.parseInt(cList.get(cList.size()-1).cId)-1;
+                int curChance = Integer.parseInt(cList.get(cList.size() - 1).cId) - 1;
 
-            Log.d("jus11t try222", "come on "+curChance);
+                Log.d("jus11t try222", "come on " + curChance);
 
-            if(curChance>=10) {
-                for (int i = curChance; i >= curChance-9; i--) {
-                    fragPutIn(i);
+                if (curChance >= 10) {
+                    for (int i = curChance; i >= curChance - 9; i--) {
+                        fragPutIn(i);
+                    }
+                } else {
+                    for (int i = curChance; i >= 1; i--) {
+                        fragPutIn(i);
+                    }
                 }
             }
             else{
-                for(int i = curChance;i>=1;i--){
-                    fragPutIn(i);
-                }
+
             }
             loadmoreFlag=true;
 

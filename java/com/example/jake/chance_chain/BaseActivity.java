@@ -390,6 +390,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             ActionBar actionBar = getSupportActionBar();
             actionBar.setDisplayShowCustomEnabled(true);
             actionBar.setCustomView(R.layout.actionbar);
+            ImageView xiaoxi = (ImageView) actionBar.getCustomView().findViewById(R.id.xiaoxi);
+            xiaoxi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(BaseActivity.this,MessageActivity.class);
+                    startActivity(intent);
+                }
+            });
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
             myThread mThread = new myThread(this,dynamoDBMapper,fragmentTransaction,fragment);
             mThread.start();

@@ -27,6 +27,9 @@
     <color name="homeback">#313849</color>
     <color name="ziyanse">#996e30</color>
     <color name="xiaoziyanse">#d2a463</color>
-
+    <color name="messageBack">#ececec</color>
+    <color name="tiancong">#bfbfbf</color>
+    <color name="liaotian">#f9f9f9</color>
+    <color name="woliaotian">#40a3ff</color>
     <color name="black_overlay">#66000000</color>
 </resources>
