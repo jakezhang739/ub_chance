@@ -149,6 +149,7 @@ public class chattingActivity extends AppCompatActivity {
             Date currentTime = Calendar.getInstance().getTime();
             String dateString = DateFormat.format("yyyyMMddHHmmss", new Date(currentTime.getTime())).toString();
             chattingTableDO.setTime(dateString);
+            chattingTableDO.setReadFlag("unRead");
             mapper.save(chattingTableDO);
             Message msg = new Message();
             msg.what = 3;
@@ -196,6 +197,8 @@ public class chattingActivity extends AppCompatActivity {
                             msg.what=2;
                             msg.obj=wholeList.get(i);
                             addHandler.sendMessage(msg);
+                            wholeList.get(i).setReadFlag("Read");
+                            mapper.save(wholeList.get(i));
                         }
 
                     }
@@ -209,59 +212,56 @@ public class chattingActivity extends AppCompatActivity {
                     }
 
             while (true) {
-                int sendTemp,recTemp;
-                try {
-                    Thread.sleep(1000);
-                    sendExpression = new DynamoDBQueryExpression().withIndexName("FindSender").withConsistentRead(false).withHashKeyValues(sender);
-                    recExpression = new DynamoDBQueryExpression().withIndexName("FindReceiver").withConsistentRead(false).withHashKeyValues(receiver);
-                    List<ChattingTableDO> sendListTemp = mapper.query(ChattingTableDO.class,sendExpression);
-                    List<ChattingTableDO> recListTemp = mapper.query(ChattingTableDO.class,recExpression);
-                    sendTemp = sendListTemp.size();
-                    recTemp = recListTemp.size();
-                    Log.d("send,sendtemp,rec,rectemp ",String.valueOf(sendSize)+","+String.valueOf(sendTemp)+","+String.valueOf(recSize)+","+String.valueOf(recTemp));
-                    int total = sendTemp + recTemp;
-                    if(total>sendSize+recSize) {
-                        sendSize=sendTemp;
-                        recSize = recTemp;
-                        Log.d("send,sendtemp,rec,rectemp11",String.valueOf(sendSize)+","+String.valueOf(sendTemp)+","+String.valueOf(recSize)+","+String.valueOf(recTemp));
-                        Message msg = new Message();
-                        msg.what = 5;
-                        List<ChattingTableDO> wholeListTemp = new ArrayList<>();
-                        wholeListTemp.addAll(sendListTemp);
-                        wholeListTemp.addAll(recListTemp);
-                        wholeListTemp.removeAll(wholeList);
-                        Collections.sort(wholeListTemp, new Comparator<ChattingTableDO>() {
-                            @Override
-                            public int compare(ChattingTableDO o1, ChattingTableDO o2) {
-                                return o1.getChatId() > o2.getChatId() ? 1 : o1.getChatId() == o2.getChatId() ? 0 : -1;
-                            }
-                        });
-                        for(int i=0;i<wholeListTemp.size();i++){
-                            Log.d("sendername ",wholeList.get(i).getSender());
-                            if(wholeListTemp.get(i).getSender().equals(myUsr)){
-                                Message msgTemp = new Message();
-                                msgTemp.what=5;
-                                msgTemp.obj=wholeListTemp.get(i);
-                                addHandler.sendMessage(msgTemp);
-                            }
-                            else {
-                                Message msgTemp = new Message();
-                                msgTemp.what=6;
-                                msgTemp.obj=wholeListTemp.get(i);
-                                addHandler.sendMessage(msgTemp);
-                            }
-
-                        }
-
-
-                    }
-                    else{
-
-                    }
-                } catch (Exception e) {
-                    Log.d("error ", e.toString());
-
-                }
+//                int sendTemp,recTemp;
+//                try {
+//                    Thread.sleep(1000);
+//                    sendExpression = new DynamoDBQueryExpression().withIndexName("FindSender").withConsistentRead(false).withHashKeyValues(sender);
+//                    recExpression = new DynamoDBQueryExpression().withIndexName("FindReceiver").withConsistentRead(false).withHashKeyValues(receiver);
+//                    List<ChattingTableDO> sendListTemp = mapper.query(ChattingTableDO.class,sendExpression);
+//                    List<ChattingTableDO> recListTemp = mapper.query(ChattingTableDO.class,recExpression);
+//                    sendTemp = sendListTemp.size();
+//                    recTemp = recListTemp.size();
+//                    Log.d("send,sendtemp,rec,rectemp ",String.valueOf(sendSize)+","+String.valueOf(sendTemp)+","+String.valueOf(recSize)+","+String.valueOf(recTemp));
+//                    int total = sendTemp + recTemp;
+//                    if(total>sendSize+recSize) {
+//                        Log.d("send,sendtemp,rec,rectemp11",String.valueOf(sendSize)+","+String.valueOf(sendTemp)+","+String.valueOf(recSize)+","+String.valueOf(recTemp));
+//                        List<ChattingTableDO> wholeListTemp = new ArrayList<>();
+//                        wholeListTemp.addAll(sendListTemp);
+//                        wholeListTemp.addAll(recListTemp);
+//                        Collections.sort(wholeListTemp, new Comparator<ChattingTableDO>() {
+//                            @Override
+//                            public int compare(ChattingTableDO o1, ChattingTableDO o2) {
+//                                return o1.getChatId() > o2.getChatId() ? 1 : o1.getChatId() == o2.getChatId() ? 0 : -1;
+//                            }
+//                        });
+//                        for(int i=sendSize+recSize;i<wholeListTemp.size();i++){
+//                          //  Log.d("sendername ",wholeList.get(i).getSender());
+//                            if(wholeListTemp.get(i).getSender().equals(myUsr)){
+//                                Message msgTemp = new Message();
+//                                msgTemp.what=5;
+//                                msgTemp.obj=wholeListTemp.get(i);
+//                                addHandler.sendMessage(msgTemp);
+//                            }
+//                            else {
+//                                Message msgTemp = new Message();
+//                                msgTemp.what=6;
+//                                msgTemp.obj=wholeListTemp.get(i);
+//                                addHandler.sendMessage(msgTemp);
+//                            }
+//
+//                        }
+//                        sendSize=sendTemp;
+//                        recSize = recTemp;
+//
+//
+//                    }
+//                    else{
+//
+//                    }
+//                } catch (Exception e) {
+//                    Log.d("error ", e.toString());
+//
+//                }
             }
 
         }

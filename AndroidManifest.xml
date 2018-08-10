@@ -114,7 +114,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity" />
         </activity>
-        <activity android:name=".chattingActivity"></activity>
+        <activity android:name=".chattingActivity" />
+        <activity android:name=".liuyan"></activity>
     </application>
 
 </manifest>
