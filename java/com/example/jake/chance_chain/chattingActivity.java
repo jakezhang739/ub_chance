@@ -26,6 +26,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBQueryExp
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedList;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.QueryRequest;
 import com.squareup.picasso.Picasso;
@@ -149,7 +150,22 @@ public class chattingActivity extends AppCompatActivity {
             Date currentTime = Calendar.getInstance().getTime();
             String dateString = DateFormat.format("yyyyMMddHHmmss", new Date(currentTime.getTime())).toString();
             chattingTableDO.setTime(dateString);
-            chattingTableDO.setReadFlag("unRead");
+            double unReadnum = 0;
+            try{
+                NotificationTableDO notificationTableDO = mapper.load(NotificationTableDO.class,userId,myUsr);
+               unReadnum = notificationTableDO.getUnReadNum() + 1;
+               notificationTableDO.setUnReadNum(unReadnum);
+               mapper.save(notificationTableDO);
+
+            }catch (Exception e){
+                Log.d("no such table", e.toString());
+                final NotificationTableDO notificationTableDO = new NotificationTableDO();
+                notificationTableDO.setReceiver(userId);
+                notificationTableDO.setSender(myUsr);
+                notificationTableDO.setUnReadNum(unReadnum);
+                mapper.save(notificationTableDO);
+
+            }
             mapper.save(chattingTableDO);
             Message msg = new Message();
             msg.what = 3;
@@ -166,8 +182,10 @@ public class chattingActivity extends AppCompatActivity {
                     ChattingTableDO sender = new ChattingTableDO();
                     sender.setSender(myUsr);
                     receiver.setReceiver(myUsr);
-                    DynamoDBQueryExpression sendExpression = new DynamoDBQueryExpression().withIndexName("FindSender").withConsistentRead(false).withHashKeyValues(sender);
-                    DynamoDBQueryExpression recExpression = new DynamoDBQueryExpression().withIndexName("FindReceiver").withConsistentRead(false).withHashKeyValues(receiver);
+                    Condition scondition = new Condition().withComparisonOperator(ComparisonOperator.EQ).withAttributeValueList(new AttributeValue().withS(myUsr));
+                    Condition rcondition = new Condition().withComparisonOperator(ComparisonOperator.EQ).withAttributeValueList(new AttributeValue().withS(userId));
+                    DynamoDBQueryExpression sendExpression = new DynamoDBQueryExpression().withIndexName("FindSender").withRangeKeyCondition("Receiver",rcondition).withConsistentRead(false).withHashKeyValues(sender);
+                    DynamoDBQueryExpression recExpression = new DynamoDBQueryExpression().withIndexName("FindReceiver").withConsistentRead(false).withRangeKeyCondition("Sender",scondition).withHashKeyValues(receiver);
                     List<ChattingTableDO> sendList = mapper.query(ChattingTableDO.class,sendExpression);
                     List<ChattingTableDO> recList = mapper.query(ChattingTableDO.class,recExpression);
                     sendSize = sendList.size();
@@ -197,7 +215,6 @@ public class chattingActivity extends AppCompatActivity {
                             msg.what=2;
                             msg.obj=wholeList.get(i);
                             addHandler.sendMessage(msg);
-                            wholeList.get(i).setReadFlag("Read");
                             mapper.save(wholeList.get(i));
                         }
 

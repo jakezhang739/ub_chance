@@ -1,6 +1,5 @@
 package com.example.jake.chance_chain;
 
-
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexHashKey;
@@ -17,7 +16,6 @@ import java.util.Set;
 public class ChattingTableDO {
     private Double _chatId;
     private String _pictures;
-    private String _readFlag;
     private String _receiver;
     private String _sender;
     private String _text;
@@ -40,14 +38,6 @@ public class ChattingTableDO {
     public void setPictures(final String _pictures) {
         this._pictures = _pictures;
     }
-    @DynamoDBIndexRangeKey(attributeName = "ReadFlag", globalSecondaryIndexName = "FindReceiver")
-    public String getReadFlag() {
-        return _readFlag;
-    }
-
-    public void setReadFlag(final String _readFlag) {
-        this._readFlag = _readFlag;
-    }
     @DynamoDBIndexHashKey(attributeName = "Receiver", globalSecondaryIndexName = "FindReceiver")
     @DynamoDBIndexRangeKey(attributeName = "Receiver", globalSecondaryIndexName = "FindSender")
     public String getReceiver() {
@@ -58,6 +48,7 @@ public class ChattingTableDO {
         this._receiver = _receiver;
     }
     @DynamoDBIndexHashKey(attributeName = "Sender", globalSecondaryIndexName = "FindSender")
+    @DynamoDBIndexRangeKey(attributeName = "Sender", globalSecondaryIndexName = "FindReceiver")
     public String getSender() {
         return _sender;
     }
