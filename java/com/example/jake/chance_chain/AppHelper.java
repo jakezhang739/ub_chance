@@ -20,6 +20,7 @@ import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserAttribu
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserDetails;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserPool;
 import com.amazonaws.mobileconnectors.cognitoidentityprovider.CognitoUserSession;
+import com.amazonaws.mobileconnectors.cognitoidentityprovider.handlers.GenericHandler;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBScanExpression;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedList;
@@ -74,6 +75,7 @@ public class AppHelper {
                     userPoolId,
                     cognitoRegion);
         }
+
         return sCredProvider;
     }
 
@@ -87,11 +89,14 @@ public class AppHelper {
         if (appHelper == null) {
             appHelper = new AppHelper();
         }
+
             userPool = new CognitoUserPool(context, userPoolId, clientId, clientSecret, cognitoRegion);
             user = userPool.getCurrentUser();
             return user.getUserId();
 
     }
+
+
 
     public static CognitoUserPool getCurrentUserPool(Context context) {
 
@@ -228,6 +233,8 @@ public class AppHelper {
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
+
+
 
 
 

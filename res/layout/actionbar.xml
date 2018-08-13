@@ -31,4 +31,17 @@
         android:layout_gravity="center_vertical"
         android:src="@drawable/name" />
 
+    <TextView
+        android:id="@+id/alert2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/xiaoxi"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:background="@drawable/redcircle"
+        android:visibility="invisible"
+        />
+
 </RelativeLayout>

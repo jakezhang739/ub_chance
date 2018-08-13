@@ -20,6 +20,7 @@ public class ChattingTableDO {
     private String _sender;
     private String _text;
     private String _time;
+    private String _unReadNum;
 
     @DynamoDBHashKey(attributeName = "ChatId")
     @DynamoDBAttribute(attributeName = "ChatId")
@@ -48,7 +49,6 @@ public class ChattingTableDO {
         this._receiver = _receiver;
     }
     @DynamoDBIndexHashKey(attributeName = "Sender", globalSecondaryIndexName = "FindSender")
-    @DynamoDBIndexRangeKey(attributeName = "Sender", globalSecondaryIndexName = "FindReceiver")
     public String getSender() {
         return _sender;
     }
@@ -71,6 +71,14 @@ public class ChattingTableDO {
 
     public void setTime(final String _time) {
         this._time = _time;
+    }
+    @DynamoDBIndexRangeKey(attributeName = "unReadNum", globalSecondaryIndexName = "FindReceiver")
+    public String getUnReadNum() {
+        return _unReadNum;
+    }
+
+    public void setUnReadNum(final String _unReadNum) {
+        this._unReadNum = _unReadNum;
     }
 
 }

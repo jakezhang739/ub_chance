@@ -34,4 +34,5 @@
     <color name="tccolor">#f0f0f0</color>
     <color name="xiaozi">#7a7a7a</color>
     <color name="black_overlay">#66000000</color>
+    <color name="timetext">#898989</color>
 </resources>

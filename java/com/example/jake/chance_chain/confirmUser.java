@@ -1,5 +1,6 @@
 package com.example.jake.chance_chain;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,8 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+
 public class confirmUser extends AppCompatActivity implements AWSLoginHandler{
     AWSLoginModel awsLoginModel;
+    String userid,email;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +23,9 @@ public class confirmUser extends AppCompatActivity implements AWSLoginHandler{
         setContentView(R.layout.activity_confirm_user);
         awsLoginModel = new AWSLoginModel(this, this);
         Button confUser = (Button) findViewById(R.id.button2);
+        userid=getIntent().getStringExtra("username");
+        email = getIntent().getStringExtra("email");
+        context = getApplicationContext().getApplicationContext();
         confUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,9 +43,22 @@ public class confirmUser extends AppCompatActivity implements AWSLoginHandler{
     public void onRegisterConfirmed() {
         Toast.makeText(confirmUser.this, "认证成功", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(confirmUser.this, LoginActivity.class);
+        new Thread(CreateNewUser).start();
         startActivity(intent);
 
     }
+
+    Runnable CreateNewUser = new Runnable() {
+        @Override
+        public void run() {
+            AppHelper helper = new AppHelper();
+            DynamoDBMapper mapper = helper.getMapper(context);
+            final UserPoolDO userPoolDO = new UserPoolDO();
+            userPoolDO.setUserId(userid);
+            userPoolDO.setMyEmail(email);
+            mapper.save(userPoolDO);
+        }
+    };
 
     @Override
     public void onSignInSuccess() {

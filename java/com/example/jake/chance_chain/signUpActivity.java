@@ -12,6 +12,7 @@ import android.widget.Toast;
 public class signUpActivity extends AppCompatActivity implements AWSLoginHandler {
     private Button finishBtn;
     AWSLoginModel awsLoginModel;
+    EditText username,Email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,11 +20,11 @@ public class signUpActivity extends AppCompatActivity implements AWSLoginHandler
         setContentView(R.layout.activity_sign_up);
         awsLoginModel = new AWSLoginModel(this, this);
         finishBtn = (Button) findViewById(R.id.signUp);
-        EditText username = (EditText) findViewById(R.id.editTextRegUserId);
+        username = (EditText) findViewById(R.id.editTextRegUserId);
         EditText pass = (EditText) findViewById(R.id.editTextRegUserPassword);
         EditText rePass = (EditText) findViewById(R.id.editTextRegGivenName);
         EditText phone = (EditText) findViewById(R.id.editTextRegPhone);
-        EditText Email = (EditText) findViewById(R.id.editTextRegEmail);
+        Email = (EditText) findViewById(R.id.editTextRegEmail);
         finishBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,6 +47,8 @@ public class signUpActivity extends AppCompatActivity implements AWSLoginHandler
     public void onRegisterSuccess(boolean mustConfirmToComplete) {
 
         Intent intent = new Intent(signUpActivity.this, confirmUser.class);
+        intent.putExtra("username",username.getText().toString());
+        intent.putExtra("email",Email.getText().toString());
         startActivity(intent);
 
     }

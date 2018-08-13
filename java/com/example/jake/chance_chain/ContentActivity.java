@@ -27,6 +27,7 @@ import android.widget.TextView;
 
 import com.amazonaws.http.HttpMethodName;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBQueryExpression;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBScanExpression;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedList;
 import com.squareup.picasso.Picasso;
@@ -241,12 +242,13 @@ public class ContentActivity extends AppCompatActivity {
             ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,chanceC.cId);
             UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,curUsername);
             chanceWithValueDO.addGetList(curUsername);
-            userPoolDO.addGotten(chanceC.cId);
+            //userPoolDO.addGotten(chanceC.cId);
             dynamoDBMapper.save(userPoolDO);
             dynamoDBMapper.save(chanceWithValueDO);
 
         }
     };
+
 
 
     private Handler handler = new Handler(){

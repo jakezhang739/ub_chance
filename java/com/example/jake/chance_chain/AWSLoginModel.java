@@ -269,5 +269,6 @@ public class AWSLoginModel {
         SharedPreferences savedValues = context.getSharedPreferences(SHARED_PREFERENCE, Context.MODE_PRIVATE);
         return savedValues.getString(PREFERENCE_USER_EMAIL, "");
     }
+
 }
 
