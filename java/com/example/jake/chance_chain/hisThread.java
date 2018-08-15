@@ -14,11 +14,11 @@ public class hisThread extends Thread {
     private List<chanceClass> cList = new ArrayList<chanceClass>();
     private List<String> imgList = new ArrayList<>();
     private volatile boolean running=true;
-    private HomeFragment fg;
+    private HisFragment fg;
     private String userName;
     private FragmentTransaction ft;
     AppHelper helper = new AppHelper();
-    public hisThread(HisActivity hisActivity, DynamoDBMapper dynamoDBMapper, FragmentTransaction fragt, HomeFragment fragment, String uid) {
+    public hisThread(HisActivity hisActivity, DynamoDBMapper dynamoDBMapper, FragmentTransaction fragt, HisFragment fragment, String uid) {
         this.hisActivity = hisActivity;
         this.dynamoDBMapper=dynamoDBMapper;
         this.ft = fragt;
@@ -36,6 +36,7 @@ public class hisThread extends Thread {
         else{
             totChance=userPoolDO.getChanceIdList().size()-1;
         }
+        Log.d("thread", "fg"+String.valueOf(totChance));
         Log.d("just try222", "come on "+helper.returnChanceeSize(dynamoDBMapper));
 
         if(totChance >= 10){
@@ -45,12 +46,11 @@ public class hisThread extends Thread {
             }
         }
         else{
-            for(int i = totChance;i>=1;i--){
+            for(int i = totChance;i>=0;i--){
                 putStuffin(userPoolDO.getChanceIdList().get(i));
 
             }
         }
-        Log.d("thread", "fg"+"sdf11");
         ;
 
 

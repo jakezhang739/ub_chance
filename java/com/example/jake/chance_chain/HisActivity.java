@@ -25,7 +25,7 @@ public class HisActivity extends AppCompatActivity {
     private AppHelper helper = new AppHelper();
     private Context context;
     private String userName;
-    private HomeFragment fragment = new HomeFragment();
+    private HisFragment fragment = new HisFragment();
     private TextView usernameText,userResume,guanzhu,beiguanzhu,fabu,shenText;
     private ImageView userPic;
 
@@ -163,7 +163,7 @@ public class HisActivity extends AppCompatActivity {
     public void setHistFragment(List<chanceClass> cc, FragmentTransaction ft){
 
         fragment.setClass(cc);
-        fragmentTransaction.replace(R.id.fragmentHome,fragment);
+        fragmentTransaction.replace(R.id.fragmentHis,fragment);
         ft.commitAllowingStateLoss();
     }
 

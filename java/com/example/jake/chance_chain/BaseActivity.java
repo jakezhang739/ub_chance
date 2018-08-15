@@ -563,6 +563,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         public void run() {
             int cSize = helper.returnChanceeSize(dynamoDBMapper)+1;
             final ChanceWithValueDO chanceWithValueDO = new ChanceWithValueDO();
+            final UserPoolDO userPoolDO = new UserPoolDO();
             List<String> pictureSet = new ArrayList<>();
             for(int i=0;i<uriList.size();i++){
                 try {
@@ -599,6 +600,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             if(pictureSet.size()!=0) {
                 chanceWithValueDO.setPictures(pictureSet);
             }
+            List<String> idList;
+            if(userPoolDO.getChanceIdList()==null){
+                idList=new ArrayList<>();
+            }
+            else{
+                idList = userPoolDO.getChanceIdList();
+            }
+            idList.add(String.valueOf(cSize));
+            userPoolDO.setChanceIdList(idList);
             chanceWithValueDO.setUsername(username);
             chanceWithValueDO.setId(String.valueOf(cSize));
             chanceWithValueDO.setReward(Double.parseDouble(txtReward));
@@ -612,6 +622,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             String dateString = DateFormat.format("yyyyMMddHHmmss", new Date(currentTime.getTime())).toString();
             chanceWithValueDO.setTime(Double.parseDouble(dateString));
             dynamoDBMapper.save(chanceWithValueDO);
+            dynamoDBMapper.save(userPoolDO);
 
         }
     };
@@ -817,6 +828,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     abstract int getContentViewId();
 
     abstract int getNavigationMenuItemId();
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+    }
 
 
 }

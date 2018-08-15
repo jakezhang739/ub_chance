@@ -230,6 +230,8 @@ public class ContentActivity extends AppCompatActivity {
 
 
 
+
+
     }
 
     public void popupdismiss(View v){
@@ -241,7 +243,22 @@ public class ContentActivity extends AppCompatActivity {
         public void run() {
             ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,chanceC.cId);
             UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,curUsername);
-            chanceWithValueDO.addGetList(curUsername);
+            List<String> cGetList,uGetList;
+            if(chanceWithValueDO.getGetList()!=null){
+                cGetList= chanceWithValueDO.getGetList();}
+            else{
+                cGetList = new ArrayList<>();
+                }
+            if(userPoolDO.getGottenList()!=null){
+                uGetList = userPoolDO.getGottenList();
+            }
+            else {
+                uGetList=new ArrayList<>();
+            }
+            cGetList.add(curUsername);
+            uGetList.add(chanceC.cId);
+            chanceWithValueDO.setGetList(cGetList);
+            userPoolDO.setGottenList(uGetList);
             //userPoolDO.addGotten(chanceC.cId);
             dynamoDBMapper.save(userPoolDO);
             dynamoDBMapper.save(chanceWithValueDO);

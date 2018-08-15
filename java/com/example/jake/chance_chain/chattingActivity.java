@@ -57,6 +57,7 @@ public class chattingActivity extends AppCompatActivity {
     TextView tianconglan;
     ProgressBar progressBar;
     Boolean exit = true;
+    ScrollView s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,15 +81,16 @@ public class chattingActivity extends AppCompatActivity {
         tianconglan = (TextView) findViewById(R.id.tianc);
         Thread receiveThread = new Thread(ReceiverListener);
         receiveThread.start();
+        s = (ScrollView) findViewById(R.id.liaozhuti);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 exit=false;
                 finish();
 
-
             }
         });
+
         addText = (ImageView) findViewById(R.id.fasongxiao);
         addText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,6 +127,8 @@ public class chattingActivity extends AppCompatActivity {
         if (!getMsg.isEmpty()) {
             myMsg.setText(getMsg);
             beijing.addView(layout1);
+            s.fullScroll(View.FOCUS_DOWN);
+
         }
 
         Log.d("beijing", String.valueOf(beijing.getChildCount()) + Picasso.get().load("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + "sd" + ".png"));
@@ -135,6 +139,7 @@ public class chattingActivity extends AppCompatActivity {
         TextView myMsg = (TextView) layout1.findViewById(R.id.timetag);
             myMsg.setText(displayTime(time));
             beijing.addView(layout1);
+        s.fullScroll(View.FOCUS_DOWN);
 
         Log.d("beijing", String.valueOf(beijing.getChildCount()) + Picasso.get().load("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + "sd" + ".png"));
     }
@@ -147,6 +152,7 @@ public class chattingActivity extends AppCompatActivity {
         if (!getMsg.isEmpty()) {
             myMsg.setText(getMsg);
             beijing.addView(layout1);
+            s.fullScroll(View.FOCUS_DOWN);
         }
 
         Log.d("beijing", String.valueOf(beijing.getChildCount()) + Picasso.get().load("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + "sd" + ".png"));
@@ -355,6 +361,7 @@ public class chattingActivity extends AppCompatActivity {
                             mapper.save(userChatDO);
                         }
             }
+            s.fullScroll(View.FOCUS_DOWN);
             while (exit){
 
              try{

@@ -40,6 +40,7 @@ public class GalleryAdapter extends
     private String cid;
     private DynamoDBMapper dynamoDBMapper;
     private AppHelper helper = new AppHelper();
+    private String myUser;
 
 
 
@@ -50,6 +51,7 @@ public class GalleryAdapter extends
         this.mContext = context;
         this.cid = "";
         this.dynamoDBMapper = helper.getMapper(context);
+        this.myUser = helper.getCurrentUserName(context);
 
 
     }
@@ -186,17 +188,25 @@ public class GalleryAdapter extends
             viewHolder.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), ContentActivity.class);
-                    intent.putExtra("cc", cList.get(i));
-                    v.getContext().startActivity(intent);
+                        Intent intent = new Intent(v.getContext(), ContentActivity.class);
+                        intent.putExtra("cc", cList.get(i));
+                        v.getContext().startActivity(intent);
+
                 }
             });
             viewHolder.uImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(),HisActivity.class);
-                    intent.putExtra("userName",cList.get(i).userid);
-                    v.getContext().startActivity(intent);
+                    Log.d("clistid user",cList.get(i).userid+myUser);
+                    if (!cList.get(i).userid.equals(myUser)) {
+                        Intent intent = new Intent(v.getContext(), HisActivity.class);
+                        intent.putExtra("userName", cList.get(i).userid);
+                        v.getContext().startActivity(intent);
+                    }
+                    else {
+                        Intent intent = new Intent(v.getContext(),MyActivity.class);
+                        v.getContext().startActivity(intent);
+                    }
                 }
             });
 
@@ -225,14 +235,23 @@ public class GalleryAdapter extends
             viewHolder.uImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(),HisActivity.class);
-                    intent.putExtra("userName",cList.get(i).userid);
-                    v.getContext().startActivity(intent);
+                    Log.d("clistid user",cList.get(i).userid+myUser);
+                    if (!cList.get(i).userid.equals(myUser)) {
+                        Intent intent = new Intent(v.getContext(), HisActivity.class);
+                        intent.putExtra("userName", cList.get(i).userid);
+                        v.getContext().startActivity(intent);
+                    }
+                    else{
+                        Intent intent = new Intent(v.getContext(),MyActivity.class);
+                        v.getContext().startActivity(intent);
+                    }
                 }
             });
+
             viewHolder.link.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.d("clistid user",cList.get(i).userid+myUser);
                     cid = cList.get(i).shareLink.get(0);
                     viewHolder.loading.setVisibility(View.VISIBLE);
                     new Thread(shareLink).start();
