@@ -36,12 +36,13 @@ public class HisFragment extends Fragment {
     private boolean refreshFlag = false;
     private boolean loadmoreFlag = false;
     private List<chanceClass> cList = new ArrayList<chanceClass>();
-    int tC,temptC;
+    Boolean nomoreFlag = false;
     RecyclerView mRecyclerView;
     GalleryAdapter mAdapter;
     LinearLayoutManager linearLayoutManager;
     int uploadOffset=-1;
     int tempOffset=-1;
+    String userName;
     AppHelper helper = new AppHelper();
     static {
         ClassicsHeader.REFRESH_HEADER_PULLING = "下拉可以刷新";
@@ -116,7 +117,7 @@ public class HisFragment extends Fragment {
                 while(!loadmoreFlag){
 
                 }
-                if(tC<=10){
+                if(nomoreFlag){
 
                     refreshLayout.finishLoadMore(500,loadmoreFlag,true);
                 }
@@ -130,14 +131,14 @@ public class HisFragment extends Fragment {
 
 
 
-    public void setClass(List<chanceClass> cc){
+    public void setClass(List<chanceClass> cc, String user){
         this.cList = cc;
+        this.userName = user;
     }
 
     Runnable pullDownRunnable = new Runnable() {
         @Override
         public void run() {
-            String userName = helper.getCurrentUserName(getContext());
             UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,userName);
             int totChance;
             if(userPoolDO.getChanceIdList()==null){
@@ -151,13 +152,13 @@ public class HisFragment extends Fragment {
 
             if(totChance >= 10){
                 for(int i = totChance;i>=totChance-9;i--){
-                    fragPutIn(i);
+                    fragPutIn(Integer.parseInt(userPoolDO.getChanceIdList().get(i)));
 
                 }
             }
             else{
                 for(int i = totChance;i>=0;i--){
-                    fragPutIn(i);
+                    fragPutIn(Integer.parseInt(userPoolDO.getChanceIdList().get(i)));
 
                 }
             }
@@ -170,36 +171,21 @@ public class HisFragment extends Fragment {
     Runnable pullUpLoad = new Runnable() {
         @Override
         public void run() {
-            String userName = helper.getCurrentUserName(getContext());
             UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,userName);
-            int totChance;
-            if(userPoolDO.getChanceIdList()==null){
-                totChance=0;
+            int i = userPoolDO.getChanceIdList().indexOf(cList.get(cList.size()-1).cId)-1;
+            Log.d("hisfrag",String.valueOf(i));
+            if(i<0){
+                nomoreFlag=true;
             }
-            else{
-                totChance=userPoolDO.getChanceIdList().size()-1;
-            }
-
-            Log.d("just try222", "come on "+helper.returnChanceeSize(dynamoDBMapper));
-            if(cList.size()!=0) {
-
-                int curChance = Integer.parseInt(cList.get(cList.size() - 1).cId) - 1;
-
-                Log.d("jus11t try222", "come on " + curChance);
-
-                if (curChance >= 10) {
-                    for (int i = curChance; i >= curChance - 9; i--) {
-                        fragPutIn(i);
-                    }
-                } else {
-                    for (int i = curChance; i >= 1; i--) {
-                        fragPutIn(i);
-                    }
+            int tempi = i;
+            while(i>=0){
+                if(tempi-1>=10){
+                    break;
                 }
+                fragPutIn(Integer.parseInt(userPoolDO.getChanceIdList().get(i)));
+                i--;
             }
-            else{
 
-            }
             loadmoreFlag=true;
 
 

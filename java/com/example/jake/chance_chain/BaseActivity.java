@@ -194,7 +194,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             beiGuanText = (TextView) findViewById(R.id.beiGuanNum);
             faText = (TextView) findViewById(R.id.woFabuNum);
             alert1 = (TextView) findViewById(R.id.alert1);
+            ImageView wodeQianbao = (ImageView) findViewById(R.id.woQian);
             ImageView wodeXiaoxi = (ImageView) findViewById(R.id.woXiao);
+            wodeQianbao.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(BaseActivity.this,myWallet.class);
+                    startActivity(intent);
+                }
+            });
             wodeXiaoxi.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -526,7 +534,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             else {
                 Message msg =new Message();
                 msg.what=4;
-                msg.obj=userPoolDO.getGuanZhu();
+                msg.obj=userPoolDO.getGuanZhu().size();
                 pHandler.sendMessage(msg);
             }
             if(userPoolDO.getBeiGuanZhu()==null){
@@ -538,7 +546,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             else {
                 Message msg =new Message();
                 msg.what=5;
-                msg.obj=userPoolDO.getBeiGuanZhu();
+                msg.obj=userPoolDO.getBeiGuanZhu().size();
                 pHandler.sendMessage(msg);
             }
             if(userPoolDO.getChanceIdList()==null){

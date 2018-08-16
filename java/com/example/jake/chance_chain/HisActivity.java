@@ -162,7 +162,7 @@ public class HisActivity extends AppCompatActivity {
 
     public void setHistFragment(List<chanceClass> cc, FragmentTransaction ft){
 
-        fragment.setClass(cc);
+        fragment.setClass(cc,userName);
         fragmentTransaction.replace(R.id.fragmentHis,fragment);
         ft.commitAllowingStateLoss();
     }

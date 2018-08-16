@@ -24,8 +24,8 @@ public class UserPoolDO {
     private String _resume;
     private String _walletAddress;
     private List<String> _beiGuanZhu;
-    private String _candyCurrency;
-    private String _cryptoCurrency;
+    private Double _candyCurrency=0.0;
+    private Double _cryptoCurrency=0.0;
     private List<String> _gottenList;
     private List<String> _guanZhu;
     private String _myEmail;
@@ -115,19 +115,19 @@ public class UserPoolDO {
         this._beiGuanZhu = _beiGuanZhu;
     }
     @DynamoDBAttribute(attributeName = "candyCurrency")
-    public String getCandyCurrency() {
+    public Double getCandyCurrency() {
         return _candyCurrency;
     }
 
-    public void setCandyCurrency(final String _candyCurrency) {
+    public void setCandyCurrency(final Double _candyCurrency) {
         this._candyCurrency = _candyCurrency;
     }
     @DynamoDBAttribute(attributeName = "cryptoCurrency")
-    public String getCryptoCurrency() {
+    public Double getCryptoCurrency() {
         return _cryptoCurrency;
     }
 
-    public void setCryptoCurrency(final String _cryptoCurrency) {
+    public void setCryptoCurrency(final Double _cryptoCurrency) {
         this._cryptoCurrency = _cryptoCurrency;
     }
     @DynamoDBAttribute(attributeName = "gottenList")

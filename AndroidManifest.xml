@@ -100,8 +100,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MyActivity" />
         </activity>
-        <activity
-            android:name=".MessageActivity"/>
+        <activity android:name=".MessageActivity" />
         <activity
             android:name=".HisActivity"
             android:label="他的主页">
@@ -110,7 +109,9 @@
                 android:value=".HomeActivity" />
         </activity>
         <activity android:name=".chattingActivity" />
-        <activity android:name=".liuyan"></activity>
+        <activity android:name=".liuyan" />
+        <activity android:name=".myWallet" />
+        <activity android:name=".fabuActivity"></activity>
     </application>
 
 </manifest>
