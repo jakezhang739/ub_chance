@@ -109,8 +109,8 @@ public class chattingActivity extends AppCompatActivity {
         public void handleMessage(Message msg){
             switch (msg.what){
                 case 1:progressBar.setVisibility(View.INVISIBLE); liaotiankuang.setVisibility(View.VISIBLE);tianconglan.setVisibility(View.VISIBLE);onAddTime(msg.obj.toString());break;
-                case 2:progressBar.setVisibility(View.INVISIBLE); liaotiankuang.setVisibility(View.VISIBLE);tianconglan.setVisibility(View.VISIBLE);onAddMyField(msg.obj.toString());break;
-                case 3:progressBar.setVisibility(View.INVISIBLE); liaotiankuang.setVisibility(View.VISIBLE);tianconglan.setVisibility(View.VISIBLE);onAddHisField(msg.obj.toString());break;
+                case 2:progressBar.setVisibility(View.INVISIBLE); liaotiankuang.setVisibility(View.VISIBLE);tianconglan.setVisibility(View.VISIBLE);onAddMyField(msg.obj.toString());s.fullScroll(ScrollView.FOCUS_DOWN);break;
+                case 3:progressBar.setVisibility(View.INVISIBLE); liaotiankuang.setVisibility(View.VISIBLE);tianconglan.setVisibility(View.VISIBLE);onAddHisField(msg.obj.toString());s.fullScroll(ScrollView.FOCUS_DOWN);break;
                 case 4:progressBar.setVisibility(View.INVISIBLE); liaotiankuang.setVisibility(View.VISIBLE);tianconglan.setVisibility(View.VISIBLE);break;
                 case 5:progressBar.setVisibility(View.INVISIBLE); liaotiankuang.setVisibility(View.VISIBLE);tianconglan.setVisibility(View.VISIBLE);addText.setVisibility(View.VISIBLE);break;
 
@@ -127,8 +127,6 @@ public class chattingActivity extends AppCompatActivity {
         if (!getMsg.isEmpty()) {
             myMsg.setText(getMsg);
             beijing.addView(layout1);
-            s.fullScroll(View.FOCUS_DOWN);
-
         }
 
         Log.d("beijing", String.valueOf(beijing.getChildCount()) + Picasso.get().load("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + "sd" + ".png"));
@@ -139,7 +137,6 @@ public class chattingActivity extends AppCompatActivity {
         TextView myMsg = (TextView) layout1.findViewById(R.id.timetag);
             myMsg.setText(displayTime(time));
             beijing.addView(layout1);
-        s.fullScroll(View.FOCUS_DOWN);
 
         Log.d("beijing", String.valueOf(beijing.getChildCount()) + Picasso.get().load("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + "sd" + ".png"));
     }
@@ -152,7 +149,6 @@ public class chattingActivity extends AppCompatActivity {
         if (!getMsg.isEmpty()) {
             myMsg.setText(getMsg);
             beijing.addView(layout1);
-            s.fullScroll(View.FOCUS_DOWN);
         }
 
         Log.d("beijing", String.valueOf(beijing.getChildCount()) + Picasso.get().load("https://s3.amazonaws.com/chance-userfiles-mobilehub-653619147/" + "sd" + ".png"));
@@ -275,6 +271,8 @@ public class chattingActivity extends AppCompatActivity {
                                     Message msg = new Message();
                                     msg.what = 1;
                                     msg.obj = chattingListDO.getChattingTime().get(i);
+                                    Log.d("gettime1 ", chattingListDO.getChattingTime().get(i));
+                                    Log.d("gettime ", displayTime(chattingListDO.getChattingTime().get(i)));
                                     addHandler.sendMessage(msg);
                                 }
                                 Log.d("srlist ",chattingListDO.getSrList().get(i));
@@ -314,6 +312,8 @@ public class chattingActivity extends AppCompatActivity {
                         Message msg = new Message();
                         msg.what = 1;
                         msg.obj = chattingListDO.getChattingTime().get(i);
+                        Log.d("gettime ", displayTime(chattingListDO.getChattingTime().get(i)));
+                        Log.d("gettime1 ", chattingListDO.getChattingTime().get(i));
                         addHandler.sendMessage(msg);
                     }
                     Log.d("sr11list ", chattingListDO.getSrList().get(i));
@@ -361,9 +361,8 @@ public class chattingActivity extends AppCompatActivity {
                             mapper.save(userChatDO);
                         }
             }
-            s.fullScroll(View.FOCUS_DOWN);
+            s.fullScroll(ScrollView.FOCUS_DOWN);
             while (exit){
-
              try{
                  Log.d("chattingsize",String.valueOf(size));
                  Thread.sleep(1000);
@@ -378,6 +377,8 @@ public class chattingActivity extends AppCompatActivity {
                              msg.what = 1;
                              msg.obj = chattingListDO.getChattingTime().get(i);
                              addHandler.sendMessage(msg);
+                             Log.d("gettime ",displayTime(chattingListDO.getChattingTime().get(i)));
+                             Log.d("gettime1 ", chattingListDO.getChattingTime().get(i));
                          }
                          Log.d("srlist ",chattingListDO.getSrList().get(i));
                          Log.d("srlist1 ",String.valueOf(chatString.size()));
@@ -411,6 +412,8 @@ public class chattingActivity extends AppCompatActivity {
                              Message msg = new Message();
                              msg.what = 1;
                              msg.obj = chattingListDO.getChattingTime().get(i);
+                            Log.d("gettime ", displayTime(chattingListDO.getChattingTime().get(i)));
+                            Log.d("gettime1 ", chattingListDO.getChattingTime().get(i));
                              addHandler.sendMessage(msg);
                          }
                          Log.d("sr11list ", chattingListDO.getSrList().get(i));

@@ -23,9 +23,11 @@ public class UserPoolDO {
     private String _nickName;
     private String _resume;
     private String _walletAddress;
+    private Double _availableWallet=0.0;
     private List<String> _beiGuanZhu;
     private Double _candyCurrency=0.0;
     private Double _cryptoCurrency=0.0;
+    private Double _frozenwallet=0.0;
     private List<String> _gottenList;
     private List<String> _guanZhu;
     private String _myEmail;
@@ -106,6 +108,14 @@ public class UserPoolDO {
     public void setWalletAddress(final String _walletAddress) {
         this._walletAddress = _walletAddress;
     }
+    @DynamoDBAttribute(attributeName = "availableWallet")
+    public Double getAvailableWallet() {
+        return _availableWallet;
+    }
+
+    public void setAvailableWallet(final Double _availableWallet) {
+        this._availableWallet = _availableWallet;
+    }
     @DynamoDBAttribute(attributeName = "beiGuanZhu")
     public List<String> getBeiGuanZhu() {
         return _beiGuanZhu;
@@ -129,6 +139,14 @@ public class UserPoolDO {
 
     public void setCryptoCurrency(final Double _cryptoCurrency) {
         this._cryptoCurrency = _cryptoCurrency;
+    }
+    @DynamoDBAttribute(attributeName = "frozenwallet")
+    public Double getFrozenwallet() {
+        return _frozenwallet;
+    }
+
+    public void setFrozenwallet(final Double _frozenwallet) {
+        this._frozenwallet = _frozenwallet;
     }
     @DynamoDBAttribute(attributeName = "gottenList")
     public List<String> getGottenList() {

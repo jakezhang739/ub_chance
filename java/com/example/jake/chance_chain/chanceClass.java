@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 
+import com.nostra13.universalimageloader.utils.L;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,9 @@ public class chanceClass implements Parcelable {
     public List<commentClass> commentList;
     public List<String> shareLink;
     public List<String> gottenId;
+    public List<String> completeList;
+    public List<String> confirmList;
+    public List<String> unConfirmList;
 
 //    public chanceClass(){
 //        this.touUri="";
@@ -55,6 +60,9 @@ public class chanceClass implements Parcelable {
         this.commentList=new ArrayList<>();
         this.shareLink = new ArrayList<>();
         this.gottenId=new ArrayList<>();
+        this.completeList=new ArrayList<>();
+        this.confirmList=new ArrayList<>();
+        this.unConfirmList=new ArrayList<>();
 
     }
 
@@ -78,6 +86,9 @@ public class chanceClass implements Parcelable {
         commentList = in.createTypedArrayList(commentClass.CREATOR);
         shareLink = in.createStringArrayList();
         gottenId = in.createStringArrayList();
+        completeList = in.createStringArrayList();
+        confirmList = in.createStringArrayList();
+        unConfirmList = in.createStringArrayList();
     }
 
     @Override
@@ -101,6 +112,9 @@ public class chanceClass implements Parcelable {
         dest.writeTypedList(commentList);
         dest.writeStringList(shareLink);
         dest.writeStringList(gottenId);
+        dest.writeStringList(completeList);
+        dest.writeStringList(confirmList);
+        dest.writeStringList(unConfirmList);
     }
 
     @Override
@@ -136,6 +150,7 @@ public class chanceClass implements Parcelable {
     public void addComId (String comId){this.commentId.add(comId);}
     public void setSharfrom (List<String> shareLink){this.shareLink=shareLink;}
     public void setGetList (List<String> getList){this.gottenId=getList;}
+    public void setCompleteList (List<String> complete){this.completeList=complete;}
 
 
 }

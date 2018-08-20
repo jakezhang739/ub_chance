@@ -316,14 +316,13 @@ public class ContentActivity extends AppCompatActivity {
             ChanceWithValueDO cc = dynamoDBMapper.load(ChanceWithValueDO.class,chanceC.cId);
             UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,curUsername);
             int totcc;
-            if(cc.getCommentNumber()!=null) {
-                totcc = cc.getCommentNumber().intValue();
+            if(cc.getCommentIdList()!=null) {
+                totcc = cc.getCommentIdList().size();
                 totcc+=1;
             }
             else {
                 totcc=1;
             }
-            cc.setCommentNumber((double) totcc);
             chanceC.setcNumber(totcc);
             Message msg = new Message();
             DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
@@ -345,14 +344,16 @@ public class ContentActivity extends AppCompatActivity {
             chanceC.addComList(commentClass);
             chanceC.addComId(String.valueOf(comId));
             if(cc.getCommentIdList()!=null) {
-                cc.addCommentId(String.valueOf(comId));
+                List<String> tempList = cc.getCommentIdList();
+                tempList.add(String.valueOf(comId));
+                cc.setCommentIdList(tempList);
             }
             else{
                 List<String> commentId = new ArrayList<>();
                 commentId.add(String.valueOf(comId));
                 cc.setCommentIdList(commentId);
             }
-            Log.d("show comid ",String.valueOf(commentTableDO.getCommentId())+" "+String.valueOf(cc.getCommentNumber()));
+            Log.d("show comid ",String.valueOf(commentTableDO.getCommentId())+" "+String.valueOf(cc.getCommentIdList().size()));
             dynamoDBMapper.save(commentTableDO);
             dynamoDBMapper.save(cc);
             msg.what=2;
@@ -370,10 +371,13 @@ public class ContentActivity extends AppCompatActivity {
             ChanceWithValueDO cc = dynamoDBMapper.load(ChanceWithValueDO.class,chanceC.cId);
             if(cc.getLiked()!=null) {
                 if (cc.getLiked().contains(curUsername)) {
-                    cc.deleteLike(curUsername);
+                    List<String> like = cc.getLiked();
+                    like.remove(curUsername);
                 }
                 else{
-                    cc.addLike(curUsername);
+                    List<String> like = cc.getLiked();
+                    like.add(curUsername);
+                    cc.setLiked(like);
                 }
             }
             else {

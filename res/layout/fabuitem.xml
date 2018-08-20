@@ -201,6 +201,35 @@
             android:background="@drawable/transround"
             android:textColor="@color/yellow"
             android:text="取消" />
+
+        <TextView
+            android:id="@+id/confirmtxt"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/round_corner"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:visibility="invisible"
+            android:text="已完成" />
+
+        <TextView
+            android:id="@+id/unConfirmtxt"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/transround"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            android:text="已取消" />
+
     </RelativeLayout>
     <TextView
         android:layout_width="match_parent"

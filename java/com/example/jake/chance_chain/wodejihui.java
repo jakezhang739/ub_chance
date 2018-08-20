@@ -32,7 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class fabuActivity extends AppCompatActivity {
+public class wodejihui extends AppCompatActivity {
     Context context;
     String myUsr;
     AppHelper helper = new AppHelper();
@@ -48,7 +48,7 @@ public class fabuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fabu);
+        setContentView(R.layout.activity_wodejihui);
         ActionBar actionBar = getSupportActionBar();
         context = getApplicationContext().getApplicationContext();
         myUsr = helper.getCurrentUserName(context);
@@ -62,39 +62,25 @@ public class fabuActivity extends AppCompatActivity {
         taglayout = (LinearLayout) findViewById(R.id.tagrel);
         beijing = (LinearLayout) findViewById(R.id.viewLay);
         progressBar = (ProgressBar) findViewById(R.id.progressBarchat);
-        titlteText.setText("我的发布");
+        titlteText.setText("我的机会");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        TextView weiJinxin = (TextView) findViewById(R.id.wjx);
         TextView jinXinZhong = (TextView) findViewById(R.id.jxz);
         TextView yiWanCheng = (TextView) findViewById(R.id.ywc);
         TextView tag1 = (TextView) findViewById(R.id.tag1);
         TextView tag2 = (TextView) findViewById(R.id.tag2);
-        TextView tag3 = (TextView) findViewById(R.id.tag3);
-        weiJinxin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new Thread(wjxRun).start();
-                flag=1;
-                tag1.setVisibility(View.VISIBLE);
-                tag2.setVisibility(View.INVISIBLE);
-                tag3.setVisibility(View.INVISIBLE);
-
-            }
-        });
 
         jinXinZhong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Thread(jxzRun).start();
                 flag=2;
-                tag1.setVisibility(View.INVISIBLE);
-                tag2.setVisibility(View.VISIBLE);
-                tag3.setVisibility(View.INVISIBLE);
+                tag1.setVisibility(View.VISIBLE);
+                tag2.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -104,8 +90,7 @@ public class fabuActivity extends AppCompatActivity {
                 new Thread(ywcRun).start();
                 flag=3;
                 tag1.setVisibility(View.INVISIBLE);
-                tag2.setVisibility(View.INVISIBLE);
-                tag3.setVisibility(View.VISIBLE);
+                tag2.setVisibility(View.VISIBLE);
             }
         });
 
@@ -128,11 +113,10 @@ public class fabuActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg){
             switch (msg.what){
-                case 1:progressBar.setVisibility(View.INVISIBLE);onAddView((chanceClass) msg.obj);break;
+                case 1:progressBar.setVisibility(View.INVISIBLE);onAddJingXing((chanceClass) msg.obj,msg.getData().getInt("index"));break;
                 case 2:progressBar.setVisibility(View.INVISIBLE);break;
                 case 3:beijing.removeAllViews();progressBar.setVisibility(View.VISIBLE);break;
                 case 4:progressBar.setVisibility(View.INVISIBLE);onAddView((chanceClass) msg.obj);break;
-                case 5:progressBar.setVisibility(View.INVISIBLE);onAddJingXing((chanceClass) msg.obj,msg.getData().getInt("index"));break;
 
 
             }
@@ -202,7 +186,7 @@ public class fabuActivity extends AppCompatActivity {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(fabuActivity.this, ContentActivity.class);
+                Intent intent = new Intent(wodejihui.this, ContentActivity.class);
                 intent.putExtra("cc", cList);
                 startActivity(intent);
 
@@ -226,7 +210,6 @@ public class fabuActivity extends AppCompatActivity {
         tagView=(ImageView) layout1.findViewById(R.id.tagView);
         mGridview = (GridView) layout1.findViewById(R.id.gallery);
         moreContent = (ImageView) layout1.findViewById(R.id.gengduo);
-        confTxt = (TextView) layout1.findViewById(R.id.confirmtxt);
         unconfTxt = (TextView) layout1.findViewById(R.id.unConfirmtxt);
         cardView = (CardView) layout1.findViewById(R.id.card_view);
         pingjia = (TextView) layout1.findViewById(R.id.liuyan);
@@ -241,12 +224,10 @@ public class fabuActivity extends AppCompatActivity {
         if(!cList.confirmList.isEmpty()){
             confirmBtn.setVisibility(View.INVISIBLE);
             cancelBtn.setVisibility(View.INVISIBLE);
-            confTxt.setVisibility(View.VISIBLE);
         }
         if(!cList.unConfirmList.isEmpty()){
             confirmBtn.setVisibility(View.INVISIBLE);
             cancelBtn.setVisibility(View.INVISIBLE);
-            unconfTxt.setVisibility(View.VISIBLE);
         }
         switch ((int) cList.tag) {
             case 1:
@@ -287,7 +268,7 @@ public class fabuActivity extends AppCompatActivity {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(fabuActivity.this, ContentActivity.class);
+                Intent intent = new Intent(wodejihui.this, ContentActivity.class);
                 intent.putExtra("cc", cList);
                 startActivity(intent);
 
@@ -297,24 +278,20 @@ public class fabuActivity extends AppCompatActivity {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tempName = cList.completeList.get(0);
+                tempName = cList.userid;
                 tempCid = cList.cId;
                 new Thread(oncConfirm).start();
-                confirmBtn.setVisibility(View.INVISIBLE);
-                cancelBtn.setVisibility(View.INVISIBLE);
-                confTxt.setVisibility(View.VISIBLE);
-                //jinXingZhong.remove(i);
-                //yiWanCheng.add(cList);
+                jinXingZhong.remove(i);
+                yiWanCheng.add(cList);
+                beijing.removeView(layout1);
+
 
             }
         });
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                beijing.removeView(layout1);
-//                jinXingZhong.remove(i);
-//                weiJingxin.add(cList);
-                tempName = cList.completeList.get(0);
+                tempName = cList.userid;
                 tempCid = cList.cId;
                 new Thread(onCancel).start();
                 confirmBtn.setVisibility(View.INVISIBLE);
@@ -329,11 +306,11 @@ public class fabuActivity extends AppCompatActivity {
         public void run() {
             ChanceWithValueDO chanceWithValueDO = mapper.load(ChanceWithValueDO.class, tempCid);
             List<String> temp = new ArrayList<>();
-            if(chanceWithValueDO.getConfirmList()!=null){
-                temp=chanceWithValueDO.getConfirmList();
+            if(chanceWithValueDO.getCompleteList()!=null){
+                temp=chanceWithValueDO.getCompleteList();
             }
             temp.add(tempName);
-            chanceWithValueDO.setConfirmList(temp);
+            chanceWithValueDO.setCompleteList(temp);
             mapper.save(chanceWithValueDO);
         }
     };
@@ -354,32 +331,10 @@ public class fabuActivity extends AppCompatActivity {
     };
 
 
-    Runnable wjxRun = new Runnable() {
-        @Override
-        public void run() {
-            Log.d("idontkonw",String.valueOf(weiJingxin.size())+String.valueOf(jinXingZhong.size())+String.valueOf(yiWanCheng.size()));
-            Message msg1 = new Message();
-            msg1.what=3;
-            setupHandler.sendMessage(msg1);
-            if(weiJingxin.isEmpty()){
-                Message msg = new Message();
-                msg.what=2;
-                setupHandler.sendMessage(msg);
-
-            }
-            for(int i=0; i < weiJingxin.size();i++){
-                Message msg = new Message();
-                msg.what = 1;
-                msg.obj = weiJingxin.get(i);
-                setupHandler.sendMessage(msg);
-            }
-
-        }
-    };
-
     Runnable jxzRun = new Runnable() {
         @Override
         public void run() {
+            Log.d("idontkonw",String.valueOf(weiJingxin.size())+String.valueOf(jinXingZhong.size())+String.valueOf(yiWanCheng.size()));
             Message msg1 = new Message();
             msg1.what=3;
             setupHandler.sendMessage(msg1);
@@ -391,13 +346,17 @@ public class fabuActivity extends AppCompatActivity {
             }
             for(int i=jinXingZhong.size()-1; i>=0 ;i--){
                 Message msg = new Message();
-                msg.what = 4;
+                msg.what = 1;
                 msg.obj = jinXingZhong.get(i);
+                Bundle bundle = new Bundle();
+                bundle.putInt("index",i);
+                msg.setData(bundle);
                 setupHandler.sendMessage(msg);
             }
 
         }
     };
+
 
     Runnable ywcRun = new Runnable() {
         @Override
@@ -413,11 +372,8 @@ public class fabuActivity extends AppCompatActivity {
             }
             for(int i=yiWanCheng.size()-1; i>=0 ;i--){
                 Message msg = new Message();
-                msg.what = 5;
+                msg.what = 4;
                 msg.obj = yiWanCheng.get(i);
-                Bundle bundle = new Bundle();
-                bundle.putInt("index",i);
-                msg.setData(bundle);
                 setupHandler.sendMessage(msg);
             }
         }
@@ -427,25 +383,24 @@ public class fabuActivity extends AppCompatActivity {
         @Override
         public void run() {
             UserPoolDO userPoolDO = mapper.load(UserPoolDO.class, myUsr);
-            if(userPoolDO.getChanceIdList()!=null) {
-                List<String> chanceID = userPoolDO.getChanceIdList();
+            if(userPoolDO.getGottenList()!=null) {
+                List<String> chanceID = userPoolDO.getGottenList();
                 for (int i = 0; i < chanceID.size(); i++) {
                     putStuffin(chanceID.get(i));
                 }
-
                 Log.d("showyourself", String.valueOf(weiJingxin.size()) + String.valueOf(jinXingZhong.size()) + String.valueOf(yiWanCheng.size()));
                 Message msg1 = new Message();
                 firstHandler.sendMessage(msg1);
-                if (weiJingxin.isEmpty()) {
+                if (jinXingZhong.isEmpty()) {
                     Message msg = new Message();
                     msg.what = 2;
                     setupHandler.sendMessage(msg);
 
                 }
-                for (int i = weiJingxin.size() - 1; i >= 0; i--) {
+                for (int i = jinXingZhong.size()-1; i >=0; i--) {
                     Message msg = new Message();
                     msg.what = 1;
-                    msg.obj = weiJingxin.get(i);
+                    msg.obj = jinXingZhong.get(i);
                     setupHandler.sendMessage(msg);
                 }
             }
@@ -509,11 +464,8 @@ public class fabuActivity extends AppCompatActivity {
         if(chanceWithValueDO.getCompleteList()!=null){
             yiWanCheng.add(cc);
         }
-        else if(chanceWithValueDO.getGetList()!=null){
+        else {
             jinXingZhong.add(cc);
-        }
-        else{
-            weiJingxin.add(cc);
         }
         mapper.save(chanceWithValueDO);
         Message msg = new Message();

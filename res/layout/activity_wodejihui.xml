@@ -18,16 +18,7 @@
         android:visibility="invisible"
         android:background="@color/colorPrimary">
 
-        <TextView
-            android:id="@+id/wjx"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="25sp"
-            android:textColor="@color/yellow"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:text="未进行" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -37,7 +28,7 @@
             android:textColor="@color/yellow"
             android:gravity="center"
             android:clickable="true"
-            android:text="进行中"/>
+            android:text="进行中的机会"/>
 
         <TextView
             android:id="@+id/ywc"
@@ -48,7 +39,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:clickable="true"
-            android:text="已完成" />
+            android:text="已确认的机会" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,13 +61,6 @@
             android:layout_weight="1"
             android:visibility="invisible"
             android:id="@+id/tag2"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/yellow"
-            android:layout_weight="1"
-            android:visibility="invisible"
-            android:id="@+id/tag3"/>
     </LinearLayout>
 
     <ProgressBar

@@ -111,7 +111,8 @@
         <activity android:name=".chattingActivity" />
         <activity android:name=".liuyan" />
         <activity android:name=".myWallet" />
-        <activity android:name=".fabuActivity"></activity>
+        <activity android:name=".fabuActivity" />
+        <activity android:name=".wodejihui"></activity>
     </application>
 
 </manifest>

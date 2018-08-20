@@ -7,7 +7,6 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRan
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,9 +18,10 @@ public class ChanceWithValueDO {
     private Double _bonus;
     private String _bonusType;
     private List<String> _commentIdList;
-    private Double _commentNumber;
-    private List<String> _liked;
+    private List<String> _completeList;
+    private List<String> _confirmList;
     private List<String> _getList;
+    private List<String> _liked;
     private List<String> _pictures;
     private String _profilePicture;
     private Double _reward;
@@ -32,6 +32,7 @@ public class ChanceWithValueDO {
     private String _text;
     private Double _time;
     private String _title;
+    private List<String> _unConfirmList;
     private String _username;
 
     @DynamoDBHashKey(attributeName = "Id")
@@ -67,16 +68,21 @@ public class ChanceWithValueDO {
     public void setCommentIdList(final List<String> _commentIdList) {
         this._commentIdList = _commentIdList;
     }
-    public void addCommentId(String cid){
-        this._commentIdList.add(cid);
-    }
-    @DynamoDBAttribute(attributeName = "commentNumber")
-    public Double getCommentNumber() {
-        return _commentNumber;
+    @DynamoDBAttribute(attributeName = "completeList")
+    public List<String> getCompleteList() {
+        return _completeList;
     }
 
-    public void setCommentNumber(final Double _commentNumber) {
-        this._commentNumber = _commentNumber;
+    public void setCompleteList(final List<String> _completeList) {
+        this._completeList = _completeList;
+    }
+    @DynamoDBAttribute(attributeName = "confirmList")
+    public List<String> getConfirmList() {
+        return _confirmList;
+    }
+
+    public void setConfirmList(final List<String> _confirmList) {
+        this._confirmList = _confirmList;
     }
     @DynamoDBAttribute(attributeName = "getList")
     public List<String> getGetList() {
@@ -86,9 +92,6 @@ public class ChanceWithValueDO {
     public void setGetList(final List<String> _getList) {
         this._getList = _getList;
     }
-    public void addGetList(final String getId){
-        this._getList.add(getId);
-    }
     @DynamoDBAttribute(attributeName = "liked")
     public List<String> getLiked() {
         return _liked;
@@ -96,12 +99,6 @@ public class ChanceWithValueDO {
 
     public void setLiked(final List<String> _liked) {
         this._liked = _liked;
-    }
-    public void addLike(String like){
-        this._liked.add(like);
-    }
-    public void deleteLike(String like){
-        this._liked.remove(like);
     }
     @DynamoDBAttribute(attributeName = "pictures")
     public List<String> getPictures() {
@@ -182,6 +179,14 @@ public class ChanceWithValueDO {
 
     public void setTitle(final String _title) {
         this._title = _title;
+    }
+    @DynamoDBAttribute(attributeName = "unConfirmList")
+    public List<String> getUnConfirmList() {
+        return _unConfirmList;
+    }
+
+    public void setUnConfirmList(final List<String> _unConfirmList) {
+        this._unConfirmList = _unConfirmList;
     }
     @DynamoDBAttribute(attributeName = "username")
     public String getUsername() {
