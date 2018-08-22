@@ -93,7 +93,7 @@
         android:layout_height="160dp"
         android:layout_below="@+id/inpCareer"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:background="@android:drawable/alert_light_frame"
         android:inputType="textMultiLine"
         android:text="个人简介" />

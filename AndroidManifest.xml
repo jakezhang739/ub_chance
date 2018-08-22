@@ -25,7 +25,9 @@
             android:logo="@drawable/name3x" />
         <activity
             android:name=".NotificationActivity"
-            android:label="@string/title_activity_notification" />
+            android:label="@string/title_activity_notification"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity
             android:name=".MyActivity"
             android:label="@string/title_activity_my" />
@@ -108,7 +110,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".HomeActivity" />
         </activity>
-        <activity android:name=".chattingActivity" />
+        <activity android:name=".chattingActivity"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity android:name=".liuyan" />
         <activity android:name=".myWallet" />
         <activity android:name=".fabuActivity" />

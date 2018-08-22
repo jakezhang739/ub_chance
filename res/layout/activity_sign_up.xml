@@ -36,7 +36,7 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_text_height"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_text_padding"
         android:paddingRight="@dimen/activity_text_padding"
         android:id="@+id/editTextRegUserId"
@@ -73,7 +73,7 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_text_height"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_text_padding"
         android:paddingRight="@dimen/activity_text_padding"
         android:id="@+id/editTextRegUserPassword"
@@ -108,7 +108,7 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_text_height"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_text_padding"
         android:paddingRight="@dimen/activity_text_padding"
         android:id="@+id/editTextRegGivenName"
@@ -143,7 +143,7 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_text_height"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_text_padding"
         android:paddingRight="@dimen/activity_text_padding"
         android:id="@+id/editTextRegEmail"
@@ -178,7 +178,7 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="@dimen/activity_text_height"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_text_padding"
         android:paddingRight="@dimen/activity_text_padding"
         android:id="@+id/editTextRegPhone"

@@ -415,7 +415,7 @@ public class wodejihui extends AppCompatActivity {
 
     public void putStuffin(String i) {
         ChanceWithValueDO chanceWithValueDO = mapper.load(ChanceWithValueDO.class, String.valueOf(i));
-        chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(), chanceWithValueDO.getUsername(), chanceWithValueDO.getTitle(), chanceWithValueDO.getText(), chanceWithValueDO.getId(), chanceWithValueDO.getBonus(), chanceWithValueDO.getReward(), chanceWithValueDO.getTag(), chanceWithValueDO.getTime());
+        chanceClass cc = new chanceClass(chanceWithValueDO.getShouFeiType(), chanceWithValueDO.getFuFeiType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getShouFei(),chanceWithValueDO.getFuFei(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime(),chanceWithValueDO.getRenShu());
         UserPoolDO userPoolDO = mapper.load(UserPoolDO.class, cc.userid);
         if(chanceWithValueDO.getConfirmList()!=null){
             cc.confirmList=chanceWithValueDO.getConfirmList();

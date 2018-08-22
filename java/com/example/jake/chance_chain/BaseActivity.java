@@ -119,7 +119,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     private GalleryAdapter mAdapter;
     private List<String> mDatasText;
     private List<String> mDatasImage;
-    private String username,textTilte,textValue,txtBonus,txtBonusType,txtReward,txtRewardType;
+    private String username,textTilte,textValue,txtShoufei,txtShoufeiType,txtFuFei,txtFuFeiType;
     private List<String> picList;
     String TestChance;
     public String trynum = "ui";
@@ -129,9 +129,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     private HomeFragment fragment = new HomeFragment();
     private FragmentTransaction fragmentTransaction;
     private int clickFlag =0;
-    private int rewardtypeInt,bonusTypeInt;
+    private int fufeiInt,shoufeiInt;
     private int unreadnum = 0;
     private String unread = "0";
+    private double renshu;
     private int viewpage;
     TextView alert1,alert2;
     //private HashMap<String, Double> mapping = new HashMap<>();
@@ -242,8 +243,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             ImageView picView = (ImageView) findViewById(R.id.getPic);
             EditText titleText = (EditText) findViewById(R.id.titletext);
             EditText Neirong = (EditText) findViewById(R.id.neirong);
-            EditText reWard = (EditText) findViewById(R.id.jiaovalue);
-            EditText bonus = (EditText) findViewById(R.id.zhuivalue);
+            EditText shoufei = (EditText) findViewById(R.id.shoufei);
+            EditText fufei = (EditText) findViewById(R.id.fufei);
+            EditText ren = (EditText) findViewById(R.id.huoderenshu);
 
             TextView cic1 = (TextView) findViewById(R.id.circleText1);
             TextView cic2 = (TextView) findViewById(R.id.circleText2);
@@ -341,13 +343,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     //选择列表项的操作
                     parent.getItemAtPosition(position);
-                    rewardtypeInt = position;
+                    fufeiInt = position;
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                     //未选中时候的操作
-                    rewardtypeInt = 0;
+                    fufeiInt = 0;
                 }
             });
 
@@ -356,13 +358,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     //选择列表项的操作
                     parent.getItemAtPosition(position);
-                    bonusTypeInt=position;
+                    shoufeiInt=position;
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                     //未选中时候的操作
-                    bonusTypeInt=0;
+                    shoufeiInt=0;
 
                 }
             });
@@ -371,7 +373,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             picView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
-                    Log.d("typetry"," rew "+ rewardtypeInt+" bonus " + bonusTypeInt);
+                    Log.d("typetry"," fu "+fufeiInt+" shou " + shoufeiInt);
 
                     requstStoragePermission();
                     FishBun.with(BaseActivity.this).setImageAdapter(new GlideAdapter()).startAlbum();
@@ -381,36 +383,36 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             fabuBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v){
-                    if(bonus.getText().length()!=0) {
-                        txtBonus = bonus.getText().toString();
+                    if(fufei.getText().length()!=0) {
+                        txtFuFei = fufei.getText().toString();
                     }
                     else{
-                        txtBonus="0";
+                        txtFuFei="0";
                     }
-                    switch (bonusTypeInt){
-                        case 0: txtBonusType="cc";break;
-                        case 1: txtBonusType="eth";break;
-                        case 2: txtBonusType="btc";break;
+                    switch (fufeiInt){
+                        case 0: txtFuFeiType="cc";break;
+                        case 1: txtFuFeiType="eth";break;
+                        case 2: txtFuFeiType="btc";break;
                     }
-                    if(reWard.getText().length()!=0) {
-                        txtReward = reWard.getText().toString();
+                    if(shoufei.getText().length()!=0) {
+                        txtShoufei = shoufei.getText().toString();
                     }
                     else{
-                        txtReward="0";
+                        txtShoufei="0";
                     }
 
-                    switch (rewardtypeInt){
-                        case 0:txtRewardType = "cc";break;
-                        case 1:txtRewardType="eth";break;
-                        case 2:txtRewardType="btc";break;
+                    switch (shoufeiInt){
+                        case 0:txtShoufeiType = "cc";break;
+                        case 1:txtShoufeiType="eth";break;
+                        case 2:txtShoufeiType="btc";break;
                     }
-                    if(!txtReward.equals("0")&&!txtBonus.equals("0")){
+                    if(!txtShoufei.equals("0")&&!txtFuFei.equals("0")){
                         Toast.makeText(context,"不能同时填写收费金额和付费金额",Toast.LENGTH_LONG).show();
 
                     }
 
                     else if(titleText.length()==0){
-                        Log.d("wtftt"," rew "+ reWard+" bonus " + bonus);
+                        Log.d("wtftt"," shou "+ shoufei+" fu " + fufei);
                         Toast.makeText(context,"请输入标题",Toast.LENGTH_LONG).show();
                     }
                     else if(Neirong.length()==0){
@@ -419,13 +421,18 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                     else if(clickFlag==0){
                         Toast.makeText(context,"请选择标签",Toast.LENGTH_LONG).show();
                     }
+                    else if(ren.getText().length()==0){
+                        Toast.makeText(context,"请输入该机会的人数限制",Toast.LENGTH_LONG).show();
+                    }
                     else {
                         textTilte = titleText.getText().toString();
                         textValue = Neirong.getText().toString();
+                        renshu=Double.parseDouble(ren.getText().toString());
                         titleText.setText("");
                         Neirong.setText("");
-                        reWard.setText("");
-                        bonus.setText("");
+                        shoufei.setText("");
+                        fufei.setText("");
+                        ren.setText("");
                         new Thread(uploadRunnable).start();
                     }
 
@@ -590,8 +597,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
       @Override
       public void handleMessage(Message msg){
           switch (msg.what){
-              case 1:Toast.makeText(context,"已上传发布",Toast.LENGTH_LONG).show();
-              case 2:Toast.makeText(context,"可用金额不足",Toast.LENGTH_LONG).show();
+              case 1:Toast.makeText(context,"已上传发布",Toast.LENGTH_LONG).show();break;
+              case 2:Toast.makeText(context,"可用金额不足",Toast.LENGTH_LONG).show();break;
           }
 
       }
@@ -603,8 +610,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
             int cSize = helper.returnChanceeSize(dynamoDBMapper) + 1;
             final ChanceWithValueDO chanceWithValueDO = new ChanceWithValueDO();
             UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class, username);
-            double fee = Double.parseDouble(txtReward);
+            double fee = Double.parseDouble(txtFuFei);
+            Log.d("thisshiit",userPoolDO.getAvailableWallet().toString()+username);
             if (userPoolDO.getAvailableWallet() >= fee) {
+                Log.d("th11isshiit",userPoolDO.getAvailableWallet().toString()+username);
                 userPoolDO.setFrozenwallet(userPoolDO.getFrozenwallet()+fee);
                 userPoolDO.setAvailableWallet(userPoolDO.getAvailableWallet()-fee);
                 List<String> pictureSet = new ArrayList<>();
@@ -639,7 +648,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         Log.d("fck2", "Unable to upload file from the given uri", e);
                     }
                 }
-                Log.d("letsee ", " " + txtReward);
+                Log.d("letsee ", " " + txtFuFei);
                 if (pictureSet.size() != 0) {
                     chanceWithValueDO.setPictures(pictureSet);
                 }
@@ -649,17 +658,20 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 } else {
                     idList = userPoolDO.getChanceIdList();
                 }
+
                 idList.add(String.valueOf(cSize));
+                //Log.d("iido",userPoolDO.getChanceIdList().toString()+idList.toString());
                 userPoolDO.setChanceIdList(idList);
                 chanceWithValueDO.setUsername(username);
                 chanceWithValueDO.setId(String.valueOf(cSize));
-                chanceWithValueDO.setReward(fee);
-                chanceWithValueDO.setRewardType(txtRewardType);
-                chanceWithValueDO.setBonus(Double.parseDouble(txtBonus));
-                chanceWithValueDO.setBonusType(txtBonusType);
+                chanceWithValueDO.setFuFei(fee);
+                chanceWithValueDO.setFuFeiType(txtFuFeiType);
+                chanceWithValueDO.setShouFei(Double.parseDouble(txtShoufei));
+                chanceWithValueDO.setShouFeiType(txtShoufeiType);
                 chanceWithValueDO.setTag((double) clickFlag);
                 chanceWithValueDO.setTitle(textTilte);
                 chanceWithValueDO.setText(textValue);
+                chanceWithValueDO.setRenShu(renshu);
                 Date currentTime = Calendar.getInstance().getTime();
                 String dateString = DateFormat.format("yyyyMMddHHmmss", new Date(currentTime.getTime())).toString();
                 chanceWithValueDO.setTime(Double.parseDouble(dateString));
@@ -670,6 +682,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 uploadHandler.sendMessage(msg);
 
             } else {
+                Log.d("tryfuck me fuck", "Unable to upload file from the given uri");
                 Message msg = new Message();
                 msg.what=2;
                 uploadHandler.sendMessage(msg);

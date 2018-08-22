@@ -55,30 +55,38 @@
             />
 
         <TextView
-            android:id="@+id/jiaoyijingTxt"
+            android:id="@+id/fufeiTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/contentNei"
-            android:text="TextView"
+            android:text=""
             android:textColor="@color/yellow"
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/zhuijiajin"
+            android:id="@+id/shoufei"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/jiaoyijingTxt"
-            android:text="TextView"
+            android:layout_below="@+id/fufeiTxt"
+            android:text=""
             android:textColor="@color/yellow"
             android:textSize="20sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/renshu"
+            android:layout_below="@id/shoufei"
+            android:textColor="@color/yellow"
+            android:textSize="20sp"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/imgLayout"
             android:orientation="vertical"
-            android:layout_below="@id/zhuijiajin">
+            android:layout_below="@id/renshu">
 
         </LinearLayout>
         <TextView

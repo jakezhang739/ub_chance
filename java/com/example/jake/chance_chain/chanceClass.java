@@ -13,13 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class chanceClass implements Parcelable {
+public class chanceClass implements Parcelable{
 
     public List<String> imageSet;
-    public double bonus;
-    public double reward,uploadTime,tag;
+    public double shoufei,fufei,uploadTime,tag,renshu;
     int shared,cNumber;
-    public String touUri, bType,rType,userid,txtTitle,txtNeirong,cId;
+    public String touUri, sType,fType,userid,txtTitle,txtNeirong,cId;
     public List<String> liked;
     public List<String> commentId;
     public List<commentClass> commentList;
@@ -41,18 +40,19 @@ public class chanceClass implements Parcelable {
 
 
 
-    public chanceClass(String rType,String userid,String txtTitle,String txtNeirong,String cId, double bonus, double reward,  double tag, double uploadTime){
+    public chanceClass(String sType,String fType,String userid,String txtTitle,String txtNeirong,String cId, double shoufei, double fufei,  double tag, double uploadTime,double renshu){
         this.touUri="";
         this.cNumber=0;
         this.shared=0;
         this.imageSet=  new ArrayList<>();
-        this.rType=rType;
+        this.sType=sType;
+        this.fType=fType;
         this.userid = userid;
         this.txtTitle = txtTitle;
         this.txtNeirong = txtNeirong;
         this.cId = cId;
-        this.bonus = bonus;
-        this.reward = reward;
+        this.shoufei = shoufei;
+        this.fufei = fufei;
         this.uploadTime = uploadTime;
         this.tag = tag;
         this.liked = new ArrayList<>();
@@ -63,20 +63,22 @@ public class chanceClass implements Parcelable {
         this.completeList=new ArrayList<>();
         this.confirmList=new ArrayList<>();
         this.unConfirmList=new ArrayList<>();
+        this.renshu = renshu;
 
     }
 
     protected chanceClass(Parcel in) {
         imageSet = in.createStringArrayList();
-        bonus = in.readDouble();
-        reward = in.readDouble();
+        shoufei = in.readDouble();
+        fufei = in.readDouble();
         uploadTime = in.readDouble();
         tag = in.readDouble();
+        renshu = in.readDouble();
         shared = in.readInt();
         cNumber = in.readInt();
         touUri = in.readString();
-        bType = in.readString();
-        rType = in.readString();
+        sType = in.readString();
+        fType = in.readString();
         userid = in.readString();
         txtTitle = in.readString();
         txtNeirong = in.readString();
@@ -94,15 +96,16 @@ public class chanceClass implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringList(imageSet);
-        dest.writeDouble(bonus);
-        dest.writeDouble(reward);
+        dest.writeDouble(shoufei);
+        dest.writeDouble(fufei);
         dest.writeDouble(uploadTime);
         dest.writeDouble(tag);
+        dest.writeDouble(renshu);
         dest.writeInt(shared);
         dest.writeInt(cNumber);
         dest.writeString(touUri);
-        dest.writeString(bType);
-        dest.writeString(rType);
+        dest.writeString(sType);
+        dest.writeString(fType);
         dest.writeString(userid);
         dest.writeString(txtTitle);
         dest.writeString(txtNeirong);

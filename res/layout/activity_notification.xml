@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorPrimary"
+    android:isScrollContainer="true"
     tools:context="com.example.jake.chance_chain.HomeActivity"
     >
 
@@ -76,72 +77,93 @@
         android:textColor="@color/white"
         android:textSize="@dimen/activity_button_text_size"/>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/tagid"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/selectTag"
+        android:orientation="horizontal"
         android:background="@color/colorPrimaryDark">
 
-        <TextView
-            android:id="@+id/circleText1"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="20dp"
-            android:layout_centerVertical="true"
-            android:text="活动"
-            android:textColor="@color/white"
-            android:textSize="@dimen/action_bar_text"
-            android:gravity="center"
-            android:clickable="true"
-            android:background="@drawable/transparent_circle" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/circleText1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:text="活动"
+                android:textColor="@color/white"
+                android:textSize="@dimen/action_bar_text"
+                android:gravity="center"
+                android:clickable="true"
+                android:background="@drawable/transparent_circle" />
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/circleText2"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_toRightOf="@+id/circleText1"
-            android:layout_marginLeft="35dp"
-            android:layout_centerVertical="true"
-            android:clickable="true"
-            android:text="约吗"
-            android:textColor="@color/white"
-            android:textSize="@dimen/action_bar_text"
-            android:gravity="center"
-            android:background="@drawable/transparent_circle" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/circleText2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/transparent_circle"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="约吗"
+                android:textColor="@color/white"
+                android:textSize="@dimen/action_bar_text" />
 
-        <TextView
-            android:id="@+id/circleText3"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginRight="35dp"
-            android:layout_toLeftOf="@+id/circleText4"
-            android:clickable="true"
-            android:layout_centerVertical="true"
-            android:text="任务"
-            android:textColor="@color/white"
-            android:textSize="@dimen/action_bar_text"
-            android:gravity="center"
-            android:background="@drawable/transparent_circle" />
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/circleText4"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="20dp"
-            android:clickable="true"
-            android:text="其他"
-            android:textColor="@color/white"
-            android:textSize="@dimen/action_bar_text"
-            android:gravity="center"
-            android:background="@drawable/transparent_circle" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/circleText3"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:clickable="true"
+                android:layout_centerVertical="true"
+                android:text="任务"
+                android:textColor="@color/white"
+                android:textSize="@dimen/action_bar_text"
+                android:gravity="center"
+                android:background="@drawable/transparent_circle" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:gravity="center">
+            <TextView
+                android:id="@+id/circleText4"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:clickable="true"
+                android:text="其他"
+                android:textColor="@color/white"
+                android:textSize="@dimen/action_bar_text"
+                android:gravity="center"
+                android:background="@drawable/transparent_circle" />
+
+        </RelativeLayout>
 
 
 
-    </RelativeLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -158,7 +180,7 @@
             android:layout_marginLeft="25dp"
             android:background="@color/yellow">
         <EditText
-                android:id="@+id/jiaovalue"
+                android:id="@+id/fufei"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="付费金额"
@@ -186,7 +208,7 @@
             android:layout_marginLeft="25dp"
             android:background="@color/yellow">
             <EditText
-                android:id="@+id/zhuivalue"
+                android:id="@+id/shoufei"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="收费金额"
@@ -204,11 +226,27 @@
                 android:layout_alignParentTop="true" />
         </RelativeLayout>
 
+        <EditText
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:id="@+id/huoderenshu"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dp"
+            android:layout_below="@+id/seconddip"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:background="@color/yellow"
+            android:hint="可获得该机会的人数"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:inputType="number"
+            />
+
         <Button
             android:layout_width="match_parent"
-            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/huoderenshu"
+            android:layout_marginTop="30dp"
             android:id="@+id/fabubtn"
-            android:layout_marginBottom="10dp"
             android:layout_height="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"

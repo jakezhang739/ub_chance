@@ -96,12 +96,13 @@ public class sharingActivity extends AppCompatActivity {
             if(!chC.touUri.isEmpty()){
             shareLink.add(chC.touUri);}
             chanceWithValueDO.setSharedFrom(shareLink);
-            chanceWithValueDO.setReward(0.0);
-            chanceWithValueDO.setRewardType("cc");
-            chanceWithValueDO.setBonus(0.0);
-            chanceWithValueDO.setBonusType("cc");
+            chanceWithValueDO.setShouFei(0.0);
+            chanceWithValueDO.setShouFeiType("cc");
+            chanceWithValueDO.setFuFei(0.0);
+            chanceWithValueDO.setFuFeiType("cc");
             chanceWithValueDO.setTag(1.0);
             chanceWithValueDO.setText("s");
+            chanceWithValueDO.setRenShu(1.0);
             Date currentTime = Calendar.getInstance().getTime();
             String dateString = DateFormat.format("yyyyMMddHHmmss", new Date(currentTime.getTime())).toString();
             chanceWithValueDO.setTime(Double.parseDouble(dateString));

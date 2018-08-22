@@ -16,7 +16,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 public class myWallet extends AppCompatActivity {
 
     Context context;
-    TextView currency;
+    TextView currency,available;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,7 @@ public class myWallet extends AppCompatActivity {
         });
         TextView guanli = (TextView) findViewById(R.id.textView11);
         currency = (TextView) findViewById(R.id.textView12);
+        available = (TextView) findViewById(R.id.textView16);
         guanli.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,8 +51,12 @@ public class myWallet extends AppCompatActivity {
 
     Handler setupHandler = new Handler(){
         @Override
-        public void handleMessage(Message msg){
-        currency.setText("CC: "+msg.obj.toString());
+        public void handleMessage(Message msg) {
+            if (msg.what == 1) {
+                currency.setText("总资产: " + msg.obj.toString()+" cc");
+            } else {
+                available.setText("可用资产 "+msg.obj.toString()+" cc");
+            }
         }
     };
 
@@ -63,6 +68,7 @@ public class myWallet extends AppCompatActivity {
             String user = helper.getCurrentUserName(context);
             UserPoolDO userPoolDO = mapper.load(UserPoolDO.class,user);
             Message msg = new Message();
+            msg.what=1;
             if(userPoolDO.getCandyCurrency()!=null){
                 msg.obj=userPoolDO.getCandyCurrency().intValue();
             }
@@ -70,6 +76,15 @@ public class myWallet extends AppCompatActivity {
                 msg.obj=0;
             }
             setupHandler.sendMessage(msg);
+            Message msg1 = new Message();
+            msg1.what=2;
+            if(userPoolDO.getAvailableWallet()!=null){
+                msg1.obj=userPoolDO.getAvailableWallet().intValue();
+            }
+            else {
+                msg1.obj=0;
+            }
+            setupHandler.sendMessage(msg1);
 
 
         }

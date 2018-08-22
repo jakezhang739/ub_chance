@@ -15,19 +15,20 @@ import java.util.Set;
 
 public class ChanceWithValueDO {
     private String _id;
-    private Double _bonus;
-    private String _bonusType;
     private List<String> _commentIdList;
     private List<String> _completeList;
     private List<String> _confirmList;
+    private Double _fuFei;
+    private String _fuFeiType;
     private List<String> _getList;
     private List<String> _liked;
     private List<String> _pictures;
     private String _profilePicture;
-    private Double _reward;
-    private String _rewardType;
+    private Double _renShu;
     private Double _shared;
     private List<String> _sharedFrom;
+    private Double _shouFei;
+    private String _shouFeiType;
     private Double _tag;
     private String _text;
     private Double _time;
@@ -43,22 +44,6 @@ public class ChanceWithValueDO {
 
     public void setId(final String _id) {
         this._id = _id;
-    }
-    @DynamoDBAttribute(attributeName = "bonus")
-    public Double getBonus() {
-        return _bonus;
-    }
-
-    public void setBonus(final Double _bonus) {
-        this._bonus = _bonus;
-    }
-    @DynamoDBAttribute(attributeName = "bonus_type")
-    public String getBonusType() {
-        return _bonusType;
-    }
-
-    public void setBonusType(final String _bonusType) {
-        this._bonusType = _bonusType;
     }
     @DynamoDBAttribute(attributeName = "commentIdList")
     public List<String> getCommentIdList() {
@@ -83,6 +68,22 @@ public class ChanceWithValueDO {
 
     public void setConfirmList(final List<String> _confirmList) {
         this._confirmList = _confirmList;
+    }
+    @DynamoDBAttribute(attributeName = "fuFei")
+    public Double getFuFei() {
+        return _fuFei;
+    }
+
+    public void setFuFei(final Double _fuFei) {
+        this._fuFei = _fuFei;
+    }
+    @DynamoDBAttribute(attributeName = "fuFei_type")
+    public String getFuFeiType() {
+        return _fuFeiType;
+    }
+
+    public void setFuFeiType(final String _fuFeiType) {
+        this._fuFeiType = _fuFeiType;
     }
     @DynamoDBAttribute(attributeName = "getList")
     public List<String> getGetList() {
@@ -116,21 +117,13 @@ public class ChanceWithValueDO {
     public void setProfilePicture(final String _profilePicture) {
         this._profilePicture = _profilePicture;
     }
-    @DynamoDBAttribute(attributeName = "reward")
-    public Double getReward() {
-        return _reward;
+    @DynamoDBAttribute(attributeName = "renShu")
+    public Double getRenShu() {
+        return _renShu;
     }
 
-    public void setReward(final Double _reward) {
-        this._reward = _reward;
-    }
-    @DynamoDBAttribute(attributeName = "reward_type")
-    public String getRewardType() {
-        return _rewardType;
-    }
-
-    public void setRewardType(final String _rewardType) {
-        this._rewardType = _rewardType;
+    public void setRenShu(final Double _renShu) {
+        this._renShu = _renShu;
     }
     @DynamoDBAttribute(attributeName = "shared")
     public Double getShared() {
@@ -147,6 +140,22 @@ public class ChanceWithValueDO {
 
     public void setSharedFrom(final List<String> _sharedFrom) {
         this._sharedFrom = _sharedFrom;
+    }
+    @DynamoDBAttribute(attributeName = "shouFei")
+    public Double getShouFei() {
+        return _shouFei;
+    }
+
+    public void setShouFei(final Double _shouFei) {
+        this._shouFei = _shouFei;
+    }
+    @DynamoDBAttribute(attributeName = "shouFei_type")
+    public String getShouFeiType() {
+        return _shouFeiType;
+    }
+
+    public void setShouFeiType(final String _shouFeiType) {
+        this._shouFeiType = _shouFeiType;
     }
     @DynamoDBAttribute(attributeName = "tag")
     public Double getTag() {

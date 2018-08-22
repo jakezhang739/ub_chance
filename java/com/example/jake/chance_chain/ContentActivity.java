@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amazonaws.http.HttpMethodName;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
@@ -43,7 +44,7 @@ public class ContentActivity extends AppCompatActivity {
     private chanceClass chanceC;
     DynamoDBMapper dynamoDBMapper;
     ImageView touImg,likeImg;
-    TextView uName,uTime,nText,zhuanNum,comNum,zhanNum,jiaoTxt,zhuitxt;
+    TextView uName,uTime,nText,zhuanNum,comNum,zhanNum,shouTxt,fuTxt,renshu;
     List<ImageView> imgList = new ArrayList<>();
     List<String> strList = new ArrayList<>();
     List<commentClass> comClass = new ArrayList<>();
@@ -54,12 +55,14 @@ public class ContentActivity extends AppCompatActivity {
     String liuText;
     Context context;
     String curUsername;
-    String bonusValue,tradeValue,tradeType;
+    String shoufei,fufei,stype,ftype;
     RecyclerView mRecyclerView;
     CommentAdapter mAdapter;
     LinearLayoutManager linearLayoutManager;
     Button getButton;
     PopupWindow popupWindow;
+    View rootview;
+    TextView showText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,13 +76,21 @@ public class ContentActivity extends AppCompatActivity {
         shareNum = chanceC.shared;
         liuNum = chanceC.cNumber;
         likeNum = chanceC.liked.size();
-        bonusValue = String.valueOf(chanceC.bonus);
-        tradeValue = String.valueOf(chanceC.reward);
-        tradeType = String.valueOf(chanceC.rType);
-        jiaoTxt = (TextView) findViewById(R.id.jiaoyijingTxt);
-        zhuitxt = (TextView) findViewById(R.id.zhuijiajin);
-        jiaoTxt.setText("交易金额： "+tradeValue+tradeType);
-        zhuitxt.setText("奖励金额： "+bonusValue+" cc");
+        shoufei = String.valueOf(chanceC.shoufei);
+        fufei = String.valueOf(chanceC.fufei);
+        stype = chanceC.sType;
+        ftype = chanceC.fType;
+        shouTxt = (TextView) findViewById(R.id.shoufei);
+        fuTxt = (TextView) findViewById(R.id.fufeiTxt);
+        renshu = (TextView) findViewById(R.id.renshu);
+        if(!shoufei.equals("0")) {
+            shouTxt.setText("收费金额： " + shoufei + stype);
+        }
+        if(!fufei.equals("0")) {
+            fuTxt.setText("付费金额： " + fufei + ftype);
+        }
+        int rNum = (int) chanceC.renshu;
+        renshu.setText("还剩"+String.valueOf(rNum)+"人能获得该机会");
         touImg = (ImageView) findViewById(R.id.contentTou);
         uName = (TextView) findViewById(R.id.contentUid);
         uTime = (TextView) findViewById(R.id.contentTime);
@@ -100,6 +111,7 @@ public class ContentActivity extends AppCompatActivity {
             Picasso.get().load(chanceC.touUri).resize(60,60).into(touImg);
         }
         uName.setText(chanceC.userid);
+        Log.d("uptime",String.valueOf(chanceC.uploadTime));
 
         uTime.setText(displayTime(String.valueOf((long) chanceC.uploadTime)));
         nText.setText(chanceC.txtNeirong);
@@ -199,11 +211,16 @@ public class ContentActivity extends AppCompatActivity {
         popupWindow.setWidth(RelativeLayout.LayoutParams.WRAP_CONTENT);
         popupWindow.setHeight(RelativeLayout.LayoutParams.WRAP_CONTENT);
         popupWindow.setContentView(LayoutInflater.from(this).inflate(R.layout.popupwindow,null));
-        View rootview = LayoutInflater.from(ContentActivity.this).inflate(R.layout.activity_content, null);
-        TextView showText = (TextView) findViewById(R.id.huodeJihui);
+        rootview = LayoutInflater.from(ContentActivity.this).inflate(R.layout.activity_content, null);
+        showText = (TextView) findViewById(R.id.huodeJihui);
 
         if(chanceC.gottenId.contains(curUsername)){
             getButton.setVisibility(View.INVISIBLE);
+            showText.setVisibility(View.VISIBLE);
+        }
+        else if(chanceC.renshu<1){
+            getButton.setVisibility(View.INVISIBLE);
+            showText.setText("该机会已达到获得人数上限");
             showText.setVisibility(View.VISIBLE);
         }
         else {
@@ -211,14 +228,15 @@ public class ContentActivity extends AppCompatActivity {
             showText.setVisibility(View.INVISIBLE);
         }
 
+        if(chanceC.userid.equals(curUsername)){
+            getButton.setVisibility(View.INVISIBLE);
+        }
+
 
         getButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new Thread(getRunnable).start();
-                popupWindow.showAtLocation(rootview, Gravity.CENTER_VERTICAL,0,0);
-                getButton.setVisibility(View.INVISIBLE);
-                showText.setVisibility(View.VISIBLE);
 
             }
         });
@@ -241,28 +259,50 @@ public class ContentActivity extends AppCompatActivity {
     Runnable getRunnable = new Runnable() {
         @Override
         public void run() {
-            ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class,chanceC.cId);
-            UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class,curUsername);
-            List<String> cGetList,uGetList;
-            if(chanceWithValueDO.getGetList()!=null){
-                cGetList= chanceWithValueDO.getGetList();}
-            else{
-                cGetList = new ArrayList<>();
+            ChanceWithValueDO chanceWithValueDO = dynamoDBMapper.load(ChanceWithValueDO.class, chanceC.cId);
+            UserPoolDO userPoolDO = dynamoDBMapper.load(UserPoolDO.class, curUsername);
+            Log.d("getrun",shoufei);
+            if (userPoolDO.getAvailableWallet() >= Double.parseDouble(shoufei)) {
+                if(chanceWithValueDO.getRenShu()<1){
+                    Message msg = new Message();
+                    msg.what=4;
+                    handler.sendMessage(msg);
                 }
-            if(userPoolDO.getGottenList()!=null){
-                uGetList = userPoolDO.getGottenList();
+                else {
+                    userPoolDO.setFrozenwallet(userPoolDO.getFrozenwallet() + Double.parseDouble(shoufei));
+                    userPoolDO.setAvailableWallet(userPoolDO.getAvailableWallet() - Double.parseDouble(shoufei));
+                    List<String> cGetList, uGetList;
+                    if (chanceWithValueDO.getGetList() != null) {
+                        cGetList = chanceWithValueDO.getGetList();
+                    } else {
+                        cGetList = new ArrayList<>();
+                    }
+                    if (userPoolDO.getGottenList() != null) {
+                        uGetList = userPoolDO.getGottenList();
+                    } else {
+                        uGetList = new ArrayList<>();
+                    }
+                    cGetList.add(curUsername);
+                    uGetList.add(chanceC.cId);
+                    chanceWithValueDO.setGetList(cGetList);
+                    chanceWithValueDO.setRenShu(chanceWithValueDO.getRenShu()-1);
+
+                    userPoolDO.setGottenList(uGetList);
+                    //userPoolDO.addGotten(chanceC.cId);
+                    dynamoDBMapper.save(userPoolDO);
+                    dynamoDBMapper.save(chanceWithValueDO);
+                    Message msg = new Message();
+                    msg.what = 3;
+                    handler.sendMessage(msg);
+                }
             }
             else {
-                uGetList=new ArrayList<>();
-            }
-            cGetList.add(curUsername);
-            uGetList.add(chanceC.cId);
-            chanceWithValueDO.setGetList(cGetList);
-            userPoolDO.setGottenList(uGetList);
-            //userPoolDO.addGotten(chanceC.cId);
-            dynamoDBMapper.save(userPoolDO);
-            dynamoDBMapper.save(chanceWithValueDO);
+                Log.d("getrun11",shoufei);
+                Message msg1 = new Message();
+                msg1.what=5;
+                handler.sendMessage(msg1);
 
+            }
         }
     };
 
@@ -271,6 +311,8 @@ public class ContentActivity extends AppCompatActivity {
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
+            Log.d("handler",String.valueOf(msg.what));
+
             if(msg.what==1){
                 zhanNum.setText(msg.obj.toString());
             }
@@ -279,6 +321,20 @@ public class ContentActivity extends AppCompatActivity {
                 mAdapter= new CommentAdapter(context,cClass.commentList);
                 mRecyclerView.setAdapter(mAdapter);
                 comNum.setText(String.valueOf(liuNum));
+
+            }
+            else if(msg.what==3){
+                popupWindow.showAtLocation(rootview, Gravity.CENTER_VERTICAL,0,0);
+                getButton.setVisibility(View.INVISIBLE);
+                showText.setVisibility(View.VISIBLE);
+            }
+            else if(msg.what==4){
+                Toast.makeText(getApplicationContext().getApplicationContext(),"该机会已被抢光了！！！",Toast.LENGTH_LONG).show();
+
+            }
+            else if(msg.what==5){
+                Log.d("handler1",String.valueOf(msg.what));
+                Toast.makeText(getApplicationContext().getApplicationContext(),"可用资产不足获得该机会",Toast.LENGTH_LONG).show();
 
             }
 
@@ -390,6 +446,11 @@ public class ContentActivity extends AppCompatActivity {
 
         }
     };
+
+    public void gotomyChance(View v){
+        Intent intent = new Intent(v.getContext(),wodejihui.class);
+        startActivity(intent);
+    }
 
     public String displayTime(String thatTime){
         Date currentTime = Calendar.getInstance().getTime();

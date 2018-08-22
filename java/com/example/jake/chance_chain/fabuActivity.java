@@ -328,12 +328,31 @@ public class fabuActivity extends AppCompatActivity {
         @Override
         public void run() {
             ChanceWithValueDO chanceWithValueDO = mapper.load(ChanceWithValueDO.class, tempCid);
+            UserPoolDO myUser = mapper.load(UserPoolDO.class,myUsr);
+            UserPoolDO hisUser = mapper.load(UserPoolDO.class,chanceWithValueDO.getGetList().get(0));
+            double value;
+            if(chanceWithValueDO.getFuFei()!=0.0){
+                Log.d("fufei",chanceWithValueDO.getFuFei().toString()+myUsr+chanceWithValueDO.getGetList().get(0));
+                myUser.setFrozenwallet(myUser.getFrozenwallet()-chanceWithValueDO.getFuFei());
+                hisUser.setAvailableWallet(hisUser.getAvailableWallet()+chanceWithValueDO.getFuFei());
+                hisUser.setCandyCurrency(hisUser.getCandyCurrency()+chanceWithValueDO.getFuFei());
+
+            }
+            else if(chanceWithValueDO.getShouFei()!=0.0){
+                Log.d("shoufei",chanceWithValueDO.getShouFei().toString()+myUsr+chanceWithValueDO.getGetList().get(0));
+                hisUser.setFrozenwallet(hisUser.getFrozenwallet()-chanceWithValueDO.getShouFei());
+                myUser.setCandyCurrency(myUser.getCandyCurrency()+chanceWithValueDO.getShouFei());
+                myUser.setAvailableWallet(myUser.getAvailableWallet()+chanceWithValueDO.getShouFei());
+
+            }
             List<String> temp = new ArrayList<>();
             if(chanceWithValueDO.getConfirmList()!=null){
                 temp=chanceWithValueDO.getConfirmList();
             }
             temp.add(tempName);
             chanceWithValueDO.setConfirmList(temp);
+            mapper.save(myUser);
+            mapper.save(hisUser);
             mapper.save(chanceWithValueDO);
         }
     };
@@ -367,7 +386,7 @@ public class fabuActivity extends AppCompatActivity {
                 setupHandler.sendMessage(msg);
 
             }
-            for(int i=0; i < weiJingxin.size();i++){
+            for(int i=weiJingxin.size()-1; i>=0  ;i--){
                 Message msg = new Message();
                 msg.what = 1;
                 msg.obj = weiJingxin.get(i);
@@ -460,7 +479,7 @@ public class fabuActivity extends AppCompatActivity {
 
     public void putStuffin(String i) {
         ChanceWithValueDO chanceWithValueDO = mapper.load(ChanceWithValueDO.class, String.valueOf(i));
-        chanceClass cc = new chanceClass(chanceWithValueDO.getRewardType(), chanceWithValueDO.getUsername(), chanceWithValueDO.getTitle(), chanceWithValueDO.getText(), chanceWithValueDO.getId(), chanceWithValueDO.getBonus(), chanceWithValueDO.getReward(), chanceWithValueDO.getTag(), chanceWithValueDO.getTime());
+        chanceClass cc = new chanceClass(chanceWithValueDO.getShouFeiType(), chanceWithValueDO.getFuFeiType(),chanceWithValueDO.getUsername(),chanceWithValueDO.getTitle(),chanceWithValueDO.getText(),chanceWithValueDO.getId(),chanceWithValueDO.getShouFei(),chanceWithValueDO.getFuFei(),chanceWithValueDO.getTag(),chanceWithValueDO.getTime(),chanceWithValueDO.getRenShu());
         UserPoolDO userPoolDO = mapper.load(UserPoolDO.class, cc.userid);
         if(chanceWithValueDO.getConfirmList()!=null){
             cc.confirmList=chanceWithValueDO.getConfirmList();
@@ -500,17 +519,17 @@ public class fabuActivity extends AppCompatActivity {
                 cc.addComList(comC);
             }
         }
-        if(chanceWithValueDO.getCompleteList()!=null){
-            cc.setCompleteList(chanceWithValueDO.getCompleteList());
-        }
         if (chanceWithValueDO.getSharedFrom() != null) {
             cc.setSharfrom(chanceWithValueDO.getSharedFrom());
         }
         if(chanceWithValueDO.getCompleteList()!=null){
+            cc.completeList=chanceWithValueDO.getCompleteList();
             yiWanCheng.add(cc);
+            Log.d("1shiit",yiWanCheng.toString());
         }
         else if(chanceWithValueDO.getGetList()!=null){
             jinXingZhong.add(cc);
+            Log.d("2shiit",yiWanCheng.toString());
         }
         else{
             weiJingxin.add(cc);
